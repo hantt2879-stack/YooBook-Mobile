@@ -12,12 +12,12 @@ export const CATS = [
 ];
 
 export const LESSONS = [
-  { id: 1, title: "Cấu tạo tế bào thực vật", meta: "Sinh học · Lớp 6 · 32 phút", typeLabel: "Mô hình 3D", price: "120", rating: "4.8", reviews: "126", tint: "linear-gradient(135deg,#00aaab,#00708f)", slot: "[ ảnh bìa · mô hình 3D tế bào ]" },
-  { id: 2, title: "Thí nghiệm điện phân dung dịch CuSO₄", meta: "Hóa học · Lớp 11 · 24 phút", typeLabel: "Mô phỏng", price: "150", rating: "4.7", reviews: "89", tint: "linear-gradient(135deg,#138cd2,#195658)", slot: "[ ảnh bìa · bể điện phân ]" },
-  { id: 3, title: "Hệ Mặt Trời trong không gian 3D", meta: "Khoa học · Lớp 9 · 41 phút", typeLabel: "VR360", price: "200", rating: "4.9", reviews: "213", tint: "linear-gradient(135deg,#195658,#0f3234)", slot: "[ ảnh bìa · hệ mặt trời ]" },
-  { id: 4, title: "Chiến dịch Điện Biên Phủ", meta: "Lịch sử · Lớp 12 · 28 phút", typeLabel: "VR360", price: "Miễn phí", rating: "4.6", reviews: "154", tint: "linear-gradient(135deg,#ef5da8,#a03a6d)", slot: "[ ảnh bìa · bản đồ chiến dịch ]" },
-  { id: 5, title: "Ba định luật Newton", meta: "Vật lý · Lớp 10 · 35 phút", typeLabel: "Mô phỏng", price: "130", rating: "4.8", reviews: "97", tint: "linear-gradient(135deg,#f59e0b,#c2410c)", slot: "[ ảnh bìa · mặt phẳng nghiêng ]" },
-  { id: 6, title: "Địa hình Việt Nam qua bản đồ 3D", meta: "Địa lý · Lớp 8 · 22 phút", typeLabel: "Mô hình 3D", price: "110", rating: "4.5", reviews: "64", tint: "linear-gradient(135deg,#22c55e,#15803d)", slot: "[ ảnh bìa · bản đồ địa hình ]" },
+  { id: 1, title: "Cấu tạo tế bào thực vật", meta: "Sinh học · Lớp 6 · 32 phút", typeLabel: "Mô hình 3D", price: "120", rating: "4.8", reviews: "126", tint: "linear-gradient(135deg,#00aaab,#00708f)", img: "/assets/thumbs/thumb-bio-cell.svg", slot: "[ ảnh bìa · mô hình 3D tế bào ]" },
+  { id: 2, title: "Thí nghiệm điện phân dung dịch CuSO₄", meta: "Hóa học · Lớp 11 · 24 phút", typeLabel: "Mô phỏng", price: "150", rating: "4.7", reviews: "89", tint: "linear-gradient(135deg,#138cd2,#195658)", img: "/assets/thumbs/thumb-chem-electrolysis.svg", slot: "[ ảnh bìa · bể điện phân ]" },
+  { id: 3, title: "Hệ Mặt Trời trong không gian 3D", meta: "Khoa học · Lớp 9 · 41 phút", typeLabel: "VR360", price: "200", rating: "4.9", reviews: "213", tint: "linear-gradient(135deg,#195658,#0f3234)", img: "/assets/thumbs/thumb-solar-system.svg", slot: "[ ảnh bìa · hệ mặt trời ]" },
+  { id: 4, title: "Chiến dịch Điện Biên Phủ", meta: "Lịch sử · Lớp 12 · 28 phút", typeLabel: "VR360", price: "Miễn phí", rating: "4.6", reviews: "154", tint: "linear-gradient(135deg,#ef5da8,#a03a6d)", img: "/assets/thumbs/thumb-history-map.svg", slot: "[ ảnh bìa · bản đồ chiến dịch ]" },
+  { id: 5, title: "Ba định luật Newton", meta: "Vật lý · Lớp 10 · 35 phút", typeLabel: "Mô phỏng", price: "130", rating: "4.8", reviews: "97", tint: "linear-gradient(135deg,#f59e0b,#c2410c)", img: "/assets/thumbs/thumb-physics-newton.svg", slot: "[ ảnh bìa · mặt phẳng nghiêng ]" },
+  { id: 6, title: "Địa hình Việt Nam qua bản đồ 3D", meta: "Địa lý · Lớp 8 · 22 phút", typeLabel: "Mô hình 3D", price: "110", rating: "4.5", reviews: "64", tint: "linear-gradient(135deg,#22c55e,#15803d)", img: "/assets/thumbs/thumb-geo-vietnam.svg", slot: "[ ảnh bìa · bản đồ địa hình ]" },
 ];
 
 export const STEPS = [
@@ -54,10 +54,10 @@ export const T_METRICS = [
   { label: "Học sinh", value: "128", hint: "Cần theo dõi và hỗ trợ", bg: "#fdeef5", color: "#ef5da8" },
 ];
 export const T_CLASSES = [
-  { name: "SINH HỌC 8A1", sub: "Sinh học · Lớp 8", code: "SH8A1-24", students: "32", progress: "60%", tint: "linear-gradient(135deg,#00aaab,#00708f)" },
-  { name: "SINH HỌC 8A2", sub: "Sinh học · Lớp 8", code: "SH8A2-24", students: "30", progress: "45%", tint: "linear-gradient(135deg,#138cd2,#195658)" },
-  { name: "KHTN 6A2", sub: "Khoa học tự nhiên · Lớp 6", code: "KH6A2-24", students: "34", progress: "72%", tint: "linear-gradient(135deg,#22c55e,#15803d)" },
-  { name: "SINH HỌC 9A1", sub: "Sinh học · Lớp 9", code: "SH9A1-24", students: "32", progress: "28%", tint: "linear-gradient(135deg,#ef5da8,#a03a6d)" },
+  { name: "SINH HỌC 8A1", sub: "Sinh học · Lớp 8", code: "SH8A1-24", students: "32", progress: "60%", tint: "linear-gradient(135deg,#00aaab,#00708f)", img: "/assets/thumbs/thumb-bio-cell.svg" },
+  { name: "SINH HỌC 8A2", sub: "Sinh học · Lớp 8", code: "SH8A2-24", students: "30", progress: "45%", tint: "linear-gradient(135deg,#138cd2,#195658)", img: "/assets/thumbs/thumb-bio-cell.svg" },
+  { name: "KHTN 6A2", sub: "Khoa học tự nhiên · Lớp 6", code: "KH6A2-24", students: "34", progress: "72%", tint: "linear-gradient(135deg,#22c55e,#15803d)", img: "/assets/thumbs/thumb-science-watercycle.svg" },
+  { name: "SINH HỌC 9A1", sub: "Sinh học · Lớp 9", code: "SH9A1-24", students: "32", progress: "28%", tint: "linear-gradient(135deg,#ef5da8,#a03a6d)", img: "/assets/thumbs/thumb-bio-cell.svg" },
 ];
 export const T_ASSIGNMENTS = [
   { title: "Bài tập tuần 20: Quang hợp của thực vật", cls: "SINH HỌC 8A1", due: "17/05/2026", submitted: "28/32", pending: "4 bài chờ chấm" },

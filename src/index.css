@@ -36,6 +36,23 @@ a:hover {
   height: 0;
 }
 
+.yb-press:hover {
+  border-color: #b9d6dc;
+  box-shadow: 0 4px 14px rgba(25, 86, 88, 0.08);
+}
+.yb-press:active {
+  transform: scale(0.97);
+  background: #f4fbfc;
+}
+
+.yb-press-dark:hover {
+  filter: brightness(1.04);
+}
+.yb-press-dark:active {
+  transform: scale(0.97);
+  filter: brightness(0.94);
+}
+
 @keyframes ybup {
   from {
     opacity: 0;

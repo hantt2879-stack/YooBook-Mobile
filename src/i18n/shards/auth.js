@@ -1,0 +1,42 @@
+export default {
+  "Đăng nhập vào YooBook": "Log in to YooBook",
+  "Kho học liệu số Giáo Dục 3D/Vr360/XR": "The digital library for 3D/VR360/XR education",
+  "Email/Số điện thoại": "Email/Phone number",
+  "Mật khẩu": "Password",
+  "Ghi nhớ mật khẩu": "Remember password",
+  "Quên mật khẩu": "Forgot password",
+  "Đăng nhập": "Log in",
+  "Hoặc": "Or",
+  "Chưa có tài khoản?": "Don't have an account?",
+  "Đăng ký": "Sign up",
+  "Thiết lập YooBook": "Set up YooBook",
+  "Chọn vai trò để cá nhân hóa trải nghiệm của bạn": "Choose a role to personalize your experience",
+  "Khám phá kho học liệu trước": "Explore the library first",
+
+  "Tạo tài khoản YooBook": "Create your YooBook account",
+  "Bắt đầu khám phá kho học liệu số": "Start exploring the digital library",
+  "Họ và tên": "Full name",
+  "Xác nhận mật khẩu": "Confirm password",
+  "Tôi đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của YooBook": "I agree to YooBook's Terms of Service and Privacy Policy",
+  "Tạo tài khoản": "Create account",
+  "Đã có tài khoản?": "Already have an account?",
+
+  "Quên mật khẩu?": "Forgot password?",
+  "Nhập email hoặc số điện thoại đã đăng ký, chúng tôi sẽ gửi mã xác thực để đặt lại mật khẩu.": "Enter your registered email or phone number and we'll send you a verification code to reset your password.",
+  "Gửi mã xác thực": "Send verification code",
+
+  "Xác thực mã": "Verify code",
+  "Mã xác thực gồm 6 số đã được gửi tới": "A 6-digit verification code was sent to",
+  "Gửi lại mã": "Resend code",
+  "Gửi lại mã sau": "Resend code in",
+  "Tiếp tục": "Continue",
+
+  "Đặt lại mật khẩu": "Reset password",
+  "Tạo một mật khẩu mới, khác với các mật khẩu bạn đã dùng trước đó.": "Create a new password that's different from any you've used before.",
+  "Mật khẩu mới": "New password",
+  "Xác nhận mật khẩu mới": "Confirm new password",
+
+  "Đổi mật khẩu thành công": "Password changed successfully",
+  "Mật khẩu của bạn đã được cập nhật. Hãy đăng nhập lại bằng mật khẩu mới.": "Your password has been updated. Please log in again with your new password.",
+  "Về trang đăng nhập": "Back to login",
+};
