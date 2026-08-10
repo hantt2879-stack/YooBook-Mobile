@@ -5,9 +5,10 @@ import {
   T_METRICS, T_CLASSES, T_ASSIGNMENTS, T_SUBMISSIONS, T_PLANS, T_BLOCKS, T_STUDENTS,
   S_ASSIGNMENTS, P_CHILDREN, P_CONVOS, P_THREAD, P_REPORT, TAB_ICONS, NOTI,
 } from "./constants.js";
+import { translate } from "./i18n/dict.js";
 
 const INITIAL_STATE = {
-  screen: "login", role: "student", tab: "home", view: "grid",
+  screen: "login", role: "student", tab: "home", view: "grid", tExploreView: "grid",
   detailTab: "overview", libTab: "learning",
   step: 0, playing: false, quickPick: null,
   examIdx: 0, answers: [null, null, null], examSecs: 596,
@@ -16,7 +17,78 @@ const INITIAL_STATE = {
   tClassIdx: 0, tClassTab: "students", gradeIdx: 0, gradeScore: "8.5", graded: false,
   childIdx: 0, sent: false,
   safety: { social: true, leaderboard: true, ai: true, noti: true, limit: "60" },
+  lang: "vi", langOpen: false,
+  showPassword: false, remember: true,
+  signupShowPassword: false, signupAgree: true,
+  newShowPassword: false, otpSecs: 60,
+  classIdx: 0, classDetailTab: "feed",
+  classAccessMode: "code",
+  classPerms: { post: false, comment: true, upload: true },
+  tExploreSaved: [], tExploreAdded: [], planTab: "recent",
+  profileEditing: false,
+  tClassesTab: "submitted",
 };
+
+// Shared announcement mock for the student-facing Class Detail newsfeed —
+// the same content the teacher dashboard's own "Bảng tin" tab shows.
+const CLASS_NEWS = [
+  { title: "Nhắc nộp bài tập tuần 20", when: "Hôm nay · 07:40", body: "Các em hoàn thành bài tập tuần 20 trước 23:59 ngày 17/05. Phần sơ đồ pha tối là bắt buộc." },
+  { title: "Lịch kiểm tra giữa kỳ", when: "12/05 · 16:10", body: "Kiểm tra giữa kỳ diễn ra tiết 2 ngày 19/05, nội dung từ bài 1 đến bài 6." },
+];
+
+// Avatar initials for T_STUDENTS, aligned by index (kept separate since the
+// roster's own initials aren't stored on that constant).
+const STUDENT_INITIALS = ["HN", "QB", "MA", "GH", "KL"];
+
+// Per-class mock data (teacher + lesson progress) for the student-facing
+// Class Detail screen, aligned by index with T_CLASSES. Kept separate from
+// TeacherScreens' own T_CLASSES usage so the two role-specific views never
+// share navigation state.
+const CLASS_EXTRA = [
+  {
+    teacher: "Cô Phạm Thu Trang", initials: "PT", tint: "linear-gradient(135deg,#138cd2,#00708f)", teacherMeta: "THCS Chu Văn An",
+    lessons: [
+      { title: "Cấu tạo tế bào thực vật", status: "Đã học", pct: "100%", statusBg: "#f0fdf4", statusColor: "#15803d" },
+      { title: "Quang hợp ở thực vật", status: "Đang học", pct: "60%", statusBg: "#eaf6f8", statusColor: "#00708f" },
+      { title: "Hô hấp tế bào", status: "Chưa học", pct: "0%", statusBg: "#f1f5f7", statusColor: "#617789" },
+    ],
+  },
+  {
+    teacher: "Cô Phạm Thu Trang", initials: "PT", tint: "linear-gradient(135deg,#138cd2,#00708f)", teacherMeta: "THCS Chu Văn An",
+    lessons: [
+      { title: "Cấu tạo tế bào thực vật", status: "Đã học", pct: "100%", statusBg: "#f0fdf4", statusColor: "#15803d" },
+      { title: "Quang hợp ở thực vật", status: "Chưa học", pct: "0%", statusBg: "#f1f5f7", statusColor: "#617789" },
+    ],
+  },
+  {
+    teacher: "Thầy Vũ Đình Nam", initials: "VN", tint: "linear-gradient(135deg,#22c55e,#15803d)", teacherMeta: "THCS Chu Văn An",
+    lessons: [
+      { title: "Vòng tuần hoàn nước trong tự nhiên", status: "Đang học", pct: "72%", statusBg: "#eaf6f8", statusColor: "#00708f" },
+      { title: "Trạng thái của nước", status: "Đã học", pct: "100%", statusBg: "#f0fdf4", statusColor: "#15803d" },
+    ],
+  },
+  {
+    teacher: "Cô Phạm Thu Trang", initials: "PT", tint: "linear-gradient(135deg,#138cd2,#00708f)", teacherMeta: "THCS Chu Văn An",
+    lessons: [
+      { title: "Di truyền học cơ bản", status: "Đang học", pct: "28%", statusBg: "#eaf6f8", statusColor: "#00708f" },
+    ],
+  },
+];
+
+// Recursively runs every string in a data tree through `t`, leaving
+// functions (onClick handlers), numbers, and booleans untouched. Safe to
+// apply blindly: hex colors, SVG path data, and icon URLs never match a
+// dictionary entry, so they just pass through unchanged.
+function deepT(x, t) {
+  if (typeof x === "string") return t(x);
+  if (Array.isArray(x)) return x.map((v) => deepT(v, t));
+  if (x && typeof x === "object") {
+    const out = {};
+    for (const k in x) out[k] = deepT(x[k], t);
+    return out;
+  }
+  return x;
+}
 
 // navStyle: "tabs" | "fab" | "pill"
 export function useAppLogic(navStyle = "tabs") {
@@ -38,6 +110,9 @@ export function useAppLogic(navStyle = "tabs") {
       if (stateRef.current.screen === "exam" && stateRef.current.examSecs > 0) {
         setState((s) => ({ examSecs: s.examSecs - 1 }));
       }
+      if (stateRef.current.screen === "verification" && stateRef.current.otpSecs > 0) {
+        setState((s) => ({ otpSecs: s.otpSecs - 1 }));
+      }
     }, 1000);
     return () => clearInterval(t);
   }, []);
@@ -52,11 +127,17 @@ export function useAppLogic(navStyle = "tabs") {
   }, [state.screen]);
 
   const s = state;
+  const t = (str) => translate(s.lang, str);
   const step = STEPS[s.step];
+
+  const langOptions = [
+    { code: "vi", label: "Tiếng Việt" },
+    { code: "en", label: "English" },
+  ].map((o) => ({ ...o, active: o.code === s.lang, onClick: () => setState({ lang: o.code, langOpen: false }) }));
 
   const ROLE_TABS = {
     student: [["home", "Trang chủ", "home"], ["explore", "Khám phá", "explore"], ["classwork", "Lớp học", "cls"], ["library", "Thư viện", "library"], ["profile", "Tài khoản", "profile"]],
-    teacher: [["tOverview", "Tổng quan", "chart"], ["tClasses", "Lớp học", "cls"], ["tGrading", "Chấm bài", "check"], ["tPlans", "Giáo án", "book"], ["profile", "Tài khoản", "profile"]],
+    teacher: [["tOverview", "Trang chủ", "home"], ["tExplore", "Khám phá", "explore"], ["tPlans", "Giáo án", "book"], ["tClasses", "Lớp học", "cls"], ["profile", "Tài khoản", "profile"]],
     parent: [["pOverview", "Tổng quan", "chart"], ["pChild", "Con của tôi", "child"], ["pReport", "Báo cáo", "doc"], ["pMessages", "Tin nhắn", "msg"], ["profile", "Tài khoản", "profile"]],
   };
   const roleHome = ROLE_TABS[s.role][0][0];
@@ -117,6 +198,7 @@ export function useAppLogic(navStyle = "tabs") {
   });
 
   const grid = s.view === "grid";
+  const tGrid = s.tExploreView === "grid";
   const detailTabDefs = [
     { key: "overview", label: "Tổng quan" }, { key: "content", label: "Nội dung" }, { key: "reviews", label: "Đánh giá" },
   ];
@@ -134,16 +216,16 @@ export function useAppLogic(navStyle = "tabs") {
   });
   const libSets = {
     learning: [
-      { title: "Cấu tạo tế bào thực vật", meta: "Sinh học · Bài 3/5", pct: "60%", bar: ACCENT, tint: LESSONS[0].tint },
-      { title: "Ba định luật Newton", meta: "Vật lý · Bài 2/6", pct: "33%", bar: "#138cd2", tint: LESSONS[4].tint },
-      { title: "Thí nghiệm điện phân dung dịch CuSO₄", meta: "Hóa học · Bài 1/4", pct: "25%", bar: "#f59e0b", tint: LESSONS[1].tint },
+      { title: "Cấu tạo tế bào thực vật", meta: "Sinh học · Bài 3/5", pct: "60%", bar: ACCENT, tint: LESSONS[0].tint, img: LESSONS[0].img },
+      { title: "Ba định luật Newton", meta: "Vật lý · Bài 2/6", pct: "33%", bar: "#138cd2", tint: LESSONS[4].tint, img: LESSONS[4].img },
+      { title: "Thí nghiệm điện phân dung dịch CuSO₄", meta: "Hóa học · Bài 1/4", pct: "25%", bar: "#f59e0b", tint: LESSONS[1].tint, img: LESSONS[1].img },
     ],
     saved: [
-      { title: "Hệ Mặt Trời trong không gian 3D", meta: "Khoa học · Đã lưu 2 ngày trước", pct: "0%", bar: MUTED, tint: LESSONS[2].tint },
-      { title: "Địa hình Việt Nam qua bản đồ 3D", meta: "Địa lý · Đã lưu 5 ngày trước", pct: "0%", bar: MUTED, tint: LESSONS[5].tint },
+      { title: "Hệ Mặt Trời trong không gian 3D", meta: "Khoa học · Đã lưu 2 ngày trước", pct: "0%", bar: MUTED, tint: LESSONS[2].tint, img: LESSONS[2].img },
+      { title: "Địa hình Việt Nam qua bản đồ 3D", meta: "Địa lý · Đã lưu 5 ngày trước", pct: "0%", bar: MUTED, tint: LESSONS[5].tint, img: LESSONS[5].img },
     ],
     completed: [
-      { title: "Chiến dịch Điện Biên Phủ", meta: "Lịch sử · Hoàn thành 12/07", pct: "100%", bar: "#22c55e", tint: LESSONS[3].tint },
+      { title: "Chiến dịch Điện Biên Phủ", meta: "Lịch sử · Hoàn thành 12/07", pct: "100%", bar: "#22c55e", tint: LESSONS[3].tint, img: LESSONS[3].img },
     ],
   };
   const libraryItems = libSets[s.libTab].map((l) => ({ ...l, tintBg: l.tint, barColor: l.bar, onClick: () => go("detail") }));
@@ -205,9 +287,15 @@ export function useAppLogic(navStyle = "tabs") {
 
   const vals = {
     isLogin: s.screen === "login", isRole: s.screen === "role", isHome: s.screen === "home",
+    isSignup: s.screen === "signup", isForgotPassword: s.screen === "forgotPassword",
+    isVerification: s.screen === "verification", isNewPassword: s.screen === "newPassword",
+    isSuccess: s.screen === "success",
+    isLearningActivity: s.screen === "learningActivity", isStudyTime: s.screen === "studyTime",
+    isLearningStreak: s.screen === "learningStreak", isAverageScore: s.screen === "averageScore",
     isExplore: s.screen === "explore", isDetail: s.screen === "detail", isPlayer: s.screen === "player",
     isComplete: s.screen === "complete", isExam: s.screen === "exam", isExamResult: s.screen === "examresult",
     isLibrary: s.screen === "library", isNoti: s.screen === "noti", isProfile: s.screen === "profile",
+    isProfileDetail: s.screen === "profileDetail", isChangePassword: s.screen === "changePassword",
     isWallet: s.screen === "wallet",
 
     showNav: NAV_SCREENS.indexOf(s.screen) >= 0,
@@ -218,7 +306,25 @@ export function useAppLogic(navStyle = "tabs") {
     toPlayer: () => setState({ screen: "player" }), toDetail: () => go("detail"),
     toExam: () => setState({ screen: "exam", examIdx: 0, answers: [null, null, null], examSecs: 596 }),
     toLibrary: () => go("library"), toNoti: () => go("noti"), toProfile: () => go("profile"),
-    toWallet: () => go("wallet"), toLogin: () => go("login"), back: () => go("explore"),
+    toWallet: () => go("wallet"),
+    toLogin: () => setState({ screen: "login", otpSecs: 60 }),
+    back: () => go(s.role === "teacher" ? "tExplore" : "explore"),
+
+    toSignup: () => go("signup"), toForgotPassword: () => go("forgotPassword"),
+    toVerification: () => go("verification"), toNewPassword: () => go("newPassword"),
+    toSuccess: () => go("success"),
+    togglePassword: () => setState({ showPassword: !s.showPassword }),
+    toggleRemember: () => setState({ remember: !s.remember }),
+    toggleSignupPassword: () => setState({ signupShowPassword: !s.signupShowPassword }),
+    toggleSignupAgree: () => setState({ signupAgree: !s.signupAgree }),
+    toggleNewPassword: () => setState({ newShowPassword: !s.newShowPassword }),
+    passwordMask: s.showPassword ? "Yootek@2026" : "••••••••",
+    signupPasswordMask: s.signupShowPassword ? "Yootek@2026" : "••••••••",
+    newPasswordMask: s.newShowPassword ? "Yootek@2026" : "••••••••",
+    otpClock: "00:" + String(s.otpSecs).padStart(2, "0"),
+    canResendOtp: s.otpSecs === 0,
+    resendOtp: () => setState({ otpSecs: 60 }),
+    remember: s.remember, signupAgree: s.signupAgree,
 
     userName: "Nguyễn Thị Hoa",
     roleLabel: roleMeta[s.role].title,
@@ -228,11 +334,46 @@ export function useAppLogic(navStyle = "tabs") {
     lessons: LESSONS.map(mkLesson),
     resumePct: "60%",
     stats: [
-      { value: "4", label: "Bài đã học", icon: "/assets/lib/learning.svg", bg: "#eaf6f8" },
-      { value: "2h 15p", label: "Thời gian học", icon: "/assets/lib/completed.svg", bg: "#e8f6ee" },
-      { value: "7", label: "Ngày liên tiếp", icon: "/assets/learning-points.svg", bg: "#fff5e6" },
-      { value: "8.4", label: "Điểm trung bình", icon: "/assets/lesson/star.svg", bg: "#fdeef5" },
+      { value: "4", label: "Bài đã học", icon: "/assets/lib/learning.svg", bg: "#eaf6f8", onClick: () => go("learningActivity") },
+      { value: "2h 15p", label: "Thời gian học", icon: "/assets/lib/completed.svg", bg: "#e8f6ee", onClick: () => go("studyTime") },
+      { value: "7", label: "Ngày liên tiếp", icon: "/assets/learning-points.svg", bg: "#fff5e6", onClick: () => go("learningStreak") },
+      { value: "8.4", label: "Điểm trung bình", icon: "/assets/lesson/star.svg", bg: "#fdeef5", onClick: () => go("averageScore") },
     ],
+
+    weekActivity: [
+      { title: "Cấu tạo tế bào thực vật", subject: "Sinh học", when: "Thứ 2 · 12/05", duration: "32 phút", status: "Hoàn thành", tint: LESSONS[0].tint },
+      { title: "Ba định luật Newton", subject: "Vật lý", when: "Thứ 3 · 13/05", duration: "28 phút", status: "Hoàn thành", tint: LESSONS[4].tint },
+      { title: "Thí nghiệm điện phân dung dịch CuSO₄", subject: "Hóa học", when: "Thứ 5 · 15/05", duration: "24 phút", status: "Đang học", tint: LESSONS[1].tint },
+      { title: "Chiến dịch Điện Biên Phủ", subject: "Lịch sử", when: "Thứ 6 · 16/05", duration: "22 phút", status: "Hoàn thành", tint: LESSONS[3].tint },
+    ].map((a) => ({ ...a, done: a.status === "Hoàn thành" })),
+
+    dailyStudy: (() => {
+      const mins = [25, 18, 0, 32, 20, 15, 25];
+      const max = Math.max(...mins);
+      return ["T2", "T3", "T4", "T5", "T6", "T7", "CN"].map((day, i) => ({
+        day, minutes: mins[i], barPct: max ? Math.round((mins[i] / max) * 100) : 0,
+      }));
+    })(),
+    subjectStudy: [
+      { subject: "Sinh học", minutes: 60, tint: "#00aaab" },
+      { subject: "Vật lý", minutes: 40, tint: "#138cd2" },
+      { subject: "Hóa học", minutes: 35, tint: "#f59e0b" },
+    ].map((x) => ({ ...x, label: x.minutes >= 60 ? `${Math.floor(x.minutes / 60)}h ${x.minutes % 60}p` : `${x.minutes} phút` })),
+
+    streakDays: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"].map((day) => ({ day, done: true })),
+    bestStreak: "15",
+    streakMessage: "Bạn đang duy trì mạch học rất tốt! Cố gắng thêm 8 ngày nữa để phá kỷ lục 15 ngày liên tiếp của mình.",
+
+    recentScores: [
+      { title: "Kiểm tra: Cấu tạo tế bào thực vật", subject: "Sinh học", score: "9.0", when: "16/05" },
+      { title: "Trắc nghiệm: Ba định luật Newton", subject: "Vật lý", score: "8.0", when: "14/05" },
+      { title: "Bài tập: Thí nghiệm điện phân dung dịch CuSO₄", subject: "Hóa học", score: "7.5", when: "12/05" },
+      { title: "Kiểm tra 15 phút: Mô phân sinh", subject: "Sinh học", score: "9.1", when: "10/05" },
+    ].map((r) => {
+      const n = parseFloat(r.score);
+      const perf = n >= 8 ? { label: "Tốt", color: "#15803d", bg: "#f0fdf4" } : n >= 6.5 ? { label: "Khá", color: "#b45309", bg: "#fff5e6" } : { label: "Cần cải thiện", color: "#b91c1c", bg: "#fef2f2" };
+      return { ...r, ...perf };
+    }),
 
     chips, resultCount: "248",
     toggleView: () => setState({ view: grid ? "list" : "grid" }),
@@ -286,13 +427,15 @@ export function useAppLogic(navStyle = "tabs") {
     scoreText: score.toFixed(1),
     scoreOffset: 402 - (402 * correctCount) / EXAM.length,
     scoreTitle: correctCount === EXAM.length ? "Xuất sắc!" : correctCount >= 2 ? "Làm tốt lắm!" : "Cần ôn lại",
-    scoreSub: "Bạn trả lời đúng " + correctCount + "/" + EXAM.length + " câu trong bài kiểm tra Cấu tạo tế bào thực vật.",
+    scoreSub: s.lang === "en"
+      ? `You answered ${correctCount}/${EXAM.length} questions correctly in the "${t("Cấu tạo tế bào thực vật")}" quiz.`
+      : `Bạn trả lời đúng ${correctCount}/${EXAM.length} câu trong bài kiểm tra Cấu tạo tế bào thực vật.`,
     examReview: EXAM.map((e, i) => {
       const ok = s.answers[i] === e.correct;
       return {
         text: e.q, markBg: ok ? "#22c55e" : "#ef4444",
         markPath: ok ? "M5 12.5L10 17.5 19 6.5" : "M6 6l12 12M18 6L6 18",
-        ansLabel: ok ? "Đúng · " + e.opts[e.correct] : "Đáp án đúng: " + e.opts[e.correct],
+        ansLabel: ok ? `${t("Đúng")} · ${t(e.opts[e.correct])}` : `${t("Đáp án đúng")}: ${t(e.opts[e.correct])}`,
         ansColor: ok ? "#15803d" : "#b91c1c",
       };
     }),
@@ -309,22 +452,73 @@ export function useAppLogic(navStyle = "tabs") {
     notifications: NOTI[s.role],
 
     profileRows: [
-      { label: "Hồ sơ cá nhân", value: "", iconPath: "M12 12.4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7.2 7.1c1.3-3.4 4-5.1 7.2-5.1s5.9 1.7 7.2 5.1", onClick: () => {} },
+      { label: "Hồ sơ cá nhân", value: "", iconPath: "M12 12.4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7.2 7.1c1.3-3.4 4-5.1 7.2-5.1s5.9 1.7 7.2 5.1", onClick: () => setState({ screen: "profileDetail", profileEditing: false }) },
       { label: "Lớp học của tôi", value: "6A2", iconPath: "M3 8.5L12 4l9 4.5-9 4.5-9-4.5zM7 11v4.6c0 .5.3 1 .8 1.2 2.7 1.3 5.7 1.3 8.4 0 .5-.2.8-.7.8-1.2V11", onClick: () => {} },
       { label: "Ví & giao dịch", value: "450.000đ", iconPath: "M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-8zM16.5 12.5h.01", onClick: () => go("wallet") },
       { label: "Gói dịch vụ", value: "Pro", iconPath: "M4 17l1.6-9L10 12l2-6 2 6 4.4-4 1.6 9H4z", onClick: () => {} },
       { label: "Thiết bị của tôi", value: "2/3", iconPath: "M7 3.5h10a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5zM11 17.5h2", onClick: () => {} },
-      { label: "Ngôn ngữ", value: "Tiếng Việt", iconPath: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3.2 12h17.6M12 3.2c4.5 5 4.5 12.6 0 17.6M12 3.2c-4.5 5-4.5 12.6 0 17.6", onClick: () => {} },
+      { label: "Ngôn ngữ", value: s.lang === "en" ? "English" : "Tiếng Việt", iconPath: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3.2 12h17.6M12 3.2c4.5 5 4.5 12.6 0 17.6M12 3.2c-4.5 5-4.5 12.6 0 17.6", onClick: () => setState({ langOpen: true }) },
     ],
+
+    toProfileDetail: () => setState({ screen: "profileDetail", profileEditing: false }),
+    toggleProfileEdit: () => setState({ profileEditing: !s.profileEditing }),
+    profileEditing: s.profileEditing,
+    toChangePassword: () => go("changePassword"),
+
+    profileName: s.role === "teacher" ? "Phạm Thu Trang" : s.role === "parent" ? "Nguyễn Văn Dũng" : "Nguyễn Thị Hoa",
+    profileInitials: s.role === "teacher" ? "PT" : s.role === "parent" ? "ND" : "HN",
+    profileAvatarTint: s.role === "teacher" ? "linear-gradient(135deg,#138cd2,#00708f)" : s.role === "parent" ? "linear-gradient(135deg,#ef5da8,#a03a6d)" : "linear-gradient(135deg,#00aaab,#00708f)",
+    profileCommon: [
+      s.role === "teacher"
+        ? { label: "Ngày sinh", value: "03/11/1989" }
+        : s.role === "parent"
+        ? { label: "Ngày sinh", value: "20/02/1985" }
+        : { label: "Ngày sinh", value: "12/05/2012" },
+      s.role === "teacher"
+        ? { label: "Email", value: "trang.pham@thcs-cvahn.edu.vn" }
+        : s.role === "parent"
+        ? { label: "Email", value: "dung.nguyen@gmail.com" }
+        : { label: "Email", value: "hoa.nguyen@thpt-nguyenhue.edu.vn" },
+      s.role === "teacher"
+        ? { label: "Số điện thoại", value: "091 456 7890" }
+        : s.role === "parent"
+        ? { label: "Số điện thoại", value: "098 765 4321" }
+        : { label: "Số điện thoại", value: "090 123 4567" },
+      { label: "Địa chỉ", value: s.role === "teacher" ? "45 Nguyễn Trãi, Hà Nội" : "12 Lê Lợi, Quận 1, TP.HCM" },
+    ],
+    profileBio: s.role === "teacher"
+      ? "Giáo viên Sinh học với 8 năm kinh nghiệm giảng dạy khối THCS."
+      : s.role === "parent"
+      ? "Phụ huynh luôn đồng hành cùng con trong học tập."
+      : "Học sinh lớp 6A2, yêu thích Sinh học và các mô hình 3D.",
+    profileRoleTitle: s.role === "teacher" ? "Thông tin giảng dạy" : s.role === "parent" ? "Học sinh liên kết" : "Thông tin học tập",
+    profileRoleFields: s.role === "teacher"
+      ? [
+          { label: "Chức danh", value: "Giáo viên" },
+          { label: "Tổ / Bộ môn", value: "Sinh học" },
+          { label: "Khối lớp giảng dạy", value: [...new Set(T_CLASSES.map((c) => c.sub.split(" · ")[1]))].join(", ") },
+          { label: "Trường học", value: "THCS Chu Văn An" },
+        ]
+      : s.role === "parent"
+      ? []
+      : [
+          { label: "Trường", value: "THPT Nguyễn Huệ" },
+          { label: "Lớp", value: "6A2" },
+          { label: "Khối", value: "Lớp 6" },
+          { label: "Mã học sinh", value: "HS2024-0182" },
+        ],
+    profileChildren: P_CHILDREN.map((c) => ({ name: c.name, meta: c.meta, initials: c.initials, tint: c.tint, relation: "Cha" })),
 
     topupAmounts, payMethods,
     topupLabel: topups[s.topup].v ? topups[s.topup].label : "số tiền khác",
 
     isStudent: s.role === "student", isTeacher: s.role === "teacher", isParent: s.role === "parent",
     isClasswork: s.screen === "classwork", isAssignment: s.screen === "assignment",
+    isClassDetail: s.screen === "classDetail",
     isTOverview: s.screen === "tOverview", isTClasses: s.screen === "tClasses", isTClass: s.screen === "tClass",
     isTGrading: s.screen === "tGrading", isTGrade: s.screen === "tGrade",
     isTPlans: s.screen === "tPlans", isTPlan: s.screen === "tPlan",
+    isTExplore: s.screen === "tExplore",
     isPOverview: s.screen === "pOverview", isPChild: s.screen === "pChild", isPReport: s.screen === "pReport",
     isPMessages: s.screen === "pMessages", isPThread: s.screen === "pThread", isPSafety: s.screen === "pSafety",
 
@@ -334,6 +528,37 @@ export function useAppLogic(navStyle = "tabs") {
     }),
     cwItems: S_ASSIGNMENTS[s.cwTab].map((a, i) => ({ ...a, hasScore: !!a.score, onClick: () => setState({ screen: "assignment", asgIdx: i, submitted: s.cwTab !== "todo" }) })),
     toClasswork: () => go("classwork"),
+
+    myClasses: T_CLASSES.map((c, i) => ({
+      ...c, tintBg: c.tint,
+      onClick: () => setState({ screen: "classDetail", classIdx: i, classDetailTab: "feed" }),
+    })),
+    classDetailTabs: [["feed", "Bảng tin"], ["students", "Học sinh"], ["assignments", "Bài tập"], ["content", "Nội dung lớp"]].map(([k, label]) => {
+      const on = s.classDetailTab === k;
+      return { key: k, label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ classDetailTab: k }) };
+    }),
+    classTabFeed: s.classDetailTab === "feed", classTabStudents: s.classDetailTab === "students",
+    classTabAssignments: s.classDetailTab === "assignments", classTabContent: s.classDetailTab === "content",
+    classDetailName: T_CLASSES[s.classIdx].name,
+    classDetailSub: T_CLASSES[s.classIdx].sub,
+    classDetailCode: T_CLASSES[s.classIdx].code,
+    classDetailStudents: T_CLASSES[s.classIdx].students,
+    classDetailProgress: T_CLASSES[s.classIdx].progress,
+    classDetailTint: T_CLASSES[s.classIdx].tint,
+    classDetailImg: T_CLASSES[s.classIdx].img,
+    classDetailTeacher: CLASS_EXTRA[s.classIdx].teacher,
+    classDetailTeacherInitials: CLASS_EXTRA[s.classIdx].initials,
+    classDetailTeacherTint: CLASS_EXTRA[s.classIdx].tint,
+    classDetailTeacherMeta: CLASS_EXTRA[s.classIdx].teacherMeta,
+    classDetailContent: CLASS_EXTRA[s.classIdx].lessons,
+    classDetailFeed: CLASS_NEWS,
+    classDetailRoster: T_STUDENTS.map((st, i) => ({ name: st.name, tint: st.tint, initials: STUDENT_INITIALS[i] })),
+    classDetailAssignments: (() => {
+      const byTitle = new Map();
+      [...S_ASSIGNMENTS.todo, ...S_ASSIGNMENTS.done].forEach((a) => byTitle.set(a.title, a));
+      S_ASSIGNMENTS.grades.forEach((a) => byTitle.set(a.title, a));
+      return Array.from(byTitle.values()).filter((a) => a.cls === T_CLASSES[s.classIdx].name);
+    })(),
     asgTitle: (S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0]).title,
     asgCls: (S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0]).cls,
     asgDue: (S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0]).due,
@@ -347,8 +572,17 @@ export function useAppLogic(navStyle = "tabs") {
 
     teacherName: "Phạm Thu Trang",
     tMetrics: T_METRICS,
-    tClasses: T_CLASSES.map((c, i) => ({ ...c, tintBg: c.tint, onClick: () => setState({ screen: "tClass", tClassIdx: i }) })),
+    tClasses: T_CLASSES.map((c, i) => ({ ...c, tintBg: c.tint, onClick: () => setState({ screen: "tClass", tClassIdx: i, tClassTab: "feed" }) })),
     tAssignments: T_ASSIGNMENTS.map((a) => ({ ...a, onClick: () => go("tGrading") })),
+    tUpcoming: [...T_ASSIGNMENTS]
+      .sort((a, b) => a.due.split("/").reverse().join("").localeCompare(b.due.split("/").reverse().join("")))
+      .slice(0, 2)
+      .map((a) => ({ ...a, onClick: () => go("tGrading") })),
+    tClassesTabs: [["submitted", "Bài đã nộp"], ["grading", "Bài cần chấm"], ["upcoming", "Sắp đến hạn"]].map(([k, label]) => {
+      const on = s.tClassesTab === k;
+      return { key: k, label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ tClassesTab: k }) };
+    }),
+    tcTabSubmitted: s.tClassesTab === "submitted", tcTabGrading: s.tClassesTab === "grading", tcTabUpcoming: s.tClassesTab === "upcoming",
     toTClasses: () => go("tClasses"), toTGrading: () => go("tGrading"), toTPlans: () => go("tPlans"),
     toTOverview: () => go("tOverview"), toTPlan: () => go("tPlan"),
     tClassName: T_CLASSES[s.tClassIdx].name,
@@ -357,16 +591,44 @@ export function useAppLogic(navStyle = "tabs") {
     tClassStudents: T_CLASSES[s.tClassIdx].students,
     tClassProgress: T_CLASSES[s.tClassIdx].progress,
     tClassTint: T_CLASSES[s.tClassIdx].tint,
-    tClassTabs: [["students", "Học sinh"], ["work", "Bài tập"], ["news", "Thông báo"]].map(([k, label]) => {
+    tClassImg: T_CLASSES[s.tClassIdx].img,
+    tClassTabs: [["feed", "Bảng tin"], ["students", "Học sinh"], ["work", "Bài tập"], ["grading", "Chấm bài"], ["content", "Nội dung lớp"], ["settings", "Cài đặt"]].map(([k, label]) => {
       const on = s.tClassTab === k;
-      return { label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ tClassTab: k }) };
+      return { key: k, label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ tClassTab: k }) };
     }),
-    tTabStudents: s.tClassTab === "students", tTabWork: s.tClassTab === "work", tTabNews: s.tClassTab === "news",
+    tTabFeed: s.tClassTab === "feed", tTabStudents: s.tClassTab === "students", tTabWork: s.tClassTab === "work",
+    tTabGrading: s.tClassTab === "grading", tTabContent: s.tClassTab === "content", tTabSettings: s.tClassTab === "settings",
     tStudents: T_STUDENTS,
     tNews: [
       { title: "Nhắc nộp bài tập tuần 20", when: "Hôm nay · 07:40", body: "Các em hoàn thành bài tập tuần 20 trước 23:59 ngày 17/05. Phần sơ đồ pha tối là bắt buộc." },
       { title: "Lịch kiểm tra giữa kỳ", when: "12/05 · 16:10", body: "Kiểm tra giữa kỳ diễn ra tiết 2 ngày 19/05, nội dung từ bài 1 đến bài 6." },
     ],
+    tClassAssignments: T_ASSIGNMENTS.filter((a) => a.cls === T_CLASSES[s.tClassIdx].name).map((a) => ({ ...a, onClick: () => go("tGrading") })),
+    tClassInfo: [
+      { label: "Tên lớp", value: T_CLASSES[s.tClassIdx].name },
+      { label: "Khối lớp", value: T_CLASSES[s.tClassIdx].sub.split(" · ")[1] || T_CLASSES[s.tClassIdx].sub },
+      { label: "Năm học", value: "2025 - 2026" },
+      { label: "Trường / Tổ chức", value: "THCS Chu Văn An" },
+      { label: "Sĩ số dự kiến", value: "40" },
+    ],
+    tClassDesc: "Lớp học Sinh học trọng tâm ôn tập chương trình, tăng cường mô hình 3D và bài tập thực hành.",
+    tClassAccessOptions: [
+      { key: "code", title: "Công khai bằng mã lớp", desc: "Học sinh nhập mã lớp để tham gia" },
+      { key: "invite", title: "Chỉ tham gia qua liên kết mời", desc: "Chỉ học sinh có liên kết mời mới tham gia được" },
+    ].map((o) => ({ ...o, selected: s.classAccessMode === o.key, onClick: () => setState({ classAccessMode: o.key }) })),
+    tClassMainTeacher: { name: "Phạm Thu Trang", initials: "PT", tint: "linear-gradient(135deg,#138cd2,#00708f)" },
+    tClassCoTeachers: [
+      { name: "Vũ Đình Nam", initials: "VN", tint: "linear-gradient(135deg,#22c55e,#15803d)", addedOn: "14/6/2026" },
+    ],
+    tClassPermRows: [
+      { key: "post", label: "Học sinh có thể đăng bài lên bảng tin" },
+      { key: "comment", label: "Học sinh có thể bình luận" },
+      { key: "upload", label: "Học sinh có thể tải tài liệu" },
+    ].map((r) => {
+      const on = s.classPerms[r.key];
+      return { ...r, trackBg: on ? ACCENT : "#dbe7ec", knobLeft: on ? "22px" : "2px", onClick: () => setState({ classPerms: { ...s.classPerms, [r.key]: !on } }) };
+    }),
+    resetClassSettings: () => setState({ classAccessMode: "code", classPerms: { post: false, comment: true, upload: true } }),
     tGradeSummary: [
       { label: "Chờ chấm", value: "12", bg: "#eaf6f8", color: "#00708f" },
       { label: "Đã chấm", value: "86", bg: "#f0fdf4", color: "#15803d" },
@@ -387,8 +649,35 @@ export function useAppLogic(navStyle = "tabs") {
       onClick: () => setState({ gradeScore: v }),
     })),
     saveGrade: () => setState({ graded: true }),
-    tPlans: T_PLANS.map((p) => ({ ...p, onClick: () => go("tPlan") })),
     tBlocks: T_BLOCKS,
+    planTabs: [["recent", "Gần đây"], ["draft", "Bản nháp"], ["published", "Đã xuất bản"]].map(([k, label]) => {
+      const on = s.planTab === k;
+      return { key: k, label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ planTab: k }) };
+    }),
+    tPlans: (() => {
+      const all = T_PLANS.map((p) => ({ ...p, onClick: () => go("tPlan") }));
+      if (s.planTab === "draft") return all.filter((p) => p.status === "Bản nháp");
+      if (s.planTab === "published") return all.filter((p) => p.status === "Đã xuất bản");
+      return all;
+    })(),
+
+    tExploreItems: LESSONS.map((l) => ({
+      ...l, tintBg: l.tint,
+      isSaved: s.tExploreSaved.includes(l.id),
+      isAdded: s.tExploreAdded.includes(l.id),
+      onPreview: () => go("detail"),
+      onSave: () => setState((prev) => ({ tExploreSaved: prev.tExploreSaved.includes(l.id) ? prev.tExploreSaved.filter((x) => x !== l.id) : [...prev.tExploreSaved, l.id] })),
+      onAdd: () => setState((prev) => ({ tExploreAdded: prev.tExploreAdded.includes(l.id) ? prev.tExploreAdded.filter((x) => x !== l.id) : [...prev.tExploreAdded, l.id] })),
+    })),
+    toggleTExploreView: () => setState({ tExploreView: tGrid ? "list" : "grid" }),
+    tGridBg: tGrid ? "#195658" : "transparent", tGridFg: tGrid ? "#fff" : "#8ba0ae",
+    tListBg: tGrid ? "transparent" : "#195658", tListFg: tGrid ? "#8ba0ae" : "#fff",
+    tExploreGridCols: tGrid ? "1fr 1fr" : "1fr",
+    tQuickActions: [
+      { label: "Tạo giáo án", iconPath: "M4.5 5.4A1.9 1.9 0 0 1 6.4 3.5H17a1.9 1.9 0 0 1 1.9 1.9v13.2H6.4a1.9 1.9 0 0 0-1.9 1.9V5.4zM8.5 8h6.5M8.5 11.5h6.5", bg: "#eaf6f8", color: "#00708f", onClick: () => go("tPlan") },
+      { label: "Tạo bài tập", iconPath: "M8.5 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5M8.5 5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2zM9 14l2.2 2.2L15.5 12", bg: "#e7f2fb", color: "#0b6aa3", onClick: () => {} },
+      { label: "Tạo bài giảng", iconPath: "M4 6h16v10H4zM8 20h8M12 16v4", bg: "#fdeef5", color: "#b13a75", onClick: () => {} },
+    ],
 
     parentName: "Nguyễn Văn Dũng",
     children: P_CHILDREN.map((c, i) => {
@@ -450,7 +739,18 @@ export function useAppLogic(navStyle = "tabs") {
       color: s.safety.limit === v ? DEEP : INK,
       onClick: () => setState({ safety: { ...s.safety, limit: v } }),
     })),
+
+    lang: s.lang,
+    langOpen: s.langOpen,
+    langLabel: s.lang.toUpperCase(),
+    toggleLangMenu: () => setState({ langOpen: !s.langOpen }),
+    closeLangMenu: () => setState({ langOpen: false }),
   };
 
-  return vals;
+  const translated = deepT(vals, t);
+  // Keep language-picker option labels as endonyms ("Tiếng Việt"/"English")
+  // rather than translating them into the currently active language.
+  translated.langOptions = langOptions;
+  translated.t = t;
+  return translated;
 }

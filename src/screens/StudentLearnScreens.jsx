@@ -13,7 +13,7 @@ export default function StudentLearnScreens({ v }) {
               <div onClick={v.toDetail} style={css(`width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer`)}>
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
               </div>
-              <div style={css(`font-size:12px;color:rgba(255,255,255,.85);font-weight:500`)}>Bài {v.stepNum}/5</div>
+              <div style={css(`font-size:12px;color:rgba(255,255,255,.85);font-weight:500`)}>{v.t(`Bài`)} {v.stepNum}/5</div>
               <div style={css(`width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer`)}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><path d="M3.5 9V3.5H9M15 3.5h5.5V9M20.5 15v5.5H15M9 20.5H3.5V15" /></svg>
               </div>
@@ -48,7 +48,7 @@ export default function StudentLearnScreens({ v }) {
 
             {v.stepHasQuiz && (
               <div style={css(`margin-top:16px;padding:16px;border:1px solid #ddeaf0;border-radius:20px;background:#fff`)}>
-                <div style={css(`font-size:14px;font-weight:600;color:#195658;line-height:1.4`)}>Bào quan nào thực hiện quá trình quang hợp?</div>
+                <div style={css(`font-size:14px;font-weight:600;color:#195658;line-height:1.4`)}>{v.t(`Bào quan nào thực hiện quá trình quang hợp?`)}</div>
                 <div style={css(`margin-top:12px;display:flex;flex-direction:column;gap:9px`)}>
                   {v.quickOptions.map((o, i) => (
                     <div key={i} onClick={o.onClick} style={css(`display:flex;align-items:center;gap:11px;padding:12px 13px;border:${o.border};background:${o.bg};border-radius:14px;cursor:pointer;transition:all .15s`)}>
@@ -90,8 +90,8 @@ export default function StudentLearnScreens({ v }) {
           <div style={css(`margin-top:26px;width:104px;height:104px;border-radius:999px;background:#00aaab;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(0,170,171,.32);animation:ybpop .5s cubic-bezier(.34,1.4,.5,1)`)}>
             <svg width="46" height="38" viewBox="0 0 46 38" fill="none" stroke="#fff" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5L17 32 42 5" /></svg>
           </div>
-          <div style={css(`margin-top:22px;font-size:24px;font-weight:700;color:#195658;text-align:center`)}>Hoàn thành bài học!</div>
-          <div style={css(`margin-top:8px;font-size:14px;color:#617789;text-align:center;max-width:290px;text-wrap:pretty`)}>Bạn đã hoàn thành “Cấu tạo tế bào thực vật”. Tiếp tục giữ chuỗi ngày học của mình nhé.</div>
+          <div style={css(`margin-top:22px;font-size:24px;font-weight:700;color:#195658;text-align:center`)}>{v.t(`Hoàn thành bài học!`)}</div>
+          <div style={css(`margin-top:8px;font-size:14px;color:#617789;text-align:center;max-width:290px;text-wrap:pretty`)}>{v.t(`Bạn đã hoàn thành “Cấu tạo tế bào thực vật”. Tiếp tục giữ chuỗi ngày học của mình nhé.`)}</div>
           <div style={css(`margin-top:24px;width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px`)}>
             {v.completeStats.map((s, i) => (
               <div key={i} style={css(`border:1px solid #ddeaf0;border-radius:18px;background:#fff;padding:14px 10px;text-align:center`)}>
@@ -102,14 +102,14 @@ export default function StudentLearnScreens({ v }) {
           </div>
           <div style={css(`margin-top:16px;width:100%;padding:16px;border:1px solid #ddeaf0;border-radius:20px;background:#fff`)}>
             <div style={css(`display:flex;align-items:center;justify-content:space-between`)}>
-              <span style={css(`font-size:13.5px;font-weight:600;color:#195658`)}>Điểm học tập nhận được</span>
+              <span style={css(`font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Điểm học tập nhận được`)}</span>
               <div style={css(`display:flex;align-items:center;gap:5px`)}><img src="/assets/learning-points.svg" alt="" style={css(`width:17px;height:17px`)} /><span style={css(`font-size:17px;font-weight:700;color:#00aaab`)}>+45</span></div>
             </div>
             <div style={css(`margin-top:12px;height:7px;border-radius:999px;background:#edf7f9;overflow:hidden`)}><div style={css(`height:100%;width:72%;border-radius:999px;background:linear-gradient(90deg,#00aaab,#138cd2)`)}></div></div>
-            <div style={css(`margin-top:8px;font-size:11.5px;color:#617789`)}>Còn 155 điểm để đạt cấp Nhà khám phá</div>
+            <div style={css(`margin-top:8px;font-size:11.5px;color:#617789`)}>{v.t(`Còn 155 điểm để đạt cấp Nhà khám phá`)}</div>
           </div>
-          <div onClick={v.toExam} style={css(`margin-top:20px;width:100%;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)`)}>Làm bài kiểm tra</div>
-          <div onClick={v.toHome} style={css(`margin-top:12px;width:100%;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>Về trang chủ</div>
+          <div onClick={v.toExam} style={css(`margin-top:20px;width:100%;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)`)}>{v.t(`Làm bài kiểm tra`)}</div>
+          <div onClick={v.toHome} style={css(`margin-top:12px;width:100%;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Về trang chủ`)}</div>
         </div>
       )}
 
@@ -133,7 +133,7 @@ export default function StudentLearnScreens({ v }) {
             </div>
           </div>
           <div style={css(`padding:20px 20px 0;flex:1`)}>
-            <div style={css(`font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#00aaab`)}>Trắc nghiệm · 1 đáp án</div>
+            <div style={css(`font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#00aaab`)}>{v.t(`Trắc nghiệm · 1 đáp án`)}</div>
             <div style={css(`font-size:18.5px;font-weight:600;color:#195658;line-height:1.45;margin-top:9px;text-wrap:pretty`)}>{v.examQuestion}</div>
             <div style={css(`margin-top:18px;display:flex;flex-direction:column;gap:11px`)}>
               {v.examOptions.map((o, i) => (
@@ -163,7 +163,7 @@ export default function StudentLearnScreens({ v }) {
               </svg>
               <div style={css(`position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center`)}>
                 <div style={css(`font-size:38px;font-weight:700;color:#195658;line-height:1`)}>{v.scoreText}</div>
-                <div style={css(`font-size:12px;color:#617789;margin-top:2px`)}>điểm</div>
+                <div style={css(`font-size:12px;color:#617789;margin-top:2px`)}>{v.t(`điểm`)}</div>
               </div>
             </div>
             <div style={css(`margin-top:18px;font-size:21px;font-weight:700;color:#195658`)}>{v.scoreTitle}</div>
@@ -182,8 +182,8 @@ export default function StudentLearnScreens({ v }) {
               </div>
             ))}
           </div>
-          <div onClick={v.restartExam} style={css(`margin-top:22px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)`)}>Làm lại bài kiểm tra</div>
-          <div onClick={v.toLibrary} style={css(`margin-top:12px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>Về thư viện của tôi</div>
+          <div onClick={v.restartExam} style={css(`margin-top:22px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)`)}>{v.t(`Làm lại bài kiểm tra`)}</div>
+          <div onClick={v.toLibrary} style={css(`margin-top:12px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Về thư viện của tôi`)}</div>
         </div>
       )}
     </>
