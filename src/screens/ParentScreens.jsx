@@ -73,6 +73,20 @@ export default function ParentScreens({ v }) {
               </div>
             ))}
           </div>
+
+          <div style={css(`margin-top:20px;font-size:14.5px;font-weight:600;color:#195658`)}>{v.t(`Hoạt động gần đây`)}</div>
+          <div style={css(`margin-top:12px;display:flex;flex-direction:column;gap:10px`)}>
+            {v.childActivity.map((a, i) => (
+              <div key={i} style={css(`display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff`)}>
+                <div style={css(`width:38px;height:38px;flex:none;border-radius:12px;background:${a.tint}`)}></div>
+                <div style={css(`flex:1;min-width:0`)}>
+                  <div style={css(`font-size:13px;font-weight:600;color:#195658;line-height:1.35;text-wrap:pretty`)}>{v.t(a.title)}</div>
+                  <div style={css(`font-size:11px;color:#617789;margin-top:2px`)}>{v.t(a.subject)} · {a.when} · {v.t(a.duration)}</div>
+                </div>
+                <div style={css(`height:22px;padding:0 9px;border-radius:999px;background:${a.done ? "#f0fdf4" : "#eaf6f8"};color:${a.done ? "#15803d" : "#00708f"};font-size:10px;font-weight:600;display:flex;align-items:center;flex:none`)}>{v.t(a.status)}</div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

@@ -6,6 +6,7 @@ import studentLibraryWork from "./shards/studentLibraryWork.js";
 import common from "./shards/common.js";
 import teacher from "./shards/teacher.js";
 import parent from "./shards/parent.js";
+import account from "./shards/account.js";
 
 const EN = {
   ...core,
@@ -16,6 +17,7 @@ const EN = {
   ...common,
   ...teacher,
   ...parent,
+  ...account,
 };
 
 // Looks up `str` (the Vietnamese source text) in the EN dictionary when

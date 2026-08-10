@@ -94,4 +94,11 @@ export default {
   "Tạo bài giảng": "Create lecture",
   "Tạo lớp học": "Create class",
   "Bài đã nộp": "Submissions",
+  "Mới tạo": "New",
+  "Tên lớp": "Class name",
+  "Tên lớp sẽ được tạo tự động": "The class name will be generated automatically",
+  "Tạo lớp": "Create class",
+  "Tiêu đề sẽ được tạo tự động": "The title will be generated automatically",
+  "Loại bài giảng": "Lecture type",
+  "Hạn nộp": "Due date",
 };

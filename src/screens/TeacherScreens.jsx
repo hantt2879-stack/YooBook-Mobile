@@ -67,7 +67,7 @@ export default function TeacherScreens({ v }) {
       {v.isTClasses && (
         <div style={css(`padding:6px 20px 120px;animation:ybup .3s ease`)}>
           <div style={css(`font-size:22px;font-weight:700;color:#195658`)}>{v.t(`Lớp học của tôi`)}</div>
-          <div style={css(`font-size:13px;color:#617789;margin-top:3px`)}>{v.t(`4 lớp đang hoạt động · 128 học sinh`)}</div>
+          <div style={css(`font-size:13px;color:#617789;margin-top:3px`)}>{v.tClassesCountLabel}</div>
 
           <div className="yb-scroll" style={css(`margin-top:16px;display:flex;gap:12px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 8px`)}>
             {v.tClasses.map((c, i) => (
@@ -75,6 +75,7 @@ export default function TeacherScreens({ v }) {
                 <img src={c.img} alt="" style={css(`position:absolute;inset:0;width:100%;height:100%;object-fit:cover`)}/>
                 <div style={css(`position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,50,52,.55) 0%,rgba(15,50,52,.25) 38%,rgba(15,50,52,.72) 100%)`)}></div>
                 <div style={css(`position:relative`)}>
+                  {c.isNew && (<div style={css(`position:absolute;right:0;top:0;height:20px;padding:0 8px;border-radius:999px;background:#f59e0b;color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center`)}>{v.t(`Mới tạo`)}</div>)}
                   <div style={css(`font-size:14.5px;font-weight:700;letter-spacing:.02em`)}>{c.name}</div>
                   <div style={css(`font-size:11.5px;opacity:.82;margin-top:3px`)}>{c.sub} · {c.students} {v.t(`học sinh`)}</div>
                   <div style={css(`margin-top:12px;height:5px;border-radius:999px;background:rgba(255,255,255,.25);overflow:hidden`)}><div style={css(`height:100%;width:${c.progress};border-radius:999px;background:#fff`)}></div></div>
@@ -82,7 +83,7 @@ export default function TeacherScreens({ v }) {
                 </div>
               </div>
             ))}
-            <div style={css(`flex:none;width:130px;padding:14px;border-radius:20px;border:1.4px dashed #bcd7e0;background:#f8fcfd;color:#00708f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;text-align:center`)}>
+            <div onClick={v.toTCreateClass} style={css(`flex:none;width:130px;padding:14px;border-radius:20px;border:1.4px dashed #bcd7e0;background:#f8fcfd;color:#00708f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;text-align:center`)}>
               <div style={css(`width:34px;height:34px;border-radius:999px;background:#fff;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center`)}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
               <span style={css(`font-size:12px;font-weight:600;line-height:1.3`)}>{v.t(`Tạo lớp học`)}</span>
             </div>
@@ -137,6 +138,99 @@ export default function TeacherScreens({ v }) {
         </div>
       )}
 
+      {v.isTCreateClass && (
+        <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
+          <div style={css(`display:flex;align-items:center;gap:12px`)}>
+            <div onClick={v.toTClasses} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div style={css(`font-size:18px;font-weight:700;color:#195658`)}>{v.t(`Tạo lớp học`)}</div>
+          </div>
+
+          <div style={css(`margin-top:20px;font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Môn học`)}</div>
+          <div style={css(`margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:9px`)}>
+            {v.ccSubjects.map((o, i) => (
+              <div key={i} onClick={o.onClick} style={css(`height:46px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#25475a"};border-radius:14px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s`)}>{o.label}</div>
+            ))}
+          </div>
+
+          <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Khối lớp`)}</div>
+          <div style={css(`margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px`)}>
+            {v.ccGrades.map((o, i) => (
+              <div key={i} onClick={o.onClick} style={css(`height:44px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#25475a"};border-radius:14px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s`)}>{o.label}</div>
+            ))}
+          </div>
+
+          <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Tên lớp`)}</div>
+          <div style={css(`margin-top:10px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#f8fcfd`)}>
+            <div style={css(`font-size:11.5px;color:#617789`)}>{v.t(`Tên lớp sẽ được tạo tự động`)}</div>
+            <div style={css(`font-size:17px;font-weight:700;color:#195658;margin-top:5px;letter-spacing:.02em`)}>{v.ccPreviewName}</div>
+          </div>
+
+          <div onClick={v.createClass} style={css(`margin-top:24px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)`)}>{v.t(`Tạo lớp`)}</div>
+        </div>
+      )}
+
+      {v.isTCreateAssignment && (
+        <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
+          <div style={css(`display:flex;align-items:center;gap:12px`)}>
+            <div onClick={v.toTOverview} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div style={css(`font-size:18px;font-weight:700;color:#195658`)}>{v.t(`Tạo bài tập`)}</div>
+          </div>
+
+          <div style={css(`margin-top:20px;font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Lớp học`)}</div>
+          <div className="yb-scroll" style={css(`margin-top:10px;display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 4px`)}>
+            {v.caClasses.map((o, i) => (
+              <div key={i} onClick={o.onClick} style={css(`flex:none;height:40px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#25475a"};border-radius:12px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{o.label}</div>
+            ))}
+          </div>
+
+          <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Hạn nộp`)}</div>
+          <div style={css(`margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px`)}>
+            {v.caDueOptions.map((o, i) => (
+              <div key={i} onClick={o.onClick} style={css(`height:44px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#25475a"};border-radius:14px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s`)}>{o.label}</div>
+            ))}
+          </div>
+
+          <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Bài tập`)}</div>
+          <div style={css(`margin-top:10px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#f8fcfd`)}>
+            <div style={css(`font-size:11.5px;color:#617789`)}>{v.t(`Tiêu đề sẽ được tạo tự động`)}</div>
+            <div style={css(`font-size:15px;font-weight:700;color:#195658;margin-top:5px`)}>{v.caPreviewTitle}</div>
+          </div>
+
+          <div onClick={v.createAssignment} style={css(`margin-top:24px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)`)}>{v.t(`Tạo bài tập`)}</div>
+        </div>
+      )}
+
+      {v.isTCreateLecture && (
+        <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
+          <div style={css(`display:flex;align-items:center;gap:12px`)}>
+            <div onClick={v.toTOverview} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div style={css(`font-size:18px;font-weight:700;color:#195658`)}>{v.t(`Tạo bài giảng`)}</div>
+          </div>
+
+          <div style={css(`margin-top:20px;font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Lớp học`)}</div>
+          <div className="yb-scroll" style={css(`margin-top:10px;display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 4px`)}>
+            {v.clClasses.map((o, i) => (
+              <div key={i} onClick={o.onClick} style={css(`flex:none;height:40px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#25475a"};border-radius:12px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{o.label}</div>
+            ))}
+          </div>
+
+          <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Loại bài giảng`)}</div>
+          <div style={css(`margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:9px`)}>
+            {v.clKinds.map((o, i) => (
+              <div key={i} onClick={o.onClick} style={css(`height:44px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#25475a"};border-radius:14px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s`)}>{o.label}</div>
+            ))}
+          </div>
+
+          <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Nội dung giáo án`)}</div>
+          <div style={css(`margin-top:10px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#f8fcfd`)}>
+            <div style={css(`font-size:11.5px;color:#617789`)}>{v.t(`Tiêu đề sẽ được tạo tự động`)}</div>
+            <div style={css(`font-size:15px;font-weight:700;color:#195658;margin-top:5px`)}>{v.clPreviewTitle}</div>
+          </div>
+
+          <div onClick={v.createLecture} style={css(`margin-top:24px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)`)}>{v.t(`Tạo bài giảng`)}</div>
+        </div>
+      )}
+
       {v.isTExplore && (
         <div style={css(`padding-bottom:120px;animation:ybup .3s ease`)}>
           <div style={css(`padding:6px 20px 0`)}>
@@ -147,7 +241,10 @@ export default function TeacherScreens({ v }) {
           <div style={css(`position:sticky;top:0;z-index:20;background:#fcfcfc;padding:14px 20px 12px;margin-top:6px;border-bottom:1px solid #ddeaf0`)}>
             <div style={css(`display:flex;align-items:center;gap:10px`)}>
               <div style={css(`flex:1;display:flex;align-items:center;gap:9px;height:46px;padding:0 14px;border:1px solid #ddeaf0;border-radius:14px;background:#fff`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#617789" strokeWidth="1.8" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.2 16.2L21 21"/></svg><span style={css(`font-size:14px;color:#8ba0ae`)}>{v.t(`Tìm kiếm học liệu`)}</span></div>
-              <div style={css(`width:46px;height:46px;border-radius:14px;background:#195658;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round"><path d="M3 6h18M6.5 12h11M10 18h4"/></svg></div>
+              <div onClick={v.openFilter} style={css(`position:relative;width:46px;height:46px;border-radius:14px;background:#195658;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round"><path d="M3 6h18M6.5 12h11M10 18h4"/></svg>
+                {v.hasActiveFilters && (<div style={css(`position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 3px;border-radius:999px;background:#f59e0b;border:2px solid #fcfcfc;color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center`)}>{v.activeFilterCount}</div>)}
+              </div>
             </div>
             <div className="yb-scroll" style={css(`margin-top:12px;display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 10px`)}>
               {v.chips.map((c, i) => (
@@ -159,7 +256,7 @@ export default function TeacherScreens({ v }) {
           <div style={css(`padding:14px 20px 0;display:flex;align-items:center;justify-content:space-between`)}>
             <div style={css(`font-size:13px;color:#617789`)}><span style={css(`font-weight:600;color:#195658`)}>{v.resultCount}</span> {v.t(`học liệu`)}</div>
             <div style={css(`display:flex;align-items:center;gap:8px`)}>
-              <div style={css(`display:flex;align-items:center;gap:5px;height:32px;padding:0 11px;border:1px solid #ddeaf0;border-radius:999px;background:#fff;font-size:12.5px;color:#25475a`)}>{v.t(`Mới nhất`)}<svg width="9" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M1 1l4 4 4-4"/></svg></div>
+              <div onClick={v.toggleExploreSort} style={css(`display:flex;align-items:center;gap:5px;height:32px;padding:0 11px;border:1px solid #ddeaf0;border-radius:999px;background:#fff;font-size:12.5px;color:#25475a;cursor:pointer`)}>{v.exploreSortLabel}<svg width="9" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M1 1l4 4 4-4"/></svg></div>
               <div onClick={v.toggleTExploreView} style={css(`display:flex;height:32px;border:1px solid #ddeaf0;border-radius:999px;background:#fff;overflow:hidden;cursor:pointer`)}>
                 <div style={css(`width:32px;display:flex;align-items:center;justify-content:center;background:${v.tGridBg}`)}><svg width="14" height="14" viewBox="0 0 24 24" fill={v.tGridFg}><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></div>
                 <div style={css(`width:32px;display:flex;align-items:center;justify-content:center;background:${v.tListBg}`)}><svg width="14" height="14" viewBox="0 0 24 24" fill={v.tListFg}><rect x="3" y="4" width="18" height="4" rx="2"/><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="16" width="18" height="4" rx="2"/></svg></div>
@@ -167,6 +264,12 @@ export default function TeacherScreens({ v }) {
             </div>
           </div>
 
+          {!v.tExploreItems.length && (
+            <div style={css(`margin:24px 20px 0;padding:28px 20px;border:1.4px dashed #ddeaf0;border-radius:20px;background:#f8fcfd;text-align:center`)}>
+              <div style={css(`font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Chưa có học liệu phù hợp`)}</div>
+              <div style={css(`font-size:12px;color:#617789;margin-top:5px;line-height:1.5`)}>{v.t(`Thử chọn một chủ đề khác hoặc chọn lại "Tất cả".`)}</div>
+            </div>
+          )}
           <div style={css(`padding:14px 20px 0;display:grid;grid-template-columns:${v.tExploreGridCols};gap:12px`)}>
             {v.tExploreItems.map((l, i) => (
               <div key={i} style={css(`border:1px solid #ddeaf0;border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 3px 12px rgba(25,86,88,.045)`)}>
@@ -251,7 +354,7 @@ export default function TeacherScreens({ v }) {
 
             {v.tTabWork && (
               <div style={css(`margin-top:14px`)}>
-                <div style={css(`display:flex;justify-content:flex-end`)}><div style={css(`height:32px;padding:0 14px;border-radius:999px;background:#195658;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer`)}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>{v.t(`Tạo bài tập`)}</div></div>
+                <div style={css(`display:flex;justify-content:flex-end`)}><div onClick={v.toTCreateAssignmentForClass} style={css(`height:32px;padding:0 14px;border-radius:999px;background:#195658;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;cursor:pointer`)}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>{v.t(`Tạo bài tập`)}</div></div>
                 <div style={css(`margin-top:11px;display:flex;flex-direction:column;gap:11px`)}>
                   {v.tClassAssignments.map((a, i) => (
                     <div key={i} onClick={a.onClick} style={css(`padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer`)}>
@@ -484,11 +587,10 @@ export default function TeacherScreens({ v }) {
             <div onClick={v.toTPlans} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`height:34px;padding:0 14px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:12.5px;font-weight:600;display:flex;align-items:center;cursor:pointer`)}>{v.t(`Lưu nháp`)}</div>
           </div>
-          <div style={css(`margin-top:16px;font-size:20px;font-weight:700;color:#195658;line-height:1.32`)}>{v.t(`Cấu tạo tế bào thực vật`)}</div>
+          <div style={css(`margin-top:16px;font-size:20px;font-weight:700;color:#195658;line-height:1.32`)}>{v.tPlanTitle}</div>
           <div style={css(`margin-top:12px;display:flex;gap:9px;flex-wrap:wrap`)}>
-            <div style={css(`height:28px;padding:0 12px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center`)}>{v.t(`Sinh học`)}</div>
-            <div style={css(`height:28px;padding:0 12px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center`)}>{v.t(`Lớp 6`)}</div>
-            <div style={css(`height:28px;padding:0 12px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center`)}>{v.t(`Kết nối tri thức`)}</div>
+            <div style={css(`height:28px;padding:0 12px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center`)}>{v.tPlanSub}</div>
+            <div style={css(`height:28px;padding:0 12px;border-radius:999px;background:${v.tPlanStatus === "Đã xuất bản" ? "#f0fdf4" : "#fff5e6"};color:${v.tPlanStatus === "Đã xuất bản" ? "#15803d" : "#b45309"};font-size:11.5px;font-weight:600;display:flex;align-items:center`)}>{v.tPlanStatus}</div>
           </div>
           <div style={css(`margin-top:20px;display:flex;align-items:baseline;justify-content:space-between`)}><div style={css(`font-size:14.5px;font-weight:600;color:#195658`)}>{v.t(`Nội dung giáo án`)}</div><span style={css(`font-size:12.5px;color:#00708f`)}>{v.t(`4 mục`)}</span></div>
           <div style={css(`margin-top:12px;display:flex;flex-direction:column;gap:10px`)}>

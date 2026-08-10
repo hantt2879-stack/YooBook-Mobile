@@ -9,7 +9,7 @@ export default function StudentLibraryWorkScreens({ v }) {
           <div style={css(`font-size:13px;color:#617789;margin-top:4px`)}>{v.t(`Học liệu bạn đã lưu, đã mua và đang học`)}</div>
           <div style={css(`margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px`)}>
             {v.libraryCards.map((c, i) => (
-              <div key={i} style={css(`border:1px solid #ddeaf0;border-radius:22px;background:#fff;padding:16px`)}>
+              <div key={i} onClick={c.onClick} className="yb-press" style={css(`border:1px solid #ddeaf0;border-radius:22px;background:#fff;padding:16px;cursor:pointer;transition:all .15s`)}>
                 <div style={css(`display:flex;align-items:flex-start;justify-content:space-between`)}>
                   <div><div style={css(`font-size:13px;font-weight:600;color:#00aaab`)}>{c.title}</div><div style={css(`font-size:32px;font-weight:700;color:#195658;line-height:1.05;margin-top:2px`)}>{c.value}</div></div>
                   <div style={css(`width:42px;height:42px;flex:none;border-radius:14px;background:#eaf6f8;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center`)}><div style={css(`width:24px;height:24px;background-image:url(${c.icon});background-size:contain;background-position:center;background-repeat:no-repeat`)}></div></div>

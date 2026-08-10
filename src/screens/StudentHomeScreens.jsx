@@ -89,7 +89,10 @@ export default function StudentHomeScreens({ v }) {
           <div style={css(`position:sticky;top:0;z-index:20;background:#fcfcfc;padding:6px 20px 12px;border-bottom:1px solid #ddeaf0`)}>
             <div style={css(`display:flex;align-items:center;gap:10px`)}>
               <div style={css(`flex:1;display:flex;align-items:center;gap:9px;height:46px;padding:0 14px;border:1px solid #ddeaf0;border-radius:14px;background:#fff`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#617789" strokeWidth="1.8" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.2 16.2L21 21"/></svg><span style={css(`font-size:14px;color:#8ba0ae`)}>{v.t(`Tìm kiếm học liệu`)}</span></div>
-              <div style={css(`width:46px;height:46px;border-radius:14px;background:#195658;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round"><path d="M3 6h18M6.5 12h11M10 18h4"/></svg></div>
+              <div onClick={v.openFilter} style={css(`position:relative;width:46px;height:46px;border-radius:14px;background:#195658;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round"><path d="M3 6h18M6.5 12h11M10 18h4"/></svg>
+                {v.hasActiveFilters && (<div style={css(`position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 3px;border-radius:999px;background:#f59e0b;border:2px solid #fcfcfc;color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center`)}>{v.activeFilterCount}</div>)}
+              </div>
             </div>
             <div className="yb-scroll" style={css(`margin-top:12px;display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 10px`)}>
               {v.chips.map((c, i) => (
@@ -101,7 +104,7 @@ export default function StudentHomeScreens({ v }) {
           <div style={css(`padding:14px 20px 0;display:flex;align-items:center;justify-content:space-between`)}>
             <div style={css(`font-size:13px;color:#617789`)}><span style={css(`font-weight:600;color:#195658`)}>{v.resultCount}</span> {v.t(`học liệu`)}</div>
             <div style={css(`display:flex;align-items:center;gap:8px`)}>
-              <div style={css(`display:flex;align-items:center;gap:5px;height:32px;padding:0 11px;border:1px solid #ddeaf0;border-radius:999px;background:#fff;font-size:12.5px;color:#25475a`)}>{v.t(`Mới nhất`)}<svg width="9" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M1 1l4 4 4-4"/></svg></div>
+              <div onClick={v.toggleExploreSort} style={css(`display:flex;align-items:center;gap:5px;height:32px;padding:0 11px;border:1px solid #ddeaf0;border-radius:999px;background:#fff;font-size:12.5px;color:#25475a;cursor:pointer`)}>{v.exploreSortLabel}<svg width="9" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M1 1l4 4 4-4"/></svg></div>
               <div onClick={v.toggleView} style={css(`display:flex;height:32px;border:1px solid #ddeaf0;border-radius:999px;background:#fff;overflow:hidden;cursor:pointer`)}>
                 <div style={css(`width:32px;display:flex;align-items:center;justify-content:center;background:${v.gridBg}`)}><svg width="14" height="14" viewBox="0 0 24 24" fill={v.gridFg}><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></div>
                 <div style={css(`width:32px;display:flex;align-items:center;justify-content:center;background:${v.listBg}`)}><svg width="14" height="14" viewBox="0 0 24 24" fill={v.listFg}><rect x="3" y="4" width="18" height="4" rx="2"/><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="16" width="18" height="4" rx="2"/></svg></div>
@@ -109,19 +112,30 @@ export default function StudentHomeScreens({ v }) {
             </div>
           </div>
 
+          {!v.lessons.length && (
+            <div style={css(`margin:32px 20px 0;padding:28px 20px;border:1.4px dashed #ddeaf0;border-radius:20px;background:#f8fcfd;text-align:center`)}>
+              <div style={css(`font-size:13.5px;font-weight:600;color:#195658`)}>{v.t(`Chưa có học liệu phù hợp`)}</div>
+              <div style={css(`font-size:12px;color:#617789;margin-top:5px;line-height:1.5`)}>{v.t(`Thử chọn một chủ đề khác hoặc chọn lại "Tất cả".`)}</div>
+            </div>
+          )}
           <div style={css(`padding:14px 20px 0;display:grid;grid-template-columns:${v.gridCols};gap:14px`)}>
             {v.lessons.map((l, i) => (
-              <div key={i} onClick={l.onClick} style={css(`border:1px solid #ddeaf0;border-radius:20px;background:#fff;overflow:hidden;cursor:pointer;display:flex;flex-direction:${v.cardDir};box-shadow:0 3px 12px rgba(25,86,88,.045)`)}>
-                <div style={css(`position:relative;background:${l.tintBg};height:${v.mediaH};width:${v.mediaW};flex:none`)}>
+              <div key={i} style={css(`border:1px solid #ddeaf0;border-radius:20px;background:#fff;overflow:hidden;display:flex;flex-direction:${v.cardDir};box-shadow:0 3px 12px rgba(25,86,88,.045)`)}>
+                <div onClick={l.onView} style={css(`position:relative;background:${l.tintBg};height:${v.mediaH};width:${v.mediaW};flex:none;cursor:pointer`)}>
                   <img src={l.img} alt="" style={css(`position:absolute;inset:0;width:100%;height:100%;object-fit:cover`)}/>
                   <div style={css(`position:absolute;left:8px;top:8px;height:21px;padding:0 8px;border-radius:999px;background:rgba(255,255,255,.92);font-size:9.5px;font-weight:600;color:#195658;display:flex;align-items:center`)}>{l.typeLabel}</div>
                 </div>
                 <div style={css(`padding:11px 12px 12px;flex:1;min-width:0`)}>
-                  <div style={css(`font-size:13.5px;font-weight:600;color:#195658;line-height:1.35;text-wrap:pretty`)}>{l.title}</div>
+                  <div onClick={l.onView} style={css(`font-size:13.5px;font-weight:600;color:#195658;line-height:1.35;text-wrap:pretty;cursor:pointer`)}>{l.title}</div>
                   <div style={css(`font-size:11px;color:#617789;margin-top:4px`)}>{l.meta}</div>
                   <div style={css(`margin-top:9px;display:flex;align-items:center;justify-content:space-between`)}>
                     <div style={css(`display:flex;align-items:center;gap:3px`)}><img src="/assets/lesson/star.svg" alt="" style={css(`width:12px;height:12px`)}/><span style={css(`font-size:11.5px;font-weight:600`)}>{l.rating}</span></div>
                     <div style={css(`display:flex;align-items:center;gap:3px`)}><img src="/assets/lesson/token.svg" alt="" style={css(`width:13px;height:13px`)}/><span style={css(`font-size:12.5px;font-weight:700;color:#00708f`)}>{l.price}</span></div>
+                  </div>
+                  <div onClick={l.onView} style={css(`margin-top:9px;height:30px;border-radius:10px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Xem`)}</div>
+                  <div style={css(`margin-top:6px;display:flex;gap:6px`)}>
+                    <div onClick={l.onSave} style={css(`width:30px;height:30px;flex:none;border-radius:10px;border:1px solid ${l.isSaved ? "#00aaab" : "#ddeaf0"};background:${l.isSaved ? "#eaf6f8" : "#fff"};display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="13" height="13" viewBox="0 0 24 24" fill={l.isSaved ? "#00aaab" : "none"} stroke={l.isSaved ? "#00aaab" : "#617789"} strokeWidth="1.8" strokeLinejoin="round"><path d="M6 3.5h12a1 1 0 0 1 1 1v16l-7-4.2-7 4.2v-16a1 1 0 0 1 1-1z"/></svg></div>
+                    <div onClick={l.onLearnNow} style={css(`flex:1;min-height:30px;padding:4px 5px;border-radius:10px;background:#00aaab;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Học ngay`)}</div>
                   </div>
                 </div>
               </div>

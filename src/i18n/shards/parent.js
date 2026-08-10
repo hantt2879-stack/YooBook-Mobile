@@ -10,6 +10,7 @@ export default {
   "Social, leaderboard, AI tutor và giới hạn thời gian": "Social, leaderboard, AI tutor and time limits",
   "Kết quả theo lớp": "Class results",
   "Bài tập gần đây": "Recent assignments",
+  "Hoạt động gần đây": "Recent activity",
   "Báo cáo tuần": "Weekly report",
   "Điểm mạnh": "Strengths",
   "Cần cải thiện": "Needs improvement",
