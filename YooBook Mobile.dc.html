@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#eef4f6;font-family:'Be Vietnam Pro',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#00aaab;text-decoration:none}a:hover{color:#067f80}
+*{box-sizing:border-box}
+.yb-scroll::-webkit-scrollbar{width:0;height:0}
+@keyframes ybup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes ybpop{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+@keyframes ybspin{to{transform:rotate(360deg)}}
+</style></helmet>
+
+<div style="width:390px;height:844px;position:relative;overflow:hidden;background:#fcfcfc;color:#25475a;display:flex;flex-direction:column;font-family:'Be Vietnam Pro',system-ui,sans-serif">
+
+<div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:14px;font-weight:600;color:#25475a;z-index:30;background:transparent">
+<span>9:41</span>
+<div style="display:flex;align-items:center;gap:6px">
+<svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.6" y="5" width="3" height="6" rx="1"/><rect x="9.2" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.8" y="0" width="3" height="11" rx="1"/></svg>
+<svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1 3.4a10 10 0 0 1 14 0"/><path d="M3.6 6.2a6.4 6.4 0 0 1 8.8 0"/><circle cx="8" cy="9.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+<svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.2" stroke="currentColor" stroke-opacity=".38"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/><path d="M23 4.2v3.6a2 2 0 0 0 0-3.6z" fill="currentColor" fill-opacity=".4"/></svg>
+</div>
+</div>
+
+<div class="yb-scroll yb-main" style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;position:relative">
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+<div style="padding:18px 24px 40px;display:flex;flex-direction:column;min-height:760px;animation:ybup .35s ease">
+<div style="display:flex;justify-content:flex-end"><div style="display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid #ddeaf0;border-radius:999px;font-size:12px;font-weight:500;color:#617789;background:#fff">VI<svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 1l4 4 4-4"/></svg></div></div>
+<div style="margin-top:34px;display:flex;flex-direction:column;align-items:center;gap:14px">
+<img src="assets/logo_new.svg" alt="YooBook" style="height:44px;width:auto"/>
+<div style="text-align:center">
+<div style="font-size:24px;font-weight:700;line-height:1.25;color:#195658">Đăng nhập vào YooBook</div>
+<div style="font-size:13px;color:#617789;margin-top:6px">Kho học liệu số Giáo Dục 3D/Vr360/XR</div>
+</div>
+</div>
+<div style="margin-top:34px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:column;gap:7px">
+<label style="font-size:13px;font-weight:500;color:#25475a">Email/Số điện thoại</label>
+<div style="display:flex;align-items:center;gap:10px;height:52px;padding:0 16px;border:1px solid #ddeaf0;border-radius:14px;background:#fff">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#617789" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 19.5c1.3-3.4 4-5.1 7.2-5.1s5.9 1.7 7.2 5.1"/></svg>
+<span style="font-size:14px;color:#25475a">hoa.nguyen@thpt-nguyenhue.edu.vn</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<label style="font-size:13px;font-weight:500;color:#25475a">Mật khẩu</label>
+<div style="display:flex;align-items:center;gap:10px;height:52px;padding:0 16px;border:1px solid #ddeaf0;border-radius:14px;background:#fff">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#617789" stroke-width="1.7" stroke-linecap="round"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2.6"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></svg>
+<span style="flex:1;font-size:16px;letter-spacing:3px;color:#25475a">••••••••</span>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#617789" stroke-width="1.7"><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
+</div>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div style="display:flex;align-items:center;gap:8px"><div style="width:18px;height:18px;border-radius:6px;background:#00aaab;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4.6L4 7.6 10 1.4"/></svg></div><span style="font-size:13px;color:#617789">Ghi nhớ mật khẩu</span></div>
+<span style="font-size:13px;color:#00708f;font-weight:500">Quên mật khẩu</span>
+</div>
+<div onClick="{{ toRole }}" style="height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)" style-hover="background:#089799">Đăng nhập</div>
+<div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:1px;background:#ddeaf0"></div><span style="font-size:12px;color:#617789">Hoặc</span><div style="flex:1;height:1px;background:#ddeaf0"></div></div>
+<div style="display:flex;gap:12px">
+<div onClick="{{ toRole }}" style="flex:1;height:50px;border:1px solid #ddeaf0;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:500;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.2a5.3 5.3 0 0 1-2.3 3.5v2.9h3.7c2.2-2 3.4-5 3.4-8.6z"/><path fill="#34A853" d="M12 24c3.1 0 5.7-1 7.6-2.8l-3.7-2.9c-1 .7-2.3 1.1-3.9 1.1-3 0-5.5-2-6.4-4.7H1.8v3C3.7 21.4 7.6 24 12 24z"/><path fill="#FBBC05" d="M5.6 14.7a7.2 7.2 0 0 1 0-4.6v-3H1.8a12 12 0 0 0 0 10.6l3.8-3z"/><path fill="#EA4335" d="M12 4.8c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.7 1.2 15.1 0 12 0 7.6 0 3.7 2.6 1.8 6.1l3.8 3C6.5 6.7 9 4.8 12 4.8z"/></svg>Google</div>
+<div onClick="{{ toRole }}" style="flex:1;height:50px;border:1px solid #ddeaf0;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:500;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Facebook</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;text-align:center;font-size:13px;color:#617789">Chưa có tài khoản? <span style="color:#00708f;font-weight:600">Đăng ký</span></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isRole }}" hint-placeholder-val="{{ false }}">
+<div style="padding:12px 24px 32px;animation:ybup .35s ease">
+<div style="text-align:center;margin-top:12px">
+<div style="font-size:23px;font-weight:700;color:#195658">Thiết lập YooBook</div>
+<div style="font-size:13px;color:#617789;margin-top:6px;max-width:280px;margin-left:auto;margin-right:auto">Chọn vai trò để cá nhân hóa trải nghiệm của bạn</div>
+</div>
+<div style="margin-top:26px;display:flex;flex-direction:column;gap:14px">
+<sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
+<div onClick="{{ r.onClick }}" style="border:{{ r.border }};background:{{ r.bg }};border-radius:22px;padding:18px;display:flex;gap:14px;align-items:flex-start;cursor:pointer;transition:all .18s">
+<div style="width:52px;height:52px;flex:none;border-radius:16px;background:#fff;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center"><div style="width:30px;height:30px;background-image:url({{ r.icon }});background-size:contain;background-position:center;background-repeat:no-repeat"></div></div>
+<div style="flex:1">
+<div style="font-size:16px;font-weight:600;color:#195658">{{ r.title }}</div>
+<div style="font-size:12.5px;line-height:1.5;color:#617789;margin-top:4px;text-wrap:pretty">{{ r.desc }}</div>
+</div>
+<div style="width:22px;height:22px;flex:none;border-radius:999px;border:{{ r.dot }};display:flex;align-items:center;justify-content:center;margin-top:3px"><div style="width:10px;height:10px;border-radius:999px;background:{{ r.dotFill }}"></div></div>
+</div>
+</sc-for>
+</div>
+<div onClick="{{ toHome }}" style="margin-top:26px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)">Tiếp tục</div>
+<div onClick="{{ toExplore }}" style="margin-top:14px;text-align:center;font-size:13.5px;color:#00708f;font-weight:500;cursor:pointer">Khám phá kho học liệu trước</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:120px;animation:ybup .3s ease">
+<div style="padding:6px 20px 20px;background:linear-gradient(180deg,#eaf6f8 0%,#fcfcfc 100%)">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div style="display:flex;align-items:center;gap:11px">
+<div style="width:44px;height:44px;border-radius:999px;background:linear-gradient(135deg,#00aaab,#00708f);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:15px">HN</div>
+<div><div style="font-size:12px;color:#617789">Chào buổi sáng</div><div style="font-size:15.5px;font-weight:600;color:#195658">{{ userName }}</div></div>
+</div>
+<div style="display:flex;align-items:center;gap:9px">
+<div style="display:flex;align-items:center;gap:5px;height:34px;padding:0 11px;border-radius:999px;background:#fff;border:1px solid #ddeaf0"><img src="assets/learning-points.svg" alt="" style="width:16px;height:16px"/><span style="font-size:13px;font-weight:600;color:#195658">1.240</span></div>
+<div onClick="{{ toNoti }}" style="position:relative;width:34px;height:34px;border-radius:999px;background:#fff;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#25475a" stroke-width="1.7" stroke-linecap="round"><path d="M18 8.4a6 6 0 0 0-12 0c0 6-2.4 7.6-2.4 7.6h16.8S18 14.4 18 8.4z"/><path d="M13.7 19.6a2 2 0 0 1-3.4 0"/></svg><div style="position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:999px;background:#ef5da8;border:1.5px solid #fff"></div></div>
+</div>
+</div>
+
+<div style="margin-top:18px;background:#195658;border-radius:24px;padding:18px;color:#fff;position:relative;overflow:hidden">
+<div style="position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:999px;background:rgba(0,170,171,.35)"></div>
+<div style="position:relative">
+<div style="font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.7">Đang học</div>
+<div style="font-size:17px;font-weight:600;margin-top:5px;line-height:1.35">Cấu tạo tế bào thực vật</div>
+<div style="font-size:12px;opacity:.75;margin-top:3px">Sinh học · Lớp 6 · Bài 3/5</div>
+<div style="margin-top:14px;height:6px;border-radius:999px;background:rgba(255,255,255,.2);overflow:hidden"><div style="height:100%;width:{{ resumePct }};border-radius:999px;background:#00aaab"></div></div>
+<div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
+<span style="font-size:12.5px;opacity:.8">{{ resumePct }} hoàn thành</span>
+<div onClick="{{ toPlayer }}" style="height:38px;padding:0 18px;border-radius:999px;background:#fff;color:#195658;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:7px;cursor:pointer"><svg width="11" height="12" viewBox="0 0 11 12" fill="currentColor"><path d="M0 1.1c0-.9 1-1.4 1.7-1L10.3 5c.7.4.7 1.4 0 1.8L1.7 11.9C1 12.3 0 11.8 0 11V1.1z"/></svg>Học tiếp</div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="padding:4px 20px 0">
+<div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font-size:16px;font-weight:600;color:#195658">Môn học</div><span onClick="{{ toExplore }}" style="font-size:13px;color:#00708f;cursor:pointer">Xem thêm</span></div>
+<div class="yb-scroll" style="margin-top:12px;display:flex;gap:10px;overflow-x:auto;padding-bottom:14px;margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px">
+<sc-for list="{{ categories }}" as="c" hint-placeholder-count="6">
+<div onClick="{{ toExplore }}" style="flex:none;width:78px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer">
+<div style="width:64px;height:64px;border-radius:20px;background:#eaf6f8;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center"><div style="width:32px;height:32px;background-image:url({{ c.icon }});background-size:contain;background-position:center;background-repeat:no-repeat"></div></div>
+<span style="font-size:11.5px;color:#25475a;text-align:center;line-height:1.25">{{ c.label }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="padding:22px 20px 0">
+<div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font-size:16px;font-weight:600;color:#195658">Đề xuất cho bạn</div><span onClick="{{ toExplore }}" style="font-size:13px;color:#00708f;cursor:pointer">Xem thêm</span></div>
+<div class="yb-scroll" style="margin-top:12px;display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px">
+<sc-for list="{{ featured }}" as="l" hint-placeholder-count="3">
+<div onClick="{{ l.onClick }}" style="flex:none;width:236px;border:1px solid #ddeaf0;border-radius:22px;background:#fff;overflow:hidden;cursor:pointer;box-shadow:0 4px 14px rgba(25,86,88,.05)">
+<div style="height:126px;position:relative;background:{{ l.tintBg }}">
+<div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.28) 0 8px,transparent 8px 16px)"></div>
+<div style="position:absolute;left:10px;top:10px;height:24px;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.92);font-size:10.5px;font-weight:600;color:#195658;display:flex;align-items:center">{{ l.typeLabel }}</div>
+<div style="position:absolute;left:0;right:0;bottom:0;padding:8px 10px;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:rgba(255,255,255,.92)">{{ l.slot }}</div>
+</div>
+<div style="padding:12px 14px 14px">
+<div style="font-size:14.5px;font-weight:600;color:#195658;line-height:1.35;text-wrap:pretty">{{ l.title }}</div>
+<div style="font-size:11.5px;color:#617789;margin-top:5px">{{ l.meta }}</div>
+<div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between">
+<div style="display:flex;align-items:center;gap:4px"><img src="assets/lesson/star.svg" alt="" style="width:13px;height:13px"/><span style="font-size:12px;font-weight:600;color:#25475a">{{ l.rating }}</span><span style="font-size:11.5px;color:#617789">({{ l.reviews }})</span></div>
+<div style="display:flex;align-items:center;gap:4px"><img src="assets/lesson/token.svg" alt="" style="width:14px;height:14px"/><span style="font-size:13px;font-weight:700;color:#00708f">{{ l.price }}</span></div>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="padding:22px 20px 0">
+<div style="font-size:16px;font-weight:600;color:#195658">Tuần này của bạn</div>
+<div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+<div style="border:1px solid #ddeaf0;border-radius:20px;background:#fff;padding:14px">
+<div style="width:36px;height:36px;border-radius:12px;background:{{ s.bg }};display:flex;align-items:center;justify-content:center"><div style="width:20px;height:20px;background-image:url({{ s.icon }});background-size:contain;background-position:center;background-repeat:no-repeat"></div></div>
+<div style="font-size:24px;font-weight:700;color:#195658;margin-top:10px;line-height:1">{{ s.value }}</div>
+<div style="font-size:12px;color:#617789;margin-top:4px">{{ s.label }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isExplore }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:120px;animation:ybup .3s ease">
+<div style="position:sticky;top:0;z-index:20;background:#fcfcfc;padding:6px 20px 12px;border-bottom:1px solid #ddeaf0">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="flex:1;display:flex;align-items:center;gap:9px;height:46px;padding:0 14px;border:1px solid #ddeaf0;border-radius:14px;background:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#617789" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.2 16.2L21 21"/></svg><span style="font-size:14px;color:#8ba0ae">Tìm kiếm học liệu</span></div>
+<div style="width:46px;height:46px;border-radius:14px;background:#195658;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M6.5 12h11M10 18h4"/></svg></div>
+</div>
+<div class="yb-scroll" style="margin-top:12px;display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 10px">
+<sc-for list="{{ chips }}" as="c" hint-placeholder-count="6">
+<div onClick="{{ c.onClick }}" style="flex:none;display:flex;align-items:center;gap:6px;height:36px;padding:0 13px;border-radius:999px;border:{{ c.border }};background:{{ c.bg }};color:{{ c.color }};font-size:13px;font-weight:500;cursor:pointer;transition:all .15s"><div style="width:17px;height:17px;background-image:url({{ c.icon }});background-size:contain;background-position:center;background-repeat:no-repeat;opacity:{{ c.iconOpacity }};flex:none"></div>{{ c.label }}</div>
+</sc-for>
+</div>
+</div>
+
+<div style="padding:14px 20px 0;display:flex;align-items:center;justify-content:space-between">
+<div style="font-size:13px;color:#617789"><span style="font-weight:600;color:#195658">{{ resultCount }}</span> học liệu</div>
+<div style="display:flex;align-items:center;gap:8px">
+<div style="display:flex;align-items:center;gap:5px;height:32px;padding:0 11px;border:1px solid #ddeaf0;border-radius:999px;background:#fff;font-size:12.5px;color:#25475a">Mới nhất<svg width="9" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 1l4 4 4-4"/></svg></div>
+<div onClick="{{ toggleView }}" style="display:flex;height:32px;border:1px solid #ddeaf0;border-radius:999px;background:#fff;overflow:hidden;cursor:pointer">
+<div style="width:32px;display:flex;align-items:center;justify-content:center;background:{{ gridBg }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="{{ gridFg }}"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></div>
+<div style="width:32px;display:flex;align-items:center;justify-content:center;background:{{ listBg }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="{{ listFg }}"><rect x="3" y="4" width="18" height="4" rx="2"/><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="16" width="18" height="4" rx="2"/></svg></div>
+</div>
+</div>
+</div>
+
+<div style="padding:14px 20px 0;display:grid;grid-template-columns:{{ gridCols }};gap:14px">
+<sc-for list="{{ lessons }}" as="l" hint-placeholder-count="4">
+<div onClick="{{ l.onClick }}" style="border:1px solid #ddeaf0;border-radius:20px;background:#fff;overflow:hidden;cursor:pointer;display:flex;flex-direction:{{ cardDir }};box-shadow:0 3px 12px rgba(25,86,88,.045)">
+<div style="position:relative;background:{{ l.tintBg }};height:{{ mediaH }};width:{{ mediaW }};flex:none">
+<div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.28) 0 8px,transparent 8px 16px)"></div>
+<div style="position:absolute;left:8px;top:8px;height:21px;padding:0 8px;border-radius:999px;background:rgba(255,255,255,.92);font-size:9.5px;font-weight:600;color:#195658;display:flex;align-items:center">{{ l.typeLabel }}</div>
+</div>
+<div style="padding:11px 12px 12px;flex:1;min-width:0">
+<div style="font-size:13.5px;font-weight:600;color:#195658;line-height:1.35;text-wrap:pretty">{{ l.title }}</div>
+<div style="font-size:11px;color:#617789;margin-top:4px">{{ l.meta }}</div>
+<div style="margin-top:9px;display:flex;align-items:center;justify-content:space-between">
+<div style="display:flex;align-items:center;gap:3px"><img src="assets/lesson/star.svg" alt="" style="width:12px;height:12px"/><span style="font-size:11.5px;font-weight:600">{{ l.rating }}</span></div>
+<div style="display:flex;align-items:center;gap:3px"><img src="assets/lesson/token.svg" alt="" style="width:13px;height:13px"/><span style="font-size:12.5px;font-weight:700;color:#00708f">{{ l.price }}</span></div>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:110px;animation:ybup .3s ease">
+<div style="position:relative;height:236px;background:linear-gradient(135deg,#00aaab,#00708f)">
+<div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.22) 0 10px,transparent 10px 20px)"></div>
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(25,86,88,.35),rgba(25,86,88,.75))"></div>
+<div style="position:absolute;top:12px;left:16px;right:16px;display:flex;justify-content:space-between">
+<div onClick="{{ back }}" style="width:38px;height:38px;border-radius:999px;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div style="display:flex;gap:9px">
+<div onClick="{{ toggleSave }}" style="width:38px;height:38px;border-radius:999px;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="{{ savedFill }}" stroke="#195658" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3.5h12a1 1 0 0 1 1 1v16l-7-4.2-7 4.2v-16a1 1 0 0 1 1-1z"/></svg></div>
+<div style="width:38px;height:38px;border-radius:999px;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.4 10.7l7.2-3.9M8.4 13.3l7.2 3.9"/></svg></div>
+</div>
+</div>
+<div onClick="{{ toPlayer }}" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:999px;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 26px rgba(0,0,0,.22)"><svg width="20" height="22" viewBox="0 0 11 12" fill="#195658"><path d="M0 1.1c0-.9 1-1.4 1.7-1L10.3 5c.7.4.7 1.4 0 1.8L1.7 11.9C1 12.3 0 11.8 0 11V1.1z"/></svg></div>
+<div style="position:absolute;left:16px;bottom:12px;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:rgba(255,255,255,.85)">[ mô hình 3D tế bào thực vật · xem thử 60s ]</div>
+</div>
+
+<div style="padding:18px 20px 0">
+<div style="display:flex;gap:7px;flex-wrap:wrap">
+<div style="height:26px;padding:0 11px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center">Bài giảng mẫu</div>
+<div style="height:26px;padding:0 11px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center">Sinh học</div>
+<div style="height:26px;padding:0 11px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center">Lớp 6</div>
+</div>
+<div style="font-size:21px;font-weight:700;color:#195658;line-height:1.3;margin-top:12px;text-wrap:pretty">Cấu tạo tế bào thực vật</div>
+<div style="margin-top:10px;display:flex;align-items:center;gap:14px;font-size:12.5px;color:#617789">
+<div style="display:flex;align-items:center;gap:4px"><img src="assets/lesson/star.svg" alt="" style="width:14px;height:14px"/><span style="font-weight:600;color:#25475a">4.8</span>(126)</div>
+<div style="display:flex;align-items:center;gap:5px"><img src="assets/lesson/eye.svg" alt="" style="width:15px;height:15px"/>8.420</div>
+<div style="display:flex;align-items:center;gap:5px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#617789" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg>32 phút</div>
+</div>
+
+<div style="margin-top:16px;display:flex;align-items:center;gap:11px;padding:13px;border:1px solid #ddeaf0;border-radius:18px;background:#fff">
+<div style="width:42px;height:42px;border-radius:999px;background:linear-gradient(135deg,#138cd2,#00708f);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px">PT</div>
+<div style="flex:1"><div style="font-size:14px;font-weight:600;color:#195658">Cô Phạm Thu Trang</div><div style="font-size:11.5px;color:#617789">THCS Chu Văn An · 24 học liệu</div></div>
+<div style="height:32px;padding:0 14px;border-radius:999px;border:1px solid #00aaab;color:#00aaab;font-size:12.5px;font-weight:600;display:flex;align-items:center">Theo dõi</div>
+</div>
+
+<div style="margin-top:18px;display:flex;gap:6px;padding:4px;background:#edf7f9;border-radius:14px">
+<sc-for list="{{ detailTabs }}" as="t" hint-placeholder-count="3">
+<div onClick="{{ t.onClick }}" style="flex:1;height:36px;border-radius:11px;background:{{ t.bg }};color:{{ t.color }};font-size:13px;font-weight:{{ t.weight }};display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s">{{ t.label }}</div>
+</sc-for>
+</div>
+
+<sc-if value="{{ detailTabOverview }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:16px">
+<div style="font-size:13.5px;line-height:1.65;color:#25475a;text-wrap:pretty">Bài giảng mô phỏng 3D toàn bộ cấu trúc tế bào thực vật: thành tế bào, màng sinh chất, lục lạp, không bào trung tâm và nhân. Học sinh có thể xoay, tách lớp và phóng to từng bào quan để quan sát chi tiết.</div>
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ detailFacts }}" as="f" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid #ddeaf0;border-radius:14px;background:#fff"><span style="font-size:12.5px;color:#617789">{{ f.k }}</span><span style="font-size:13px;font-weight:600;color:#195658">{{ f.v }}</span></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ detailTabContent }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+<div onClick="{{ s.onClick }}" style="display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;cursor:pointer">
+<div style="width:34px;height:34px;flex:none;border-radius:11px;background:#eaf6f8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#00708f">{{ s.num }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600;color:#195658">{{ s.title }}</div><div style="font-size:11.5px;color:#617789;margin-top:2px">{{ s.kind }} · {{ s.dur }}</div></div>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8ba0ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5l7 7-7 7"/></svg>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ detailTabReviews }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+<div style="padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="width:34px;height:34px;border-radius:999px;background:{{ r.tint }};display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600">{{ r.initials }}</div>
+<div style="flex:1"><div style="font-size:13px;font-weight:600;color:#195658">{{ r.name }}</div><div style="font-size:11px;color:#617789">{{ r.when }}</div></div>
+<div style="display:flex;align-items:center;gap:3px"><img src="assets/lesson/star.svg" alt="" style="width:12px;height:12px"/><span style="font-size:12px;font-weight:600">{{ r.stars }}</span></div>
+</div>
+<div style="font-size:12.5px;line-height:1.6;color:#25475a;margin-top:9px;text-wrap:pretty">{{ r.text }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+
+<div style="position:absolute;left:0;right:0;bottom:0;padding:12px 20px 22px;background:rgba(252,252,252,.94);backdrop-filter:blur(12px);border-top:1px solid #ddeaf0;display:flex;align-items:center;gap:12px;z-index:25">
+<div><div style="font-size:11px;color:#617789">Giá học liệu</div><div style="display:flex;align-items:center;gap:5px"><img src="assets/lesson/token.svg" alt="" style="width:17px;height:17px"/><span style="font-size:19px;font-weight:700;color:#00708f">120</span></div></div>
+<div onClick="{{ toPlayer }}" style="flex:1;height:52px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(0,170,171,.3)">Bắt đầu học</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPlayer }}" hint-placeholder-val="{{ false }}">
+<div style="animation:ybup .3s ease;min-height:100%;display:flex;flex-direction:column">
+<div style="position:relative;height:222px;background:#0f3234;flex:none">
+<div style="position:absolute;inset:0;background:{{ stepTint }}"></div>
+<div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.2) 0 9px,transparent 9px 18px)"></div>
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,50,52,.45),rgba(15,50,52,.72))"></div>
+<div style="position:absolute;top:12px;left:16px;right:16px;display:flex;align-items:center;justify-content:space-between">
+<div onClick="{{ toDetail }}" style="width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+<div style="font-size:12px;color:rgba(255,255,255,.85);font-weight:500">Bài {{ stepNum }}/5</div>
+<div style="width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3.5 9V3.5H9M15 3.5h5.5V9M20.5 15v5.5H15M9 20.5H3.5V15"/></svg></div>
+</div>
+<div onClick="{{ togglePlay }}" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:999px;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.25)">
+<sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><svg width="16" height="18" viewBox="0 0 16 18" fill="#195658"><rect x="1" y="0" width="5" height="18" rx="1.6"/><rect x="10" y="0" width="5" height="18" rx="1.6"/></svg></sc-if>
+<sc-if value="{{ notPlaying }}" hint-placeholder-val="{{ true }}"><svg width="19" height="20" viewBox="0 0 11 12" fill="#195658"><path d="M0 1.1c0-.9 1-1.4 1.7-1L10.3 5c.7.4.7 1.4 0 1.8L1.7 11.9C1 12.3 0 11.8 0 11V1.1z"/></svg></sc-if>
+</div>
+<div style="position:absolute;left:16px;right:16px;bottom:14px">
+<div style="font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:rgba(255,255,255,.8);margin-bottom:8px">{{ stepSlot }}</div>
+<div style="height:4px;border-radius:999px;background:rgba(255,255,255,.25);overflow:hidden"><div style="height:100%;width:{{ mediaPct }};background:#00aaab;border-radius:999px;transition:width .3s"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:10.5px;color:rgba(255,255,255,.75);margin-top:6px"><span>{{ mediaElapsed }}</span><span>{{ stepDur }}</span></div>
+</div>
+</div>
+
+<div style="padding:16px 20px 0">
+<div style="display:flex;gap:5px">
+<sc-for list="{{ stepDots }}" as="d" hint-placeholder-count="5">
+<div onClick="{{ d.onClick }}" style="flex:1;height:5px;border-radius:999px;background:{{ d.bg }};cursor:pointer;transition:background .2s"></div>
+</sc-for>
+</div>
+<div style="margin-top:16px;display:flex;align-items:center;gap:8px">
+<div style="height:24px;padding:0 10px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11px;font-weight:600;display:flex;align-items:center">{{ stepKind }}</div>
+<div style="font-size:11.5px;color:#617789">{{ stepDur }}</div>
+</div>
+<div style="font-size:19px;font-weight:700;color:#195658;line-height:1.32;margin-top:9px;text-wrap:pretty">{{ stepTitle }}</div>
+<div style="font-size:13.5px;line-height:1.7;color:#25475a;margin-top:10px;text-wrap:pretty">{{ stepBody }}</div>
+
+<sc-if value="{{ stepHasQuiz }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;padding:16px;border:1px solid #ddeaf0;border-radius:20px;background:#fff">
+<div style="font-size:14px;font-weight:600;color:#195658;line-height:1.4">Bào quan nào thực hiện quá trình quang hợp?</div>
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ quickOptions }}" as="o" hint-placeholder-count="4">
+<div onClick="{{ o.onClick }}" style="display:flex;align-items:center;gap:11px;padding:12px 13px;border:{{ o.border }};background:{{ o.bg }};border-radius:14px;cursor:pointer;transition:all .15s">
+<div style="width:24px;height:24px;flex:none;border-radius:999px;border:{{ o.dotBorder }};background:{{ o.dotBg }};display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;color:{{ o.dotColor }}">{{ o.letter }}</div>
+<span style="font-size:13.5px;color:{{ o.color }};font-weight:{{ o.weight }}">{{ o.text }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ stepHasNotes }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ stepPoints }}" as="p" hint-placeholder-count="3">
+<div style="display:flex;gap:11px;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff">
+<div style="width:8px;height:8px;flex:none;border-radius:999px;background:#00aaab;margin-top:6px"></div>
+<div><div style="font-size:13.5px;font-weight:600;color:#195658">{{ p.title }}</div><div style="font-size:12.5px;line-height:1.6;color:#617789;margin-top:3px;text-wrap:pretty">{{ p.text }}</div></div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+
+<div style="height:110px;flex:none"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;padding:12px 20px 22px;background:rgba(252,252,252,.94);backdrop-filter:blur(12px);border-top:1px solid #ddeaf0;display:flex;align-items:center;gap:11px;z-index:25">
+<div onClick="{{ prevStep }}" style="width:52px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div onClick="{{ nextStep }}" style="flex:1;height:52px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 8px 20px rgba(0,170,171,.3)">{{ nextLabel }}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5l7 7-7 7"/></svg></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isComplete }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100%;padding:24px 24px 40px;display:flex;flex-direction:column;align-items:center;background:linear-gradient(180deg,#eaf6f8,#fcfcfc 45%);animation:ybup .35s ease">
+<div style="margin-top:26px;width:104px;height:104px;border-radius:999px;background:#00aaab;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(0,170,171,.32);animation:ybpop .5s cubic-bezier(.34,1.4,.5,1)"><svg width="46" height="38" viewBox="0 0 46 38" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5L17 32 42 5"/></svg></div>
+<div style="margin-top:22px;font-size:24px;font-weight:700;color:#195658;text-align:center">Hoàn thành bài học!</div>
+<div style="margin-top:8px;font-size:14px;color:#617789;text-align:center;max-width:290px;text-wrap:pretty">Bạn đã hoàn thành “Cấu tạo tế bào thực vật”. Tiếp tục giữ chuỗi ngày học của mình nhé.</div>
+<div style="margin-top:24px;width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+<sc-for list="{{ completeStats }}" as="s" hint-placeholder-count="3">
+<div style="border:1px solid #ddeaf0;border-radius:18px;background:#fff;padding:14px 10px;text-align:center"><div style="font-size:22px;font-weight:700;color:#00708f;line-height:1">{{ s.value }}</div><div style="font-size:11px;color:#617789;margin-top:5px">{{ s.label }}</div></div>
+</sc-for>
+</div>
+<div style="margin-top:16px;width:100%;padding:16px;border:1px solid #ddeaf0;border-radius:20px;background:#fff">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:13.5px;font-weight:600;color:#195658">Điểm học tập nhận được</span><div style="display:flex;align-items:center;gap:5px"><img src="assets/learning-points.svg" alt="" style="width:17px;height:17px"/><span style="font-size:17px;font-weight:700;color:#00aaab">+45</span></div></div>
+<div style="margin-top:12px;height:7px;border-radius:999px;background:#edf7f9;overflow:hidden"><div style="height:100%;width:72%;border-radius:999px;background:linear-gradient(90deg,#00aaab,#138cd2)"></div></div>
+<div style="margin-top:8px;font-size:11.5px;color:#617789">Còn 155 điểm để đạt cấp Nhà khám phá</div>
+</div>
+<div onClick="{{ toExam }}" style="margin-top:20px;width:100%;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)">Làm bài kiểm tra</div>
+<div onClick="{{ toHome }}" style="margin-top:12px;width:100%;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer">Về trang chủ</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isExam }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100%;display:flex;flex-direction:column;animation:ybup .3s ease">
+<div style="padding:6px 20px 14px;border-bottom:1px solid #ddeaf0">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div onClick="{{ toHome }}" style="width:36px;height:36px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+<div style="display:flex;align-items:center;gap:6px;height:34px;padding:0 13px;border-radius:999px;background:#fff5e6;border:1px solid #fbe0b3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg><span style="font-size:13.5px;font-weight:700;color:#b45309;font-variant-numeric:tabular-nums">{{ examClock }}</span></div>
+<div style="font-size:13px;font-weight:600;color:#617789">{{ examPos }}</div>
+</div>
+<div style="margin-top:14px;display:flex;gap:5px">
+<sc-for list="{{ examDots }}" as="d" hint-placeholder-count="3">
+<div style="flex:1;height:5px;border-radius:999px;background:{{ d.bg }};transition:background .2s"></div>
+</sc-for>
+</div>
+</div>
+<div style="padding:20px 20px 0;flex:1">
+<div style="font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#00aaab">Trắc nghiệm · 1 đáp án</div>
+<div style="font-size:18.5px;font-weight:600;color:#195658;line-height:1.45;margin-top:9px;text-wrap:pretty">{{ examQuestion }}</div>
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ examOptions }}" as="o" hint-placeholder-count="4">
+<div onClick="{{ o.onClick }}" style="display:flex;align-items:center;gap:12px;padding:15px 14px;border:{{ o.border }};background:{{ o.bg }};border-radius:16px;cursor:pointer;transition:all .15s">
+<div style="width:28px;height:28px;flex:none;border-radius:999px;border:{{ o.dotBorder }};background:{{ o.dotBg }};display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:{{ o.dotColor }}">{{ o.letter }}</div>
+<span style="flex:1;font-size:14px;line-height:1.45;color:{{ o.color }};font-weight:{{ o.weight }}">{{ o.text }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="padding:16px 20px 26px;display:flex;gap:11px">
+<div onClick="{{ prevQ }}" style="width:52px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div onClick="{{ nextQ }}" style="flex:1;height:52px;border-radius:16px;background:{{ examNextBg }};color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ examNextLabel }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isExamResult }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100%;padding:20px 24px 40px;animation:ybup .35s ease">
+<div style="display:flex;flex-direction:column;align-items:center;margin-top:14px">
+<div style="position:relative;width:150px;height:150px">
+<svg width="150" height="150" viewBox="0 0 150 150" style="transform:rotate(-90deg)"><circle cx="75" cy="75" r="64" fill="none" stroke="#edf7f9" stroke-width="14"/><circle cx="75" cy="75" r="64" fill="none" stroke="#00aaab" stroke-width="14" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="{{ scoreOffset }}" style="transition:stroke-dashoffset .8s ease"/></svg>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font-size:38px;font-weight:700;color:#195658;line-height:1">{{ scoreText }}</div><div style="font-size:12px;color:#617789;margin-top:2px">điểm</div></div>
+</div>
+<div style="margin-top:18px;font-size:21px;font-weight:700;color:#195658">{{ scoreTitle }}</div>
+<div style="margin-top:6px;font-size:13.5px;color:#617789;text-align:center;max-width:280px;text-wrap:pretty">{{ scoreSub }}</div>
+</div>
+<div style="margin-top:22px;display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ examReview }}" as="q" hint-placeholder-count="3">
+<div style="padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;display:flex;gap:12px">
+<div style="width:26px;height:26px;flex:none;border-radius:999px;background:{{ q.markBg }};display:flex;align-items:center;justify-content:center">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="{{ q.markPath }}"/></svg>
+</div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#195658;line-height:1.4;text-wrap:pretty">{{ q.text }}</div><div style="font-size:11.5px;color:{{ q.ansColor }};margin-top:4px">{{ q.ansLabel }}</div></div>
+</div>
+</sc-for>
+</div>
+<div onClick="{{ restartExam }}" style="margin-top:22px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)">Làm lại bài kiểm tra</div>
+<div onClick="{{ toLibrary }}" style="margin-top:12px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer">Về thư viện của tôi</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isLibrary }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 120px;animation:ybup .3s ease">
+<div style="font-size:22px;font-weight:700;color:#195658">Thư viện của tôi</div>
+<div style="font-size:13px;color:#617789;margin-top:4px">Học liệu bạn đã lưu, đã mua và đang học</div>
+<div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<sc-for list="{{ libraryCards }}" as="c" hint-placeholder-count="4">
+<div style="border:1px solid #ddeaf0;border-radius:22px;background:#fff;padding:16px">
+<div style="display:flex;align-items:flex-start;justify-content:space-between">
+<div><div style="font-size:13px;font-weight:600;color:#00aaab">{{ c.title }}</div><div style="font-size:32px;font-weight:700;color:#195658;line-height:1.05;margin-top:2px">{{ c.value }}</div></div>
+<div style="width:42px;height:42px;flex:none;border-radius:14px;background:#eaf6f8;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center"><div style="width:24px;height:24px;background-image:url({{ c.icon }});background-size:contain;background-position:center;background-repeat:no-repeat"></div></div>
+</div>
+<div style="font-size:11.5px;color:#617789;margin-top:8px;line-height:1.5;text-wrap:pretty">{{ c.hint }}</div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:24px;display:flex;gap:6px;padding:4px;background:#edf7f9;border-radius:14px">
+<sc-for list="{{ libTabs }}" as="t" hint-placeholder-count="3">
+<div onClick="{{ t.onClick }}" style="flex:1;height:36px;border-radius:11px;background:{{ t.bg }};color:{{ t.color }};font-size:12.5px;font-weight:{{ t.weight }};display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.label }}</div>
+</sc-for>
+</div>
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ libraryItems }}" as="l" hint-placeholder-count="4">
+<div onClick="{{ l.onClick }}" style="display:flex;gap:12px;padding:12px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer">
+<div style="width:82px;height:66px;flex:none;border-radius:13px;position:relative;overflow:hidden;background:{{ l.tintBg }}"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.28) 0 7px,transparent 7px 14px)"></div></div>
+<div style="flex:1;min-width:0">
+<div style="font-size:13.5px;font-weight:600;color:#195658;line-height:1.35;text-wrap:pretty">{{ l.title }}</div>
+<div style="font-size:11px;color:#617789;margin-top:3px">{{ l.meta }}</div>
+<div style="margin-top:9px;display:flex;align-items:center;gap:8px">
+<div style="flex:1;height:5px;border-radius:999px;background:#edf7f9;overflow:hidden"><div style="height:100%;width:{{ l.pct }};border-radius:999px;background:{{ l.barColor }}"></div></div>
+<span style="font-size:11px;font-weight:600;color:{{ l.barColor }}">{{ l.pct }}</span>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isNoti }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 120px;animation:ybup .3s ease">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div><div style="font-size:22px;font-weight:700;color:#195658">Thông báo của bạn</div><div style="font-size:13px;color:#617789;margin-top:3px">3 thông báo chưa đọc</div></div>
+<span style="font-size:12.5px;color:#00708f;font-weight:500;cursor:pointer">Đánh dấu đã đọc</span>
+</div>
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ notifications }}" as="n" hint-placeholder-count="5">
+<div style="display:flex;gap:12px;padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:{{ n.bg }}">
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:{{ n.tint }};display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.iconPath }}"/></svg></div>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px"><div style="font-size:13.5px;font-weight:600;color:#195658;line-height:1.35">{{ n.title }}</div><span style="font-size:10.5px;color:#8ba0ae;white-space:nowrap;margin-top:2px">{{ n.when }}</span></div>
+<div style="font-size:12.5px;line-height:1.55;color:#617789;margin-top:4px;text-wrap:pretty">{{ n.text }}</div>
+</div>
+<sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><div style="width:8px;height:8px;flex:none;border-radius:999px;background:#00aaab;margin-top:6px"></div></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:120px;animation:ybup .3s ease">
+<div style="padding:14px 20px 22px;background:linear-gradient(180deg,#eaf6f8,#fcfcfc)">
+<div style="display:flex;align-items:center;gap:14px">
+<div style="width:70px;height:70px;border-radius:999px;background:linear-gradient(135deg,#00aaab,#00708f);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:600">HN</div>
+<div style="flex:1">
+<div style="font-size:18px;font-weight:700;color:#195658">{{ userName }}</div>
+<div style="font-size:12.5px;color:#617789;margin-top:2px">{{ roleLabel }} · THPT Nguyễn Huệ</div>
+<div style="margin-top:7px;display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 10px;border-radius:999px;background:#195658;color:#fff;font-size:11px;font-weight:600">Gói Pro · còn 214 ngày</div>
+</div>
+</div>
+<div style="margin-top:16px;display:flex;gap:8px">
+<sc-for list="{{ roleSwitch }}" as="r" hint-placeholder-count="3">
+<div onClick="{{ r.onClick }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 6px;border:{{ r.border }};background:{{ r.bg }};border-radius:16px;cursor:pointer;transition:all .15s"><div style="width:24px;height:24px;background-image:url({{ r.icon }});background-size:contain;background-position:center;background-repeat:no-repeat;opacity:{{ r.opacity }}"></div><span style="font-size:11.5px;font-weight:{{ r.weight }};color:{{ r.color }}">{{ r.title }}</span></div>
+</sc-for>
+</div>
+</div>
+
+<div style="padding:0 20px">
+<div onClick="{{ toWallet }}" style="padding:16px;border-radius:22px;background:#195658;color:#fff;position:relative;overflow:hidden;cursor:pointer">
+<div style="position:absolute;right:-24px;bottom:-38px;width:120px;height:120px;border-radius:999px;background:rgba(0,170,171,.35)"></div>
+<div style="position:relative;display:flex;align-items:center;justify-content:space-between">
+<div><div style="font-size:11.5px;opacity:.72">Số dư ví YooBook</div><div style="font-size:26px;font-weight:700;margin-top:3px">450.000<span style="font-size:15px;font-weight:500"> đ</span></div><div style="font-size:11.5px;opacity:.72;margin-top:3px">1.240 điểm học tập</div></div>
+<div style="height:38px;padding:0 16px;border-radius:999px;background:#fff;color:#195658;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Nạp</div>
+</div>
+</div>
+
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:2px;border:1px solid #ddeaf0;border-radius:20px;background:#fff;overflow:hidden">
+<sc-for list="{{ profileRows }}" as="p" hint-placeholder-count="6">
+<div onClick="{{ p.onClick }}" style="display:flex;align-items:center;gap:13px;padding:15px 16px;border-bottom:1px solid #edf7f9;cursor:pointer">
+<div style="width:34px;height:34px;flex:none;border-radius:11px;background:#eaf6f8;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#00708f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ p.iconPath }}"/></svg></div>
+<div style="flex:1"><div style="font-size:14px;font-weight:500;color:#25475a">{{ p.label }}</div></div>
+<span style="font-size:12px;color:#8ba0ae">{{ p.value }}</span>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8ba0ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5l7 7-7 7"/></svg>
+</div>
+</sc-for>
+</div>
+<div onClick="{{ toLogin }}" style="margin-top:16px;height:50px;border-radius:16px;border:1px solid #f3c9cd;background:#fff;color:#ad172b;font-size:14.5px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer">Đăng xuất</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isWallet }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 40px;animation:ybup .3s ease">
+<div style="display:flex;align-items:center;gap:12px">
+<div onClick="{{ toProfile }}" style="width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div style="font-size:18px;font-weight:700;color:#195658">Nạp tiền vào ví</div>
+</div>
+<div style="margin-top:18px;padding:18px;border-radius:22px;background:linear-gradient(135deg,#195658,#00708f);color:#fff">
+<div style="font-size:11.5px;opacity:.75">Số dư hiện tại</div>
+<div style="font-size:32px;font-weight:700;margin-top:4px">450.000<span style="font-size:17px;font-weight:500"> đ</span></div>
+<div style="margin-top:12px;display:flex;gap:16px;font-size:11.5px;opacity:.8"><span>Đã nạp tháng này: 200.000đ</span><span>Đã chi: 180.000đ</span></div>
+</div>
+<div style="margin-top:22px;font-size:14.5px;font-weight:600;color:#195658">Chọn mệnh giá</div>
+<div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+<sc-for list="{{ topupAmounts }}" as="a" hint-placeholder-count="6">
+<div onClick="{{ a.onClick }}" style="padding:14px 8px;border:{{ a.border }};background:{{ a.bg }};border-radius:16px;text-align:center;cursor:pointer;transition:all .15s">
+<div style="font-size:15px;font-weight:700;color:{{ a.color }}">{{ a.label }}</div>
+<div style="font-size:10.5px;color:#617789;margin-top:3px">{{ a.bonus }}</div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:22px;font-size:14.5px;font-weight:600;color:#195658">Phương thức thanh toán</div>
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ payMethods }}" as="m" hint-placeholder-count="3">
+<div onClick="{{ m.onClick }}" style="display:flex;align-items:center;gap:12px;padding:14px;border:{{ m.border }};background:{{ m.bg }};border-radius:16px;cursor:pointer">
+<div style="width:38px;height:38px;flex:none;border-radius:12px;background:{{ m.tint }};display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700">{{ m.tag }}</div>
+<div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:#195658">{{ m.name }}</div><div style="font-size:11.5px;color:#617789;margin-top:2px">{{ m.desc }}</div></div>
+<div style="width:20px;height:20px;border-radius:999px;border:{{ m.dotBorder }};display:flex;align-items:center;justify-content:center"><div style="width:9px;height:9px;border-radius:999px;background:{{ m.dotBg }}"></div></div>
+</div>
+</sc-for>
+</div>
+<div onClick="{{ toProfile }}" style="margin-top:24px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)">Nạp {{ topupLabel }}</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isClasswork }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 120px;animation:ybup .3s ease">
+<div style="display:flex;align-items:flex-start;justify-content:space-between">
+<div><div style="font-size:22px;font-weight:700;color:#195658">Lớp &amp; bài tập</div><div style="font-size:13px;color:#617789;margin-top:3px">2 lớp đang học · 3 bài cần làm</div></div>
+<div onClick="{{ toNoti }}" style="position:relative;width:36px;height:36px;border-radius:999px;background:#fff;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#25475a" stroke-width="1.7" stroke-linecap="round"><path d="M18 8.4a6 6 0 0 0-12 0c0 6-2.4 7.6-2.4 7.6h16.8S18 14.4 18 8.4z"/><path d="M13.7 19.6a2 2 0 0 1-3.4 0"/></svg><div style="position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:999px;background:#ef5da8;border:1.5px solid #fff"></div></div>
+</div>
+<div class="yb-scroll" style="margin-top:16px;display:flex;gap:12px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 8px">
+<sc-for list="{{ tClasses }}" as="c" hint-placeholder-count="2">
+<div style="flex:none;width:206px;padding:14px;border-radius:20px;background:{{ c.tintBg }};color:#fff;position:relative;overflow:hidden">
+<div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.16) 0 8px,transparent 8px 16px)"></div>
+<div style="position:relative">
+<div style="font-size:14.5px;font-weight:700;letter-spacing:.02em">{{ c.name }}</div>
+<div style="font-size:11.5px;opacity:.82;margin-top:3px">{{ c.sub }}</div>
+<div style="margin-top:12px;height:5px;border-radius:999px;background:rgba(255,255,255,.25);overflow:hidden"><div style="height:100%;width:{{ c.progress }};border-radius:999px;background:#fff"></div></div>
+<div style="font-size:11px;opacity:.85;margin-top:7px">Tiến độ {{ c.progress }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:18px;display:flex;gap:6px;padding:4px;background:#edf7f9;border-radius:14px">
+<sc-for list="{{ cwTabs }}" as="t" hint-placeholder-count="3">
+<div onClick="{{ t.onClick }}" style="flex:1;height:36px;border-radius:11px;background:{{ t.bg }};color:{{ t.color }};font-size:12.5px;font-weight:{{ t.weight }};display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.label }}</div>
+</sc-for>
+</div>
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ cwItems }}" as="a" hint-placeholder-count="3">
+<div onClick="{{ a.onClick }}" style="padding:15px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+<div style="height:23px;padding:0 10px;border-radius:999px;background:{{ a.tagBg }};color:{{ a.tagColor }};font-size:10.5px;font-weight:600;display:flex;align-items:center">{{ a.tag }}</div>
+<sc-if value="{{ a.hasScore }}" hint-placeholder-val="{{ false }}"><div style="font-size:19px;font-weight:700;color:#00708f">{{ a.score }}</div></sc-if>
+</div>
+<div style="font-size:14px;font-weight:600;color:#195658;line-height:1.4;margin-top:9px;text-wrap:pretty">{{ a.title }}</div>
+<div style="font-size:11.5px;color:#617789;margin-top:5px">{{ a.cls }} · {{ a.due }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAssignment }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 40px;animation:ybup .3s ease">
+<div onClick="{{ toClasswork }}" style="width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div style="margin-top:16px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#00aaab">{{ asgCls }}</div>
+<div style="font-size:20px;font-weight:700;color:#195658;line-height:1.32;margin-top:7px;text-wrap:pretty">{{ asgTitle }}</div>
+<div style="margin-top:12px;display:flex;align-items:center;gap:8px;padding:12px 14px;border:1px solid #fbe0b3;background:#fff5e6;border-radius:14px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg><span style="font-size:12.5px;font-weight:600;color:#b45309">{{ asgDue }}</span></div>
+<div style="margin-top:18px;font-size:14px;font-weight:600;color:#195658">Yêu cầu bài làm</div>
+<div style="margin-top:10px;display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ asgChecklist }}" as="c" hint-placeholder-count="3">
+<div style="display:flex;gap:11px;align-items:flex-start;padding:12px 13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff"><div style="width:7px;height:7px;flex:none;border-radius:999px;background:#00aaab;margin-top:6px"></div><span style="font-size:13px;line-height:1.5;color:#25475a">{{ c.text }}</span></div>
+</sc-for>
+</div>
+<div style="margin-top:18px;font-size:14px;font-weight:600;color:#195658">Bài làm của bạn</div>
+<sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:10px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;min-height:118px;font-size:13px;line-height:1.6;color:#25475a">Quang hợp diễn ra ở lục lạp, cần ánh sáng, nước và khí CO₂. Sản phẩm tạo ra là glucôzơ và khí ôxi…</div>
+<div style="margin-top:11px;display:flex;align-items:center;gap:11px;padding:13px;border:1.4px dashed #bcd7e0;border-radius:16px;background:#f8fcfd;cursor:pointer"><div style="width:34px;height:34px;border-radius:11px;background:#eaf6f8;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#00708f" stroke-width="1.9" stroke-linecap="round"><path d="M12 16V5m0 0L7.5 9.5M12 5l4.5 4.5M4.5 19h15"/></svg></div><div><div style="font-size:13px;font-weight:600;color:#195658">Đính kèm tệp</div><div style="font-size:11px;color:#617789;margin-top:2px">Ảnh, PDF hoặc tài liệu, tối đa 20MB</div></div></div>
+<div onClick="{{ submitAsg }}" style="margin-top:20px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)">Nộp bài</div>
+</sc-if>
+<sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:10px;padding:16px;border:1.6px solid #22c55e;border-radius:18px;background:#f0fdf4;animation:ybup .3s ease">
+<div style="display:flex;align-items:center;gap:10px"><div style="width:30px;height:30px;border-radius:999px;background:#22c55e;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5 19 6.5"/></svg></div><div><div style="font-size:14px;font-weight:600;color:#15803d">Đã nộp bài thành công</div><div style="font-size:11.5px;color:#3f7d55;margin-top:2px">Lần nộp 1 · 17/05 · 20:14 · đúng hạn</div></div></div>
+</div>
+<div style="margin-top:12px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;font-size:13px;line-height:1.6;color:#25475a">Quang hợp diễn ra ở lục lạp, cần ánh sáng, nước và khí CO₂. Sản phẩm tạo ra là glucôzơ và khí ôxi. Em có đính kèm sơ đồ mô tả pha sáng và pha tối.</div>
+<div style="margin-top:11px;display:flex;align-items:center;gap:10px;padding:12px 13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff"><div style="width:30px;height:30px;border-radius:9px;background:#eaf6f8;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#00708f">PDF</div><div style="flex:1"><div style="font-size:12.5px;font-weight:500;color:#25475a">so-do-quang-hop.pdf</div><div style="font-size:10.5px;color:#617789">1,2 MB</div></div></div>
+<div onClick="{{ toClasswork }}" style="margin-top:20px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer">Về danh sách bài tập</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTOverview }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:120px;animation:ybup .3s ease">
+<div style="padding:6px 20px 20px;background:linear-gradient(180deg,#eaf6f8 0%,#fcfcfc 100%)">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div style="display:flex;align-items:center;gap:11px">
+<div style="width:44px;height:44px;border-radius:999px;background:linear-gradient(135deg,#138cd2,#00708f);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:15px">PT</div>
+<div><div style="font-size:12px;color:#617789">Giáo viên</div><div style="font-size:15.5px;font-weight:600;color:#195658">{{ teacherName }}</div></div>
+</div>
+<div onClick="{{ toNoti }}" style="position:relative;width:36px;height:36px;border-radius:999px;background:#fff;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#25475a" stroke-width="1.7" stroke-linecap="round"><path d="M18 8.4a6 6 0 0 0-12 0c0 6-2.4 7.6-2.4 7.6h16.8S18 14.4 18 8.4z"/><path d="M13.7 19.6a2 2 0 0 1-3.4 0"/></svg><div style="position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:999px;background:#ef5da8;border:1.5px solid #fff"></div></div>
+</div>
+<div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:11px">
+<sc-for list="{{ tMetrics }}" as="m" hint-placeholder-count="4">
+<div style="border:1px solid #ddeaf0;border-radius:20px;background:#fff;padding:14px">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12.5px;font-weight:600;color:{{ m.color }}">{{ m.label }}</span><div style="width:9px;height:9px;border-radius:999px;background:{{ m.color }}"></div></div>
+<div style="font-size:30px;font-weight:700;color:#195658;line-height:1;margin-top:8px">{{ m.value }}</div>
+<div style="font-size:10.5px;color:#617789;margin-top:5px;line-height:1.4">{{ m.hint }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="padding:4px 20px 0">
+<div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font-size:16px;font-weight:600;color:#195658">Lớp học của tôi</div><span onClick="{{ toTClasses }}" style="font-size:13px;color:#00708f;cursor:pointer">Xem thêm</span></div>
+<div class="yb-scroll" style="margin-top:12px;display:flex;gap:12px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 8px">
+<sc-for list="{{ tClasses }}" as="c" hint-placeholder-count="3">
+<div onClick="{{ c.onClick }}" style="flex:none;width:212px;border-radius:20px;overflow:hidden;border:1px solid #ddeaf0;background:#fff;cursor:pointer">
+<div style="height:78px;position:relative;background:{{ c.tintBg }}"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.2) 0 8px,transparent 8px 16px)"></div><div style="position:absolute;left:12px;bottom:10px;color:#fff;font-size:14px;font-weight:700;letter-spacing:.02em">{{ c.name }}</div></div>
+<div style="padding:12px 13px 13px">
+<div style="font-size:11.5px;color:#617789">{{ c.sub }} · {{ c.students }} học sinh</div>
+<div style="margin-top:10px;height:5px;border-radius:999px;background:#edf7f9;overflow:hidden"><div style="height:100%;width:{{ c.progress }};border-radius:999px;background:#00aaab"></div></div>
+<div style="font-size:11px;color:#617789;margin-top:6px">Tiến độ {{ c.progress }} · mã {{ c.code }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="padding:18px 20px 0">
+<div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font-size:16px;font-weight:600;color:#195658">Bài cần chấm</div><span onClick="{{ toTGrading }}" style="font-size:13px;color:#00708f;cursor:pointer">Chấm bài</span></div>
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ tAssignments }}" as="a" hint-placeholder-count="3">
+<div onClick="{{ a.onClick }}" style="padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer">
+<div style="font-size:13.5px;font-weight:600;color:#195658;line-height:1.4;text-wrap:pretty">{{ a.title }}</div>
+<div style="font-size:11.5px;color:#617789;margin-top:5px">{{ a.cls }} · hạn {{ a.due }}</div>
+<div style="margin-top:10px;display:flex;align-items:center;gap:9px">
+<div style="height:23px;padding:0 10px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:10.5px;font-weight:600;display:flex;align-items:center;gap:4px">{{ a.submitted }} đã nộp</div>
+<div style="height:23px;padding:0 10px;border-radius:999px;background:#fff5e6;color:#b45309;font-size:10.5px;font-weight:600;display:flex;align-items:center">{{ a.pending }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTClasses }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 120px;animation:ybup .3s ease">
+<div style="display:flex;align-items:flex-start;justify-content:space-between">
+<div><div style="font-size:22px;font-weight:700;color:#195658">Lớp học của tôi</div><div style="font-size:13px;color:#617789;margin-top:3px">4 lớp đang hoạt động · 128 học sinh</div></div>
+<div style="width:38px;height:38px;border-radius:999px;background:#00aaab;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 16px rgba(0,170,171,.3)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+</div>
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ tClasses }}" as="c" hint-placeholder-count="4">
+<div onClick="{{ c.onClick }}" style="display:flex;gap:13px;padding:13px;border:1px solid #ddeaf0;border-radius:20px;background:#fff;cursor:pointer">
+<div style="width:62px;height:62px;flex:none;border-radius:16px;position:relative;overflow:hidden;background:{{ c.tintBg }}"><div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.24) 0 7px,transparent 7px 14px)"></div></div>
+<div style="flex:1;min-width:0">
+<div style="font-size:14px;font-weight:700;color:#195658;letter-spacing:.02em">{{ c.name }}</div>
+<div style="font-size:11.5px;color:#617789;margin-top:3px">{{ c.sub }} · {{ c.students }} học sinh</div>
+<div style="margin-top:9px;display:flex;align-items:center;gap:8px">
+<div style="flex:1;height:5px;border-radius:999px;background:#edf7f9;overflow:hidden"><div style="height:100%;width:{{ c.progress }};border-radius:999px;background:#00aaab"></div></div>
+<span style="font-size:11px;font-weight:600;color:#00708f">{{ c.progress }}</span>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTClass }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:120px;animation:ybup .3s ease">
+<div style="position:relative;padding:12px 20px 20px;background:{{ tClassTint }}">
+<div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.18) 0 9px,transparent 9px 18px)"></div>
+<div style="position:relative">
+<div onClick="{{ toTClasses }}" style="width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div style="margin-top:14px;color:#fff">
+<div style="font-size:21px;font-weight:700;letter-spacing:.02em">{{ tClassName }}</div>
+<div style="font-size:12.5px;opacity:.85;margin-top:4px">{{ tClassSub }} · {{ tClassStudents }} học sinh</div>
+<div style="margin-top:14px;display:flex;gap:9px">
+<div style="height:30px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.92);color:#195658;font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:6px">Mã lớp {{ tClassCode }}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2.4"/><path d="M15.5 5H6a2 2 0 0 0-2 2v9.5"/></svg></div>
+<div style="height:30px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.18);color:#fff;font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:4px">Tiến độ {{ tClassProgress }}</div>
+</div>
+</div>
+</div>
+</div>
+<div style="padding:16px 20px 0">
+<div style="display:flex;gap:6px;padding:4px;background:#edf7f9;border-radius:14px">
+<sc-for list="{{ tClassTabs }}" as="t" hint-placeholder-count="3">
+<div onClick="{{ t.onClick }}" style="flex:1;height:36px;border-radius:11px;background:{{ t.bg }};color:{{ t.color }};font-size:12.5px;font-weight:{{ t.weight }};display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.label }}</div>
+</sc-for>
+</div>
+<sc-if value="{{ tTabStudents }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ tStudents }}" as="st" hint-placeholder-count="5">
+<div style="display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff">
+<div style="width:38px;height:38px;flex:none;border-radius:999px;background:{{ st.tint }};display:flex;align-items:center;justify-content:center;color:#fff;font-size:12.5px;font-weight:600">{{ st.score }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600;color:#195658">{{ st.name }}</div><div style="font-size:11.5px;color:#617789;margin-top:2px">{{ st.meta }}</div></div>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8ba0ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5l7 7-7 7"/></svg>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ tTabWork }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ tAssignments }}" as="a" hint-placeholder-count="3">
+<div onClick="{{ a.onClick }}" style="padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer">
+<div style="font-size:13.5px;font-weight:600;color:#195658;line-height:1.4;text-wrap:pretty">{{ a.title }}</div>
+<div style="font-size:11.5px;color:#617789;margin-top:5px">hạn {{ a.due }} · {{ a.submitted }} đã nộp</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ tTabNews }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:14px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ tNews }}" as="n" hint-placeholder-count="2">
+<div style="padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px"><div style="font-size:13.5px;font-weight:600;color:#195658">{{ n.title }}</div><span style="font-size:10.5px;color:#8ba0ae;white-space:nowrap">{{ n.when }}</span></div>
+<div style="font-size:12.5px;line-height:1.6;color:#617789;margin-top:6px;text-wrap:pretty">{{ n.body }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTGrading }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 120px;animation:ybup .3s ease">
+<div style="font-size:22px;font-weight:700;color:#195658">Chấm bài</div>
+<div style="font-size:13px;color:#617789;margin-top:3px;text-wrap:pretty">Xem bài nộp của học sinh, phản hồi và lưu điểm cuối cùng.</div>
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 14px;border:1px solid #ddeaf0;border-radius:14px;background:#fff"><div><div style="font-size:10.5px;color:#617789">Lớp học</div><div style="font-size:13px;font-weight:600;color:#195658">SINH HỌC 8A1</div></div><svg width="11" height="7" viewBox="0 0 10 6" fill="none" stroke="#617789" stroke-width="1.6"><path d="M1 1l4 4 4-4"/></svg></div>
+<div style="display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 14px;border:1px solid #ddeaf0;border-radius:14px;background:#fff"><div><div style="font-size:10.5px;color:#617789">Bài tập</div><div style="font-size:13px;font-weight:600;color:#195658">Bài tập tuần 20: Quang hợp</div></div><svg width="11" height="7" viewBox="0 0 10 6" fill="none" stroke="#617789" stroke-width="1.6"><path d="M1 1l4 4 4-4"/></svg></div>
+</div>
+<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+<sc-for list="{{ tGradeSummary }}" as="g" hint-placeholder-count="3">
+<div style="padding:13px 10px;border-radius:16px;background:{{ g.bg }};text-align:center"><div style="font-size:22px;font-weight:700;color:{{ g.color }};line-height:1">{{ g.value }}</div><div style="font-size:10.5px;color:#617789;margin-top:5px">{{ g.label }}</div></div>
+</sc-for>
+</div>
+<div style="margin-top:18px;font-size:14.5px;font-weight:600;color:#195658">Bài nộp</div>
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ tSubmissions }}" as="x" hint-placeholder-count="4">
+<div onClick="{{ x.onClick }}" style="display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;cursor:pointer">
+<div style="width:38px;height:38px;flex:none;border-radius:999px;background:{{ x.tint }};display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 19.4c1.2-3.2 3.8-4.8 7-4.8s5.8 1.6 7 4.8"/></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600;color:#195658">{{ x.name }}</div><div style="font-size:11.5px;color:#617789;margin-top:2px">{{ x.at }} · {{ x.attempt }}</div></div>
+<div style="height:24px;padding:0 10px;border-radius:999px;background:{{ x.statusBg }};color:{{ x.statusTint }};font-size:10.5px;font-weight:600;display:flex;align-items:center">{{ x.status }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTGrade }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 40px;animation:ybup .3s ease">
+<div onClick="{{ toTGrading }}" style="width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div style="margin-top:16px;display:flex;align-items:center;gap:12px">
+<div style="width:46px;height:46px;flex:none;border-radius:999px;background:{{ subTint }};display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 19.4c1.2-3.2 3.8-4.8 7-4.8s5.8 1.6 7 4.8"/></svg></div>
+<div><div style="font-size:17px;font-weight:700;color:#195658">{{ subName }}</div><div style="font-size:12px;color:#617789;margin-top:2px">{{ subAt }} · {{ subAttempt }}</div></div>
+</div>
+<div style="margin-top:18px;font-size:13.5px;font-weight:600;color:#195658">Câu trả lời</div>
+<div style="margin-top:9px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;font-size:13px;line-height:1.65;color:#25475a;text-wrap:pretty">{{ subAnswer }}</div>
+<div style="margin-top:14px;font-size:13.5px;font-weight:600;color:#195658">Tệp đính kèm</div>
+<div style="margin-top:9px;display:flex;align-items:center;gap:10px;padding:12px 13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff"><div style="width:30px;height:30px;border-radius:9px;background:#eaf6f8;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#00708f">PDF</div><div style="flex:1"><div style="font-size:12.5px;font-weight:500;color:#25475a">so-do-quang-hop.pdf</div><div style="font-size:10.5px;color:#617789">1,2 MB</div></div></div>
+<div style="margin-top:18px;font-size:13.5px;font-weight:600;color:#195658">Điểm</div>
+<div style="margin-top:10px;display:flex;align-items:center;gap:12px">
+<div style="width:96px;height:60px;border:1.6px solid #00aaab;border-radius:16px;background:#eaf6f8;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#00708f">{{ gradeScore }}</div>
+<div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">
+<sc-for list="{{ scoreChips }}" as="c" hint-placeholder-count="6">
+<div onClick="{{ c.onClick }}" style="height:26px;border:{{ c.border }};background:{{ c.bg }};color:{{ c.color }};border-radius:999px;font-size:11.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ c.label }}</div>
+</sc-for>
+</div>
+</div>
+<div style="margin-top:18px;font-size:13.5px;font-weight:600;color:#195658">Nhận xét</div>
+<div style="margin-top:9px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;min-height:86px;font-size:13px;line-height:1.6;color:#25475a">Bài làm trình bày rõ hai pha của quang hợp. Em bổ sung thêm kết luận về vai trò của quang hợp với sự sống nhé.</div>
+<sc-if value="{{ notGraded }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:20px;display:flex;gap:11px">
+<div onClick="{{ saveGrade }}" style="flex:1;height:52px;border-radius:16px;background:#00aaab;color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(0,170,171,.3)">Lưu điểm</div>
+<div onClick="{{ saveGrade }}" style="width:118px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:14.5px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer">Trả bài</div>
+</div>
+</sc-if>
+<sc-if value="{{ graded }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:20px;padding:16px;border:1.6px solid #22c55e;border-radius:18px;background:#f0fdf4;display:flex;align-items:center;gap:11px;animation:ybup .3s ease"><div style="width:30px;height:30px;border-radius:999px;background:#22c55e;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5 19 6.5"/></svg></div><div><div style="font-size:14px;font-weight:600;color:#15803d">Đã chấm điểm bài nộp</div><div style="font-size:11.5px;color:#3f7d55;margin-top:2px">Điểm {{ gradeScore }} đã trả cho học sinh</div></div></div>
+<div onClick="{{ toTGrading }}" style="margin-top:14px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer">Chấm bài tiếp theo</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTPlans }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 120px;animation:ybup .3s ease">
+<div style="display:flex;align-items:flex-start;justify-content:space-between">
+<div><div style="font-size:22px;font-weight:700;color:#195658">Giáo án của tôi</div><div style="font-size:13px;color:#617789;margin-top:3px">3 giáo án · 2 đã xuất bản</div></div>
+<div onClick="{{ toTPlan }}" style="width:38px;height:38px;border-radius:999px;background:#00aaab;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 16px rgba(0,170,171,.3)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+</div>
+<div style="margin-top:16px;padding:16px;border-radius:20px;background:#fbf5ed;border:1px solid #eddfcc">
+<div style="font-size:14px;font-weight:700;color:#195658">Kết nối YooStudio</div>
+<div style="font-size:12px;line-height:1.55;color:#7a6a55;margin-top:6px;text-wrap:pretty">Tạo nội dung 3D, VR, AR chuyên sâu trên YooStudio và đưa trực tiếp vào giáo án.</div>
+<div style="margin-top:12px;height:36px;padding:0 14px;border-radius:999px;background:#195658;color:#fff;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;cursor:pointer">Trải nghiệm ngay!</div>
+</div>
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ tPlans }}" as="p" hint-placeholder-count="3">
+<div onClick="{{ p.onClick }}" style="padding:15px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+<div style="height:23px;padding:0 10px;border-radius:999px;background:{{ p.statusBg }};color:{{ p.statusColor }};font-size:10.5px;font-weight:600;display:flex;align-items:center">{{ p.status }}</div>
+<span style="font-size:11px;color:#8ba0ae">{{ p.used }}</span>
+</div>
+<div style="font-size:14px;font-weight:600;color:#195658;line-height:1.4;margin-top:9px;text-wrap:pretty">{{ p.title }}</div>
+<div style="font-size:11.5px;color:#617789;margin-top:5px">{{ p.sub }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTPlan }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 40px;animation:ybup .3s ease">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div onClick="{{ toTPlans }}" style="width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div style="height:34px;padding:0 14px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:12.5px;font-weight:600;display:flex;align-items:center;cursor:pointer">Lưu nháp</div>
+</div>
+<div style="margin-top:16px;font-size:20px;font-weight:700;color:#195658;line-height:1.32">Cấu tạo tế bào thực vật</div>
+<div style="margin-top:12px;display:flex;gap:9px;flex-wrap:wrap">
+<div style="height:28px;padding:0 12px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center">Sinh học</div>
+<div style="height:28px;padding:0 12px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center">Lớp 6</div>
+<div style="height:28px;padding:0 12px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:11.5px;font-weight:600;display:flex;align-items:center">Kết nối tri thức</div>
+</div>
+<div style="margin-top:20px;display:flex;align-items:baseline;justify-content:space-between"><div style="font-size:14.5px;font-weight:600;color:#195658">Nội dung giáo án</div><span style="font-size:12.5px;color:#00708f">4 mục</span></div>
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ tBlocks }}" as="b" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff">
+<div style="width:6px;height:38px;flex:none;border-radius:999px;background:{{ b.tint }}"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600;color:#195658">{{ b.title }}</div><div style="font-size:11.5px;color:#617789;margin-top:2px">{{ b.kind }} · {{ b.dur }}</div></div>
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8ba0ae" stroke-width="1.9" stroke-linecap="round"><path d="M5 8h14M5 12h14M5 16h14"/></svg>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;height:50px;border:1.4px dashed #bcd7e0;border-radius:16px;background:#f8fcfd;color:#00708f;font-size:13.5px;font-weight:600;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Thêm mục nội dung</div>
+<div style="margin-top:20px;display:flex;gap:11px">
+<div onClick="{{ toTPlans }}" style="flex:1;height:52px;border-radius:16px;background:#00aaab;color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(0,170,171,.3)">Xuất bản giáo án</div>
+<div style="width:104px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:14.5px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer">Xem thử</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPOverview }}" hint-placeholder-val="{{ false }}">
+<div style="padding-bottom:120px;animation:ybup .3s ease">
+<div style="padding:6px 20px 20px;background:linear-gradient(180deg,#eaf6f8 0%,#fcfcfc 100%)">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<div><div style="font-size:12px;color:#617789">Phụ huynh</div><div style="font-size:17px;font-weight:700;color:#195658">{{ parentName }}</div></div>
+<div onClick="{{ toNoti }}" style="position:relative;width:36px;height:36px;border-radius:999px;background:#fff;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#25475a" stroke-width="1.7" stroke-linecap="round"><path d="M18 8.4a6 6 0 0 0-12 0c0 6-2.4 7.6-2.4 7.6h16.8S18 14.4 18 8.4z"/><path d="M13.7 19.6a2 2 0 0 1-3.4 0"/></svg><div style="position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:999px;background:#ef5da8;border:1.5px solid #fff"></div></div>
+</div>
+<div style="margin-top:14px;display:flex;gap:10px">
+<sc-for list="{{ children }}" as="c" hint-placeholder-count="2">
+<div onClick="{{ c.onClick }}" style="flex:1;display:flex;align-items:center;gap:10px;padding:11px;border:{{ c.border }};background:{{ c.bg }};border-radius:16px;cursor:pointer;transition:all .15s">
+<div style="width:34px;height:34px;flex:none;border-radius:999px;background:{{ c.tint }};display:flex;align-items:center;justify-content:center;color:#fff;font-size:11.5px;font-weight:600">{{ c.initials }}</div>
+<span style="font-size:12.5px;font-weight:{{ c.weight }};color:#195658;line-height:1.3">{{ c.name }}</span>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:11px">
+<sc-for list="{{ childStats }}" as="st" hint-placeholder-count="4">
+<div style="padding:14px;border-radius:18px;background:{{ st.bg }}"><div style="font-size:26px;font-weight:700;color:{{ st.color }};line-height:1">{{ st.value }}</div><div style="font-size:11.5px;color:#617789;margin-top:5px">{{ st.label }}</div></div>
+</sc-for>
+</div>
+</div>
+<div style="padding:4px 20px 0">
+<div style="padding:16px;border:1px solid #ddeaf0;border-radius:20px;background:#fff">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:13.5px;font-weight:600;color:#195658">Tiến độ học tập</span><span style="font-size:13px;font-weight:700;color:#00708f">{{ childPath }}</span></div>
+<div style="margin-top:11px;height:7px;border-radius:999px;background:#edf7f9;overflow:hidden"><div style="height:100%;width:{{ childPath }};border-radius:999px;background:linear-gradient(90deg,#00aaab,#138cd2)"></div></div>
+<div style="margin-top:9px;font-size:11.5px;color:#617789">{{ childMissions }} mission hoàn thành trong tuần này</div>
+</div>
+<div style="margin-top:14px;padding:16px;border-radius:20px;background:#195658;color:#fff;position:relative;overflow:hidden">
+<div style="position:absolute;right:-30px;bottom:-40px;width:130px;height:130px;border-radius:999px;background:rgba(0,170,171,.3)"></div>
+<div style="position:relative">
+<div style="font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.7">Gợi ý cho tuần tới</div>
+<div style="font-size:14px;line-height:1.6;margin-top:7px;text-wrap:pretty">{{ nextAction }}</div>
+<div onClick="{{ toPReport }}" style="margin-top:14px;height:38px;padding:0 16px;border-radius:999px;background:#fff;color:#195658;font-size:13px;font-weight:600;display:inline-flex;align-items:center;cursor:pointer">Tạo báo cáo tuần</div>
+</div>
+</div>
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+<div onClick="{{ toPChild }}" style="display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;cursor:pointer"><div style="width:34px;height:34px;flex:none;border-radius:11px;background:#eaf6f8;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#00708f" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10.5M10 20V4.5M16 20v-7M21.5 20h-19"/></svg></div><div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:#195658">Theo dõi học tập</div><div style="font-size:11.5px;color:#617789;margin-top:2px">Kết quả theo lớp và bài tập gần đây</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8ba0ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5l7 7-7 7"/></svg></div>
+<div onClick="{{ toPSafety }}" style="display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;cursor:pointer"><div style="width:34px;height:34px;flex:none;border-radius:11px;background:#eaf6f8;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#00708f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l7 3v5.2c0 4.3-2.9 7.6-7 8.8-4.1-1.2-7-4.5-7-8.8V6.5l7-3z"/></svg></div><div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:#195658">Cài đặt an toàn</div><div style="font-size:11.5px;color:#617789;margin-top:2px">Social, leaderboard, AI tutor và giới hạn thời gian</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8ba0ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5l7 7-7 7"/></svg></div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPChild }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 120px;animation:ybup .3s ease">
+<div style="display:flex;align-items:center;gap:13px">
+<div style="width:52px;height:52px;border-radius:999px;background:{{ childTint }};display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:600">{{ childInitials }}</div>
+<div><div style="font-size:18px;font-weight:700;color:#195658">{{ childName }}</div><div style="font-size:12px;color:#617789;margin-top:2px">{{ childMeta }}</div></div>
+</div>
+<div style="margin-top:20px;font-size:14.5px;font-weight:600;color:#195658">Kết quả theo lớp</div>
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ childClasses }}" as="c" hint-placeholder-count="2">
+<div style="padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff">
+<div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:13.5px;font-weight:700;color:#195658;letter-spacing:.02em">{{ c.name }}</div><div style="font-size:19px;font-weight:700;color:#00708f">{{ c.score }}</div></div>
+<div style="font-size:11.5px;color:#617789;margin-top:4px">{{ c.teacher }} · {{ c.submitted }}</div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:20px;font-size:14.5px;font-weight:600;color:#195658">Bài tập gần đây</div>
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ childAssignments }}" as="a" hint-placeholder-count="3">
+<div style="padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff">
+<div style="font-size:13.5px;font-weight:600;color:#195658;line-height:1.4;text-wrap:pretty">{{ a.title }}</div>
+<div style="margin-top:8px;display:flex;align-items:center;gap:9px">
+<div style="height:23px;padding:0 10px;border-radius:999px;background:{{ a.bg }};color:{{ a.color }};font-size:10.5px;font-weight:600;display:flex;align-items:center">{{ a.state }}</div>
+<span style="font-size:11px;color:#8ba0ae">{{ a.cls }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPReport }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 120px;animation:ybup .3s ease">
+<div style="font-size:22px;font-weight:700;color:#195658">Báo cáo tuần</div>
+<div style="font-size:13px;color:#617789;margin-top:3px">{{ reportPeriod }}</div>
+<div style="margin-top:16px;padding:16px;border:1px solid #ddeaf0;border-radius:20px;background:#fff">
+<div style="font-size:13px;line-height:1.7;color:#25475a;text-wrap:pretty">{{ reportSummary }}</div>
+<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px">
+<sc-for list="{{ reportMetrics }}" as="m" hint-placeholder-count="3">
+<div style="padding:12px 8px;border-radius:14px;background:#edf7f9;text-align:center"><div style="font-size:19px;font-weight:700;color:#00708f;line-height:1">{{ m.value }}</div><div style="font-size:10px;color:#617789;margin-top:4px;line-height:1.3">{{ m.label }}</div></div>
+</sc-for>
+</div>
+</div>
+<div style="margin-top:18px;display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:999px;background:#22c55e"></div><div style="font-size:14px;font-weight:600;color:#195658">Điểm mạnh</div></div>
+<div style="margin-top:10px;display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ reportStrengths }}" as="r" hint-placeholder-count="3">
+<div style="padding:13px;border:1px solid #cdecd8;border-radius:14px;background:#f6fdf8;font-size:12.5px;line-height:1.55;color:#25475a;text-wrap:pretty">{{ r.text }}</div>
+</sc-for>
+</div>
+<div style="margin-top:18px;display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:999px;background:#f59e0b"></div><div style="font-size:14px;font-weight:600;color:#195658">Cần cải thiện</div></div>
+<div style="margin-top:10px;display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ reportImprovements }}" as="r" hint-placeholder-count="3">
+<div style="padding:13px;border:1px solid #f6e2bd;border-radius:14px;background:#fffaf1;font-size:12.5px;line-height:1.55;color:#25475a;text-wrap:pretty">{{ r.text }}</div>
+</sc-for>
+</div>
+<div onClick="{{ toPMessages }}" style="margin-top:20px;height:52px;border-radius:16px;background:#00aaab;color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(0,170,171,.3)">Trao đổi với giáo viên</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPMessages }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 120px;animation:ybup .3s ease">
+<div style="display:flex;align-items:flex-start;justify-content:space-between">
+<div><div style="font-size:22px;font-weight:700;color:#195658">Liên hệ giáo viên</div><div style="font-size:13px;color:#617789;margin-top:3px;text-wrap:pretty">Gửi tin nhắn cho giáo viên đang dạy con và theo dõi phản hồi tại một nơi.</div></div>
+</div>
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ convos }}" as="c" hint-placeholder-count="2">
+<div onClick="{{ c.onClick }}" style="padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer">
+<div style="display:flex;align-items:center;gap:11px">
+<div style="width:38px;height:38px;flex:none;border-radius:999px;background:{{ c.tint }};display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 19.4c1.2-3.2 3.8-4.8 7-4.8s5.8 1.6 7 4.8"/></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600;color:#195658">{{ c.teacher }}</div><div style="font-size:11px;color:#617789;margin-top:2px">{{ c.cls }}</div></div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+<span style="font-size:10.5px;color:#8ba0ae">{{ c.when }}</span>
+<sc-if value="{{ c.hasUnread }}" hint-placeholder-val="{{ false }}"><div style="min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:#00aaab;color:#fff;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ c.unread }}</div></sc-if>
+</div>
+</div>
+<div style="font-size:12.5px;font-weight:600;color:#00708f;margin-top:10px">{{ c.subject }}</div>
+<div style="font-size:12.5px;line-height:1.55;color:#617789;margin-top:4px;text-wrap:pretty">{{ c.preview }}</div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;height:50px;border:1.4px dashed #bcd7e0;border-radius:16px;background:#f8fcfd;color:#00708f;font-size:13.5px;font-weight:600;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Tin nhắn mới</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPThread }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100%;display:flex;flex-direction:column;animation:ybup .3s ease">
+<div style="padding:6px 20px 14px;border-bottom:1px solid #ddeaf0;display:flex;align-items:center;gap:12px">
+<div onClick="{{ toPMessages }}" style="width:36px;height:36px;flex:none;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div style="width:36px;height:36px;flex:none;border-radius:999px;background:#00aaab;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 19.4c1.2-3.2 3.8-4.8 7-4.8s5.8 1.6 7 4.8"/></svg></div>
+<div><div style="font-size:14.5px;font-weight:600;color:#195658">Cô Phạm Thu Trang</div><div style="font-size:11px;color:#617789">SINH HỌC 8A1 · Trao đổi học tập</div></div>
+</div>
+<div style="flex:1;padding:16px 20px;display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ thread }}" as="m" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;align-items:{{ m.align }}">
+<div style="max-width:82%;padding:12px 14px;border:{{ m.border }};background:{{ m.bg }};color:{{ m.color }};border-radius:18px;font-size:13px;line-height:1.6;text-wrap:pretty">{{ m.body }}</div>
+<span style="font-size:10.5px;color:#8ba0ae;margin-top:5px">{{ m.at }}</span>
+</div>
+</sc-for>
+<sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;align-items:flex-end;animation:ybup .3s ease">
+<div style="max-width:82%;padding:12px 14px;border:1px solid #00aaab;background:#00aaab;color:#fff;border-radius:18px;font-size:13px;line-height:1.6">Cảm ơn cô, tối nay em sẽ cho cháu xem lại mô hình 3D và nhắc nộp bài đúng hạn.</div>
+<span style="font-size:10.5px;color:#8ba0ae;margin-top:5px">Vừa gửi · đã gửi</span>
+</div>
+</sc-if>
+</div>
+<div style="padding:12px 20px 26px;border-top:1px solid #ddeaf0;display:flex;align-items:center;gap:10px;background:#fcfcfc">
+<div style="flex:1;min-height:48px;padding:13px 15px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;font-size:13px;color:#8ba0ae">Nhập nội dung tin nhắn...</div>
+<div onClick="{{ sendMsg }}" style="width:48px;height:48px;flex:none;border-radius:16px;background:#00aaab;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 16px rgba(0,170,171,.3)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l16-8-6 8 6 8-16-8z"/></svg></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPSafety }}" hint-placeholder-val="{{ false }}">
+<div style="padding:6px 20px 40px;animation:ybup .3s ease">
+<div style="display:flex;align-items:center;gap:12px">
+<div onClick="{{ toPOverview }}" style="width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+<div style="font-size:18px;font-weight:700;color:#195658">Cài đặt an toàn</div>
+</div>
+<div style="margin-top:8px;font-size:12.5px;line-height:1.55;color:#617789;text-wrap:pretty">Quản lý social, leaderboard, AI tutor và giới hạn thời gian học.</div>
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ safetyRows }}" as="r" hint-placeholder-count="4">
+<div onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:12px;padding:15px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer">
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600;color:#195658">{{ r.label }}</div><div style="font-size:11.5px;color:#617789;margin-top:3px;line-height:1.45">{{ r.desc }}</div></div>
+<div style="width:44px;height:26px;flex:none;border-radius:999px;background:{{ r.trackBg }};position:relative;transition:background .2s"><div style="position:absolute;top:2px;left:{{ r.knobLeft }};width:22px;height:22px;border-radius:999px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s"></div></div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:20px;font-size:14px;font-weight:600;color:#195658">Giới hạn màn hình mỗi ngày</div>
+<div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:9px">
+<sc-for list="{{ limitChips }}" as="c" hint-placeholder-count="4">
+<div onClick="{{ c.onClick }}" style="height:44px;border:{{ c.border }};background:{{ c.bg }};color:{{ c.color }};border-radius:14px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ c.label }}</div>
+</sc-for>
+</div>
+<div style="margin-top:12px;padding:13px 14px;border-radius:14px;background:#edf7f9;font-size:12px;line-height:1.55;color:#617789;text-wrap:pretty">Khi đạt giới hạn, con sẽ thấy thông báo “Hết thời gian sử dụng” và không thể tiếp tục học trong ngày.</div>
+<div onClick="{{ toPOverview }}" style="margin-top:22px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)">Lưu cài đặt</div>
+</div>
+</sc-if>
+
+</div>
+
+<sc-if value="{{ showNav }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:40;pointer-events:none">
+
+<sc-if value="{{ navTabs }}" hint-placeholder-val="{{ false }}">
+<div style="pointer-events:auto;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:1px solid #ddeaf0;padding:9px 8px 22px;display:flex">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+<div onClick="{{ t.onClick }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 0">
+<svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="{{ t.color }}" stroke-width="{{ t.sw }}" stroke-linecap="round" stroke-linejoin="round"><path d="{{ t.iconPath }}"/></svg>
+<span style="font-size:10.5px;font-weight:{{ t.weight }};color:{{ t.color }}">{{ t.label }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ navFab }}" hint-placeholder-val="{{ false }}">
+<div style="pointer-events:auto;position:relative;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:1px solid #ddeaf0;padding:9px 8px 22px;display:flex">
+<sc-for list="{{ tabsSplitLeft }}" as="t" hint-placeholder-count="2">
+<div onClick="{{ t.onClick }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 0">
+<svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="{{ t.color }}" stroke-width="{{ t.sw }}" stroke-linecap="round" stroke-linejoin="round"><path d="{{ t.iconPath }}"/></svg>
+<span style="font-size:10.5px;font-weight:{{ t.weight }};color:{{ t.color }}">{{ t.label }}</span>
+</div>
+</sc-for>
+<div style="width:74px;flex:none"></div>
+<sc-for list="{{ tabsSplitRight }}" as="t" hint-placeholder-count="2">
+<div onClick="{{ t.onClick }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 0">
+<svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="{{ t.color }}" stroke-width="{{ t.sw }}" stroke-linecap="round" stroke-linejoin="round"><path d="{{ t.iconPath }}"/></svg>
+<span style="font-size:10.5px;font-weight:{{ t.weight }};color:{{ t.color }}">{{ t.label }}</span>
+</div>
+</sc-for>
+<div onClick="{{ toPlayer }}" style="position:absolute;left:50%;top:-24px;transform:translateX(-50%);width:62px;height:62px;border-radius:999px;background:#00aaab;border:4px solid #fcfcfc;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 24px rgba(0,170,171,.4)"><svg width="20" height="21" viewBox="0 0 11 12" fill="#fff"><path d="M0 1.1c0-.9 1-1.4 1.7-1L10.3 5c.7.4.7 1.4 0 1.8L1.7 11.9C1 12.3 0 11.8 0 11V1.1z"/></svg></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ navPill }}" hint-placeholder-val="{{ false }}">
+<div style="pointer-events:auto;padding:0 18px 24px">
+<div style="height:62px;border-radius:999px;background:rgba(25,86,88,.96);backdrop-filter:blur(14px);display:flex;align-items:center;padding:0 8px;box-shadow:0 12px 30px rgba(25,86,88,.32)">
+<sc-for list="{{ tabsPill }}" as="t" hint-placeholder-count="5">
+<div onClick="{{ t.onClick }}" style="flex:{{ t.flex }};height:46px;border-radius:999px;background:{{ t.pillBg }};display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:all .22s;overflow:hidden">
+<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{ t.pillColor }}" stroke-width="{{ t.sw }}" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="{{ t.iconPath }}"/></svg>
+<sc-if value="{{ t.active }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px;font-weight:600;color:#195658;white-space:nowrap">{{ t.label }}</span></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;navStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;tabs&quot;,&quot;fab&quot;,&quot;pill&quot;],&quot;default&quot;:&quot;tabs&quot;,&quot;tsType&quot;:&quot;'tabs'|'fab'|'pill'&quot;,&quot;section&quot;:&quot;Điều hướng&quot;}}">
+const ACCENT = "#00aaab", DEEP = "#00708f", INK = "#195658", MUTED = "#617789", BORDER = "#ddeaf0";
+
+const CATS = [
+  { label: "Toán", icon: "assets/cat/toan.svg" },
+  { label: "Vật lý", icon: "assets/cat/vat-ly.svg" },
+  { label: "Hóa học", icon: "assets/cat/hoa-hoc.svg" },
+  { label: "Sinh học", icon: "assets/cat/sinh-hoc.svg" },
+  { label: "Lịch sử", icon: "assets/cat/lich-su.svg" },
+  { label: "Địa lý", icon: "assets/cat/dia-ly.svg" },
+  { label: "Tiếng Anh", icon: "assets/cat/english.svg" },
+  { label: "Công nghệ", icon: "assets/cat/cong-nghe.svg" },
+];
+
+const LESSONS = [
+  { id: 1, title: "Cấu tạo tế bào thực vật", meta: "Sinh học · Lớp 6 · 32 phút", typeLabel: "Mô hình 3D", price: "120", rating: "4.8", reviews: "126", tint: "linear-gradient(135deg,#00aaab,#00708f)", slot: "[ ảnh bìa · mô hình 3D tế bào ]" },
+  { id: 2, title: "Thí nghiệm điện phân dung dịch CuSO₄", meta: "Hóa học · Lớp 11 · 24 phút", typeLabel: "Mô phỏng", price: "150", rating: "4.7", reviews: "89", tint: "linear-gradient(135deg,#138cd2,#195658)", slot: "[ ảnh bìa · bể điện phân ]" },
+  { id: 3, title: "Hệ Mặt Trời trong không gian 3D", meta: "Khoa học · Lớp 9 · 41 phút", typeLabel: "VR360", price: "200", rating: "4.9", reviews: "213", tint: "linear-gradient(135deg,#195658,#0f3234)", slot: "[ ảnh bìa · hệ mặt trời ]" },
+  { id: 4, title: "Chiến dịch Điện Biên Phủ", meta: "Lịch sử · Lớp 12 · 28 phút", typeLabel: "VR360", price: "Miễn phí", rating: "4.6", reviews: "154", tint: "linear-gradient(135deg,#ef5da8,#a03a6d)", slot: "[ ảnh bìa · bản đồ chiến dịch ]" },
+  { id: 5, title: "Ba định luật Newton", meta: "Vật lý · Lớp 10 · 35 phút", typeLabel: "Mô phỏng", price: "130", rating: "4.8", reviews: "97", tint: "linear-gradient(135deg,#f59e0b,#c2410c)", slot: "[ ảnh bìa · mặt phẳng nghiêng ]" },
+  { id: 6, title: "Địa hình Việt Nam qua bản đồ 3D", meta: "Địa lý · Lớp 8 · 22 phút", typeLabel: "Mô hình 3D", price: "110", rating: "4.5", reviews: "64", tint: "linear-gradient(135deg,#22c55e,#15803d)", slot: "[ ảnh bìa · bản đồ địa hình ]" },
+];
+
+const STEPS = [
+  { num: "1", title: "Giới thiệu bài học", kind: "Video", dur: "4:12", tint: "linear-gradient(135deg,#00aaab,#00708f)", slot: "[ video giảng · cô Phạm Thu Trang ]",
+    body: "Tổng quan về tế bào — đơn vị cơ bản của sự sống. Bài học đặt câu hỏi: điều gì khiến tế bào thực vật khác tế bào động vật?" },
+  { num: "2", title: "Mô hình 3D tế bào thực vật", kind: "Tương tác 3D", dur: "8:00", tint: "linear-gradient(135deg,#138cd2,#195658)", slot: "[ mô hình 3D · xoay, tách lớp, phóng to ]",
+    body: "Xoay mô hình để quan sát từng bào quan. Chạm vào một bào quan để tách lớp và đọc chú thích chi tiết.",
+    points: [
+      { title: "Thành tế bào", text: "Lớp ngoài cùng bằng xenlulôzơ, giữ hình dạng cố định cho tế bào." },
+      { title: "Lục lạp", text: "Chứa diệp lục, nơi diễn ra quá trình quang hợp." },
+      { title: "Không bào trung tâm", text: "Chiếm tới 90% thể tích, dự trữ nước và duy trì áp suất trương." },
+    ] },
+  { num: "3", title: "Thành tế bào và màng sinh chất", kind: "Bài đọc", dur: "6:30", tint: "linear-gradient(135deg,#22c55e,#15803d)", slot: "[ hình minh họa · lát cắt thành tế bào ]",
+    body: "Thành tế bào nằm ngoài màng sinh chất, được cấu tạo chủ yếu từ xenlulôzơ. Màng sinh chất kiểm soát các chất ra vào tế bào theo cơ chế chọn lọc." },
+  { num: "4", title: "Câu hỏi nhanh", kind: "Kiểm tra", dur: "3:00", tint: "linear-gradient(135deg,#f59e0b,#c2410c)", slot: "[ nền câu hỏi nhanh ]",
+    body: "Trả lời để kiểm tra hiểu biết trước khi sang phần tổng kết.", quiz: true },
+  { num: "5", title: "Tổng kết bài học", kind: "Video", dur: "2:05", tint: "linear-gradient(135deg,#195658,#0f3234)", slot: "[ video tổng kết ]",
+    body: "Nhắc lại năm cấu trúc đặc trưng của tế bào thực vật và mối liên hệ giữa chúng với chức năng sống của cây." },
+];
+
+const QUICK = ["Ti thể", "Lục lạp", "Ribôxôm", "Không bào"];
+const QUICK_CORRECT = 1;
+
+const EXAM = [
+  { q: "Bào quan nào thực hiện quá trình quang hợp ở tế bào thực vật?", opts: ["Ti thể", "Lục lạp", "Ribôxôm", "Bộ máy Gôngi"], correct: 1 },
+  { q: "Thành tế bào thực vật được cấu tạo chủ yếu từ chất nào?", opts: ["Xenlulôzơ", "Kitin", "Peptiđôglican", "Lipit"], correct: 0 },
+  { q: "Chức năng chính của không bào trung tâm là gì?", opts: ["Tổng hợp prôtêin", "Phân giải chất thải", "Dự trữ nước và duy trì áp suất trương", "Vận chuyển nội bào"], correct: 2 },
+];
+
+const T_METRICS = [
+  { label: "Lớp đang dạy", value: "5", hint: "Tổng số lớp đang hoạt động", bg: "#eaf6f8", color: "#00aaab" },
+  { label: "Bài cần chấm", value: "12", hint: "Bài tập cần chấm điểm", bg: "#e7f2fb", color: "#138cd2" },
+  { label: "Sắp đến hạn", value: "3", hint: "Trong 3 ngày tới", bg: "#fff5e6", color: "#f59e0b" },
+  { label: "Học sinh", value: "128", hint: "Cần theo dõi và hỗ trợ", bg: "#fdeef5", color: "#ef5da8" },
+];
+const T_CLASSES = [
+  { name: "SINH HỌC 8A1", sub: "Sinh học · Lớp 8", code: "SH8A1-24", students: "32", progress: "60%", tint: "linear-gradient(135deg,#00aaab,#00708f)" },
+  { name: "SINH HỌC 8A2", sub: "Sinh học · Lớp 8", code: "SH8A2-24", students: "30", progress: "45%", tint: "linear-gradient(135deg,#138cd2,#195658)" },
+  { name: "KHTN 6A2", sub: "Khoa học tự nhiên · Lớp 6", code: "KH6A2-24", students: "34", progress: "72%", tint: "linear-gradient(135deg,#22c55e,#15803d)" },
+  { name: "SINH HỌC 9A1", sub: "Sinh học · Lớp 9", code: "SH9A1-24", students: "32", progress: "28%", tint: "linear-gradient(135deg,#ef5da8,#a03a6d)" },
+];
+const T_ASSIGNMENTS = [
+  { title: "Bài tập tuần 20: Quang hợp của thực vật", cls: "SINH HỌC 8A1", due: "17/05/2026", submitted: "28/32", pending: "4 bài chờ chấm" },
+  { title: "Kiểm tra giữa kỳ: Cấu tạo tế bào", cls: "SINH HỌC 8A2", due: "19/05/2026", submitted: "25/30", pending: "5 bài chờ chấm" },
+  { title: "Dự án nhóm: Vòng tuần hoàn nước", cls: "KHTN 6A2", due: "22/05/2026", submitted: "31/34", pending: "3 bài chờ chấm" },
+];
+const T_SUBMISSIONS = [
+  { name: "Nguyễn Thị Hoa", at: "16/05 · 20:14", attempt: "Lần 1", status: "Đã nộp", statusTint: "#00708f", statusBg: "#eaf6f8", tint: "#00aaab", late: false,
+    answer: "Quang hợp diễn ra ở lục lạp, cần ánh sáng, nước và khí CO₂. Sản phẩm tạo ra là glucôzơ và khí ôxi. Em có đính kèm sơ đồ mô tả pha sáng và pha tối." },
+  { name: "Trần Quốc Bảo", at: "17/05 · 07:02", attempt: "Lần 2", status: "Nộp muộn", statusTint: "#b45309", statusBg: "#fff5e6", tint: "#f59e0b", late: true,
+    answer: "Lục lạp chứa diệp lục hấp thụ ánh sáng. Em chưa kịp vẽ sơ đồ pha tối, mong cô cho nộp bổ sung." },
+  { name: "Lê Minh Anh", at: "16/05 · 18:41", attempt: "Lần 1", status: "Đã nộp", statusTint: "#00708f", statusBg: "#eaf6f8", tint: "#138cd2", late: false,
+    answer: "Em trình bày hai pha của quang hợp và so sánh với hô hấp tế bào ở phần cuối bài làm." },
+  { name: "Phạm Gia Hân", at: "16/05 · 21:30", attempt: "Lần 1", status: "Đã chấm", statusTint: "#15803d", statusBg: "#f0fdf4", tint: "#22c55e", late: false,
+    answer: "Bài làm đầy đủ hai pha, có sơ đồ và kết luận về vai trò của quang hợp với sự sống trên Trái Đất." },
+];
+const T_PLANS = [
+  { title: "Cấu tạo tế bào thực vật", sub: "Sinh học · Lớp 6 · 5 mục nội dung", status: "Đã xuất bản", statusBg: "#f0fdf4", statusColor: "#15803d", used: "Dùng trong 3 lớp" },
+  { title: "Quang hợp và hô hấp tế bào", sub: "Sinh học · Lớp 8 · 7 mục nội dung", status: "Bản nháp", statusBg: "#fff5e6", statusColor: "#b45309", used: "Chưa gán lớp" },
+  { title: "Vòng tuần hoàn nước trong tự nhiên", sub: "KHTN · Lớp 6 · 4 mục nội dung", status: "Đã xuất bản", statusBg: "#f0fdf4", statusColor: "#15803d", used: "Dùng trong 1 lớp" },
+];
+const T_BLOCKS = [
+  { kind: "Video", title: "Giới thiệu bài học", dur: "4:12", tint: "#00aaab" },
+  { kind: "Mô hình 3D", title: "Mô hình tế bào thực vật", dur: "8:00", tint: "#138cd2" },
+  { kind: "Bài đọc", title: "Thành tế bào và màng sinh chất", dur: "6:30", tint: "#22c55e" },
+  { kind: "Trắc nghiệm", title: "Câu hỏi nhanh · 4 câu", dur: "3:00", tint: "#f59e0b" },
+];
+const T_STUDENTS = [
+  { name: "Nguyễn Thị Hoa", meta: "Lớp 8A1 · 12/12 bài đã nộp", score: "8.6", tint: "#00aaab" },
+  { name: "Trần Quốc Bảo", meta: "Lớp 8A1 · 9/12 bài đã nộp", score: "6.4", tint: "#f59e0b" },
+  { name: "Lê Minh Anh", meta: "Lớp 8A1 · 12/12 bài đã nộp", score: "9.1", tint: "#138cd2" },
+  { name: "Phạm Gia Hân", meta: "Lớp 8A1 · 11/12 bài đã nộp", score: "7.8", tint: "#22c55e" },
+  { name: "Đỗ Khánh Linh", meta: "Lớp 8A1 · 8/12 bài đã nộp", score: "5.9", tint: "#ef5da8" },
+];
+const S_ASSIGNMENTS = {
+  todo: [
+    { title: "Bài tập tuần 20: Quang hợp của thực vật", cls: "SINH HỌC 8A1", due: "hạn 17/05 · còn 2 ngày", tag: "Bài tập", tagBg: "#eaf6f8", tagColor: "#00708f", score: "" },
+    { title: "Trắc nghiệm: Cấu tạo tế bào thực vật", cls: "SINH HỌC 8A1", due: "hạn 18/05 · còn 3 ngày", tag: "Trắc nghiệm", tagBg: "#e7f2fb", tagColor: "#0b6aa3", score: "" },
+    { title: "Dự án nhóm: Vòng tuần hoàn nước", cls: "KHTN 6A2", due: "hạn 22/05 · còn 1 tuần", tag: "Dự án", tagBg: "#fdeef5", tagColor: "#b13a75", score: "" },
+  ],
+  done: [
+    { title: "Bài tập tuần 19: Hô hấp tế bào", cls: "SINH HỌC 8A1", due: "nộp 10/05 · đúng hạn", tag: "Đã nộp", tagBg: "#f0fdf4", tagColor: "#15803d", score: "" },
+    { title: "Kiểm tra 15 phút: Mô phân sinh", cls: "SINH HỌC 8A1", due: "nộp 08/05 · nộp muộn", tag: "Đã nộp", tagBg: "#fff5e6", tagColor: "#b45309", score: "" },
+  ],
+  grades: [
+    { title: "Bài tập tuần 19: Hô hấp tế bào", cls: "SINH HỌC 8A1", due: "Nhận xét: Trình bày rõ, thiếu kết luận", tag: "Đã chấm", tagBg: "#f0fdf4", tagColor: "#15803d", score: "8.5" },
+    { title: "Kiểm tra 15 phút: Mô phân sinh", cls: "SINH HỌC 8A1", due: "Nhận xét: Cần ôn lại phần mô dẫn", tag: "Đã chấm", tagBg: "#f0fdf4", tagColor: "#15803d", score: "6.0" },
+  ],
+};
+const P_CHILDREN = [
+  { name: "Nguyễn Thị Hoa", meta: "Lớp 6A2 · THPT Nguyễn Huệ", initials: "HN", tint: "linear-gradient(135deg,#00aaab,#00708f)",
+    xp: "2.480", level: "7", streak: "7", minutes: "185", missions: "12", path: "68%",
+    classes: [
+      { name: "SINH HỌC 8A1", teacher: "Cô Phạm Thu Trang", submitted: "12 / 12 bài đã nộp", score: "8.6" },
+      { name: "KHTN 6A2", teacher: "Thầy Vũ Đình Nam", submitted: "9 / 11 bài đã nộp", score: "7.9" },
+    ],
+    assignments: [
+      { title: "Bài tập tuần 20: Quang hợp của thực vật", cls: "SINH HỌC 8A1", state: "Chưa nộp · hạn 17/05", color: "#b45309", bg: "#fff5e6" },
+      { title: "Bài tập tuần 19: Hô hấp tế bào", cls: "SINH HỌC 8A1", state: "Đã chấm · 8.5 điểm", color: "#15803d", bg: "#f0fdf4" },
+      { title: "Kiểm tra 15 phút: Mô phân sinh", cls: "SINH HỌC 8A1", state: "Nộp muộn · 6.0 điểm", color: "#b13a75", bg: "#fdeef5" },
+    ] },
+  { name: "Nguyễn Minh Khôi", meta: "Lớp 4B · Tiểu học Kim Đồng", initials: "MK", tint: "linear-gradient(135deg,#138cd2,#195658)",
+    xp: "1.150", level: "4", streak: "3", minutes: "92", missions: "6", path: "41%",
+    classes: [{ name: "TIẾNG VIỆT 4B", teacher: "Cô Lê Thanh Mai", submitted: "7 / 9 bài đã nộp", score: "8.0" }],
+    assignments: [
+      { title: "Luyện đọc hiểu tuần 20", cls: "TIẾNG VIỆT 4B", state: "Chưa nộp · hạn 18/05", color: "#b45309", bg: "#fff5e6" },
+      { title: "Chính tả tuần 19", cls: "TIẾNG VIỆT 4B", state: "Đã chấm · 9.0 điểm", color: "#15803d", bg: "#f0fdf4" },
+    ] },
+];
+const P_CONVOS = [
+  { teacher: "Cô Phạm Thu Trang", cls: "SINH HỌC 8A1", subject: "Trao đổi về tiến độ tuần này", preview: "Hoa làm bài rất chắc phần lý thuyết, chị nhắc em nộp bài tuần 20 trước 17/05 nhé.", when: "2 giờ", unread: "2", tint: "#00aaab" },
+  { teacher: "Thầy Vũ Đình Nam", cls: "KHTN 6A2", subject: "Dự án nhóm vòng tuần hoàn nước", preview: "Nhóm của Hoa cần bổ sung phần kết luận, hạn cuối là 22/05.", when: "1 ngày", unread: "", tint: "#138cd2" },
+];
+const P_THREAD = [
+  { who: "teacher", name: "Cô Phạm Thu Trang", at: "08:12", body: "Chào anh/chị. Tuần này Hoa tham gia rất tích cực, phần lý thuyết quang hợp em nắm tốt." },
+  { who: "parent", name: "Bạn", at: "08:30", body: "Cảm ơn cô. Ở nhà cháu có nói phần pha tối khó hiểu, cô có tài liệu nào thêm không ạ?" },
+  { who: "teacher", name: "Cô Phạm Thu Trang", at: "09:05", body: "Em cho Hoa xem lại mô hình 3D trong bài “Cấu tạo tế bào thực vật” phần lục lạp, có chú thích từng bước ạ." },
+  { who: "teacher", name: "Cô Phạm Thu Trang", at: "09:06", body: "Anh/chị nhắc em nộp bài tuần 20 trước 17/05 giúp cô nhé." },
+];
+const P_REPORT = {
+  period: "Tuần 20 · 11/05 – 17/05/2026",
+  summary: "Hoa duy trì chuỗi học 7 ngày liên tiếp và hoàn thành 12 mission. Kết quả lớp Sinh học ổn định ở mức 8.6, riêng phần bài tập về pha tối của quang hợp còn chậm.",
+  metrics: [
+    { label: "Mission hoàn thành", value: "12" },
+    { label: "XP trong báo cáo", value: "640" },
+    { label: "Phút học", value: "185" },
+  ],
+  strengths: ["Giữ nhịp học đều mỗi ngày, không bỏ buổi nào trong tuần.", "Trả lời đúng 92% câu hỏi nhanh trong bài giảng 3D.", "Chủ động ôn lại bài trước khi làm kiểm tra."],
+  improvements: ["Còn 1 bài tập chưa nộp, hạn 17/05.", "Phần pha tối của quang hợp cần ôn thêm.", "Thời gian học buổi tối thường sau 21:30."],
+};
+const TAB_ICONS = {
+  cls: "M3 8.5L12 4l9 4.5-9 4.5-9-4.5zM7 11v4.6c0 .5.3 1 .8 1.2 2.7 1.3 5.7 1.3 8.4 0 .5-.2.8-.7.8-1.2V11",
+  chart: "M4 20V10.5M10 20V4.5M16 20v-7M21.5 20h-19",
+  check: "M8.5 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5M8.5 5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2zM9 14l2.2 2.2L15.5 12",
+  book: "M4.5 5.4A1.9 1.9 0 0 1 6.4 3.5H17a1.9 1.9 0 0 1 1.9 1.9v13.2H6.4a1.9 1.9 0 0 0-1.9 1.9V5.4zM8.5 8h6.5M8.5 11.5h6.5",
+  doc: "M14 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8L14 3.5zM14 3.5V8h4.5M8.5 13h7M8.5 16.5h4",
+  msg: "M20.5 11.6a7.9 7.9 0 0 1-11.5 7L4 20.5l1.4-4.8A7.9 7.9 0 1 1 20.5 11.6z",
+  child: "M12 12.4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7.2 7.1c1.3-3.4 4-5.1 7.2-5.1s5.9 1.7 7.2 5.1",
+  home: "M3.5 10.4L12 3.6l8.5 6.8V20a1 1 0 0 1-1 1h-4.6v-6.2H9.1V21H4.5a1 1 0 0 1-1-1v-9.6z",
+  explore: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm3.6 5.4l-2 4.2-4.2 2 2-4.2 4.2-2z",
+  library: "M4 5.2A1.6 1.6 0 0 1 5.6 3.6h4.1a2.3 2.3 0 0 1 2.3 2.3V20a2 2 0 0 0-2-2H4V5.2zm16 0A1.6 1.6 0 0 0 18.4 3.6h-4.1A2.3 2.3 0 0 0 12 5.9V20a2 2 0 0 1 2-2h6V5.2z",
+  noti: "M18 8.4a6 6 0 0 0-12 0c0 6-2.4 7.6-2.4 7.6h16.8S18 14.4 18 8.4zM13.7 19.6a2 2 0 0 1-3.4 0",
+  profile: "M12 12.4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7.2 7.1c1.3-3.4 4-5.1 7.2-5.1s5.9 1.7 7.2 5.1",
+};
+
+const NOTI = {
+  student: [
+    { title: "Bài kiểm tra mới được giao", when: "5 phút", text: "Cô Phạm Thu Trang vừa giao bài kiểm tra “Cấu tạo tế bào thực vật” cho lớp 6A2.", tint: "#00aaab", bg: "#f4fbfc", unread: true, iconPath: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2" },
+    { title: "Bạn đạt chuỗi 7 ngày học", when: "2 giờ", text: "Giữ chuỗi thêm 3 ngày để nhận 100 điểm học tập thưởng.", tint: "#f59e0b", bg: "#f4fbfc", unread: true, iconPath: "M13 2L4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5z" },
+    { title: "Bài tập tuần 20 sắp đến hạn", when: "5 giờ", text: "Còn 2 ngày để nộp bài tập tuần 20 của lớp SINH HỌC 8A1.", tint: "#138cd2", bg: "#f4fbfc", unread: true, iconPath: "M12 8v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" },
+    { title: "Nạp tiền thành công", when: "3 ngày", text: "Ví YooBook của bạn đã được cộng 200.000đ.", tint: "#22c55e", bg: "#fff", unread: false, iconPath: "M5 12.5L10 17.5 19 6.5" },
+  ],
+  teacher: [
+    { title: "12 bài nộp đang chờ chấm", when: "10 phút", text: "Bài tập tuần 20 của SINH HỌC 8A1 đã có 28/32 bài nộp.", tint: "#00aaab", bg: "#f4fbfc", unread: true, iconPath: "M9 14l2.2 2.2L15.5 12M7 3.5h10a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5z" },
+    { title: "Phụ huynh gửi tin nhắn", when: "1 giờ", text: "Anh Nguyễn Văn Dũng hỏi về tiến độ của Nguyễn Thị Hoa.", tint: "#ef5da8", bg: "#f4fbfc", unread: true, iconPath: "M20.5 11.6a7.9 7.9 0 0 1-11.5 7L4 20.5l1.4-4.8A7.9 7.9 0 1 1 20.5 11.6z" },
+    { title: "Giáo án đã được xuất bản", when: "4 giờ", text: "“Cấu tạo tế bào thực vật” đã sẵn sàng để gán cho lớp học.", tint: "#22c55e", bg: "#f4fbfc", unread: true, iconPath: "M5 12.5L10 17.5 19 6.5" },
+    { title: "Kiểm tra giữa kỳ sắp diễn ra", when: "2 ngày", text: "Đề thi giữa kỳ lớp 8A2 diễn ra tiết 2 ngày 19/05.", tint: "#f59e0b", bg: "#fff", unread: false, iconPath: "M12 8v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" },
+  ],
+  parent: [
+    { title: "Báo cáo tuần 20 đã sẵn sàng", when: "30 phút", text: "Báo cáo học tập của Nguyễn Thị Hoa tuần 11/05 – 17/05 đã được tạo.", tint: "#00aaab", bg: "#f4fbfc", unread: true, iconPath: "M14 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8L14 3.5z" },
+    { title: "Cô Phạm Thu Trang phản hồi", when: "2 giờ", text: "Hoa làm bài rất chắc phần lý thuyết, nhắc em nộp bài tuần 20 trước 17/05.", tint: "#ef5da8", bg: "#f4fbfc", unread: true, iconPath: "M20.5 11.6a7.9 7.9 0 0 1-11.5 7L4 20.5l1.4-4.8A7.9 7.9 0 1 1 20.5 11.6z" },
+    { title: "Con sắp đạt giới hạn màn hình", when: "6 giờ", text: "Hôm nay Hoa đã học 52 phút trên giới hạn 60 phút.", tint: "#f59e0b", bg: "#f4fbfc", unread: true, iconPath: "M12 8v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" },
+    { title: "Bài tập chưa nộp", when: "1 ngày", text: "Bài tập tuần 20 của lớp SINH HỌC 8A1 còn 2 ngày đến hạn.", tint: "#138cd2", bg: "#fff", unread: false, iconPath: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" },
+  ],
+};
+
+class Component extends DCLogic {
+  state = {
+    screen: "login", role: "student", tab: "home", view: "grid",
+    detailTab: "overview", libTab: "learning",
+    step: 0, playing: false, quickPick: null,
+    examIdx: 0, answers: [null, null, null], examSecs: 596,
+    saved: false, topup: 1, pay: 0,
+    cwTab: "todo", asgIdx: 0, submitted: false,
+    tClassIdx: 0, tClassTab: "students", gradeIdx: 0, gradeScore: "8.5", graded: false,
+    childIdx: 0, sent: false,
+    safety: { social: true, leaderboard: true, ai: true, noti: true, limit: "60" },
+  };
+
+  componentDidMount() {
+    this._t = setInterval(() => {
+      if (this.state.screen === "exam" && this.state.examSecs > 0)
+        this.setState((s) => ({ examSecs: s.examSecs - 1 }));
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this._t); }
+
+  componentDidUpdate(_p, prev) {
+    if (prev.screen !== this.state.screen) {
+      const el = document.querySelector(".yb-main");
+      if (el) el.scrollTop = 0;
+    }
+  }
+
+  go = (screen) => this.setState({ screen });
+
+  renderVals() {
+    const s = this.state;
+    const p = this.props;
+    const navStyle = p.navStyle ?? "tabs";
+    const go = this.go;
+    const step = STEPS[s.step];
+    const ROLE_TABS = {
+      student: [["home", "Trang chủ", "home"], ["explore", "Khám phá", "explore"], ["classwork", "Lớp học", "cls"], ["library", "Thư viện", "library"], ["profile", "Tài khoản", "profile"]],
+      teacher: [["tOverview", "Tổng quan", "chart"], ["tClasses", "Lớp học", "cls"], ["tGrading", "Chấm bài", "check"], ["tPlans", "Giáo án", "book"], ["profile", "Tài khoản", "profile"]],
+      parent: [["pOverview", "Tổng quan", "chart"], ["pChild", "Con của tôi", "child"], ["pReport", "Báo cáo", "doc"], ["pMessages", "Tin nhắn", "msg"], ["profile", "Tài khoản", "profile"]],
+    };
+    const roleHome = ROLE_TABS[s.role][0][0];
+    const NAV_SCREENS = ROLE_TABS[s.role].map((t) => t[0]).concat(["noti"]);
+    const tabDefs = ROLE_TABS[s.role].map((t) => ({ key: t[2], label: t[1], screen: t[0] }));
+    const tabs = tabDefs.map((t) => {
+      const active = s.screen === t.screen;
+      return {
+        ...t, active, iconPath: TAB_ICONS[t.key],
+        color: active ? ACCENT : "#8ba0ae", sw: active ? 2.1 : 1.7,
+        weight: active ? 600 : 400,
+        pillBg: active ? "#fff" : "transparent",
+        pillColor: active ? INK : "rgba(255,255,255,.72)",
+        flex: active ? 2.1 : 1,
+        onClick: () => go(t.screen),
+      };
+    });
+
+    const cardOn = (on) => ({
+      border: on ? `1.6px solid ${ACCENT}` : `1px solid ${BORDER}`,
+      bg: on ? "#eaf6f8" : "#fff",
+    });
+
+    const roleMeta = {
+      student: { title: "Học sinh", icon: "assets/role/student.svg", desc: "Khám phá học liệu 3D, tham gia lớp học, làm bài tập và theo dõi tiến độ cá nhân." },
+      teacher: { title: "Giáo viên", icon: "assets/role/teacher.svg", desc: "Tạo lớp học, soạn giáo án, giao bài tập, chấm bài và theo dõi tiến độ học sinh." },
+      parent: { title: "Phụ huynh", icon: "assets/role/parent.svg", desc: "Liên kết với con, theo dõi tự học, kết quả lớp học, báo cáo tuần và cài đặt an toàn." },
+    };
+    const roles = Object.keys(roleMeta).map((k) => {
+      const on = s.role === k;
+      return {
+        ...roleMeta[k], ...cardOn(on),
+        dot: on ? `6px solid ${ACCENT}` : `1.6px solid ${BORDER}`,
+        dotFill: "transparent",
+        onClick: () => this.setState({ role: k }),
+      };
+    });
+    const roleSwitch = Object.keys(roleMeta).map((k) => {
+      const on = s.role === k;
+      return {
+        title: roleMeta[k].title, icon: roleMeta[k].icon, ...cardOn(on),
+        opacity: on ? 1 : 0.5, weight: on ? 600 : 400, color: on ? INK : MUTED,
+        onClick: () => this.setState({ role: k, screen: ROLE_TABS[k][0][0] }),
+      };
+    });
+
+    const mkLesson = (l) => ({ ...l, tintBg: l.tint, onClick: () => go("detail") });
+
+    const chipDefs = [{ label: "Tất cả", icon: "assets/cat/all.svg" }].concat(CATS.slice(0, 6));
+    const chips = chipDefs.map((c, i) => {
+      const on = i === 0;
+      return {
+        ...c, onClick: () => {},
+        border: on ? `1.4px solid ${ACCENT}` : `1px solid ${BORDER}`,
+        bg: on ? "#eaf6f8" : "#fff", color: on ? DEEP : "#25475a",
+        iconOpacity: on ? 1 : 0.7,
+      };
+    });
+
+    const grid = s.view === "grid";
+    const detailTabDefs = [
+      { key: "overview", label: "Tổng quan" }, { key: "content", label: "Nội dung" }, { key: "reviews", label: "Đánh giá" },
+    ];
+    const detailTabs = detailTabDefs.map((t) => {
+      const on = s.detailTab === t.key;
+      return { label: t.label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => this.setState({ detailTab: t.key }) };
+    });
+
+    const libTabDefs = [
+      { key: "learning", label: "Đang học" }, { key: "saved", label: "Đã lưu" }, { key: "completed", label: "Hoàn thành" },
+    ];
+    const libTabs = libTabDefs.map((t) => {
+      const on = s.libTab === t.key;
+      return { label: t.label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => this.setState({ libTab: t.key }) };
+    });
+    const libSets = {
+      learning: [
+        { title: "Cấu tạo tế bào thực vật", meta: "Sinh học · Bài 3/5", pct: "60%", bar: ACCENT, tint: LESSONS[0].tint },
+        { title: "Ba định luật Newton", meta: "Vật lý · Bài 2/6", pct: "33%", bar: "#138cd2", tint: LESSONS[4].tint },
+        { title: "Thí nghiệm điện phân dung dịch CuSO₄", meta: "Hóa học · Bài 1/4", pct: "25%", bar: "#f59e0b", tint: LESSONS[1].tint },
+      ],
+      saved: [
+        { title: "Hệ Mặt Trời trong không gian 3D", meta: "Khoa học · Đã lưu 2 ngày trước", pct: "0%", bar: MUTED, tint: LESSONS[2].tint },
+        { title: "Địa hình Việt Nam qua bản đồ 3D", meta: "Địa lý · Đã lưu 5 ngày trước", pct: "0%", bar: MUTED, tint: LESSONS[5].tint },
+      ],
+      completed: [
+        { title: "Chiến dịch Điện Biên Phủ", meta: "Lịch sử · Hoàn thành 12/07", pct: "100%", bar: "#22c55e", tint: LESSONS[3].tint },
+      ],
+    };
+    const libraryItems = libSets[s.libTab].map((l) => ({ ...l, tintBg: l.tint, barColor: l.bar, onClick: () => go("detail") }));
+
+    // quick quiz inside player
+    const quickOptions = QUICK.map((t, i) => {
+      const picked = s.quickPick === i;
+      const revealed = s.quickPick !== null;
+      const correct = i === QUICK_CORRECT;
+      let border = `1px solid ${BORDER}`, bg = "#fff", dotBg = "#edf7f9", dotColor = MUTED, dotBorder = "1px solid #ddeaf0", color = "#25475a", weight = 400;
+      if (revealed && correct) { border = "1.6px solid #22c55e"; bg = "#f0fdf4"; dotBg = "#22c55e"; dotColor = "#fff"; dotBorder = "1px solid #22c55e"; color = "#15803d"; weight = 600; }
+      else if (picked) { border = "1.6px solid #ef4444"; bg = "#fef2f2"; dotBg = "#ef4444"; dotColor = "#fff"; dotBorder = "1px solid #ef4444"; color = "#b91c1c"; weight = 600; }
+      return { text: t, letter: "ABCD"[i], border, bg, dotBg, dotColor, dotBorder, color, weight, onClick: () => this.setState({ quickPick: i }) };
+    });
+
+    // exam
+    const q = EXAM[s.examIdx];
+    const picked = s.answers[s.examIdx];
+    const examOptions = q.opts.map((t, i) => {
+      const on = picked === i;
+      return {
+        text: t, letter: "ABCD"[i],
+        border: on ? `1.6px solid ${ACCENT}` : `1px solid ${BORDER}`,
+        bg: on ? "#eaf6f8" : "#fff",
+        dotBg: on ? ACCENT : "#edf7f9", dotColor: on ? "#fff" : MUTED,
+        dotBorder: on ? `1px solid ${ACCENT}` : `1px solid ${BORDER}`,
+        color: on ? INK : "#25475a", weight: on ? 600 : 400,
+        onClick: () => { const a = s.answers.slice(); a[i === picked ? s.examIdx : s.examIdx] = i; this.setState({ answers: a }); },
+      };
+    });
+    const examDots = EXAM.map((_, i) => ({ bg: i < s.examIdx ? ACCENT : i === s.examIdx ? INK : "#e3eef2" }));
+    const mm = String(Math.floor(s.examSecs / 60)).padStart(2, "0");
+    const ss = String(s.examSecs % 60).padStart(2, "0");
+    const lastQ = s.examIdx === EXAM.length - 1;
+    const correctCount = s.answers.filter((a, i) => a === EXAM[i].correct).length;
+    const score = Math.round((correctCount / EXAM.length) * 100) / 10;
+
+    const stepDots = STEPS.map((_, i) => ({
+      bg: i < s.step ? ACCENT : i === s.step ? INK : "#e3eef2",
+      onClick: () => this.setState({ step: i, playing: false, quickPick: null }),
+    }));
+
+    const topups = [
+      { v: 50000, label: "50.000đ", bonus: "—" }, { v: 100000, label: "100.000đ", bonus: "+5.000đ" },
+      { v: 200000, label: "200.000đ", bonus: "+15.000đ" }, { v: 500000, label: "500.000đ", bonus: "+50.000đ" },
+      { v: 1000000, label: "1.000.000đ", bonus: "+120.000đ" }, { v: 0, label: "Khác", bonus: "Tự nhập" },
+    ];
+    const topupAmounts = topups.map((t, i) => {
+      const on = s.topup === i;
+      return { label: t.label, bonus: t.bonus, ...cardOn(on), color: on ? DEEP : INK, onClick: () => this.setState({ topup: i }) };
+    });
+    const pays = [
+      { tag: "VNP", name: "VNPAY QR", desc: "Quét mã bằng ứng dụng ngân hàng", tint: "#195658" },
+      { tag: "MOMO", name: "Ví MoMo", desc: "Thanh toán qua ví điện tử MoMo", tint: "#ef5da8" },
+      { tag: "ATM", name: "Thẻ nội địa / ATM", desc: "Vietcombank ···· 4821", tint: "#138cd2" },
+    ];
+    const payMethods = pays.map((m, i) => {
+      const on = s.pay === i;
+      return { ...m, ...cardOn(on), dotBorder: on ? `6px solid ${ACCENT}` : `1.6px solid ${BORDER}`, dotBg: "transparent", onClick: () => this.setState({ pay: i }) };
+    });
+
+    return {
+      // screen flags
+      isLogin: s.screen === "login", isRole: s.screen === "role", isHome: s.screen === "home",
+      isExplore: s.screen === "explore", isDetail: s.screen === "detail", isPlayer: s.screen === "player",
+      isComplete: s.screen === "complete", isExam: s.screen === "exam", isExamResult: s.screen === "examresult",
+      isLibrary: s.screen === "library", isNoti: s.screen === "noti", isProfile: s.screen === "profile",
+      isWallet: s.screen === "wallet",
+
+      showNav: NAV_SCREENS.indexOf(s.screen) >= 0,
+      navTabs: navStyle === "tabs", navFab: navStyle === "fab", navPill: navStyle === "pill",
+      tabs, tabsSplitLeft: tabs.slice(0, 2), tabsSplitRight: tabs.slice(3), tabsPill: tabs,
+
+      toRole: () => go("role"), toHome: () => go(roleHome), toExplore: () => go("explore"),
+      toPlayer: () => this.setState({ screen: "player" }), toDetail: () => go("detail"),
+      toExam: () => this.setState({ screen: "exam", examIdx: 0, answers: [null, null, null], examSecs: 596 }),
+      toLibrary: () => go("library"), toNoti: () => go("noti"), toProfile: () => go("profile"),
+      toWallet: () => go("wallet"), toLogin: () => go("login"), back: () => go("explore"),
+
+      userName: "Nguyễn Thị Hoa",
+      roleLabel: roleMeta[s.role].title,
+      roles, roleSwitch,
+      categories: CATS,
+      featured: LESSONS.slice(0, 3).map(mkLesson),
+      lessons: LESSONS.map(mkLesson),
+      resumePct: "60%",
+      stats: [
+        { value: "4", label: "Bài đã học", icon: "assets/lib/learning.svg", bg: "#eaf6f8" },
+        { value: "2h 15p", label: "Thời gian học", icon: "assets/lib/completed.svg", bg: "#e8f6ee" },
+        { value: "7", label: "Ngày liên tiếp", icon: "assets/learning-points.svg", bg: "#fff5e6" },
+        { value: "8.4", label: "Điểm trung bình", icon: "assets/lesson/star.svg", bg: "#fdeef5" },
+      ],
+
+      chips, resultCount: "248",
+      toggleView: () => this.setState({ view: grid ? "list" : "grid" }),
+      gridBg: grid ? "#195658" : "transparent", gridFg: grid ? "#fff" : "#8ba0ae",
+      listBg: grid ? "transparent" : "#195658", listFg: grid ? "#8ba0ae" : "#fff",
+      gridCols: grid ? "1fr 1fr" : "1fr",
+      cardDir: grid ? "column" : "row",
+      mediaH: grid ? "104px" : "auto", mediaW: grid ? "auto" : "104px",
+
+      detailTabs,
+      detailTabOverview: s.detailTab === "overview",
+      detailTabContent: s.detailTab === "content",
+      detailTabReviews: s.detailTab === "reviews",
+      detailFacts: [
+        { k: "Khối lớp", v: "Lớp 6" }, { k: "Bộ sách", v: "Kết nối tri thức" },
+        { k: "Loại học liệu", v: "Mô hình 3D tương tác" }, { k: "Thiết bị hỗ trợ", v: "Điện thoại, máy tính, VR" },
+      ],
+      steps: STEPS.map((st, i) => ({ ...st, onClick: () => this.setState({ screen: "player", step: i, playing: false, quickPick: null }) })),
+      savedFill: s.saved ? INK : "none",
+      toggleSave: () => this.setState({ saved: !s.saved }),
+      reviews: [
+        { initials: "LM", name: "Lê Minh", when: "3 ngày trước", stars: "5", tint: "#00aaab", text: "Mô hình 3D rất trực quan, học sinh lớp mình xoay và tách lớp được nên hiểu bài nhanh hơn hẳn." },
+        { initials: "TH", name: "Trần Hà", when: "1 tuần trước", stars: "5", tint: "#138cd2", text: "Phần chú thích từng bào quan viết ngắn gọn, bám sát sách Kết nối tri thức." },
+        { initials: "NV", name: "Nguyễn Vân", when: "2 tuần trước", stars: "4", tint: "#ef5da8", text: "Nội dung tốt. Mong có thêm bản so sánh tế bào động vật trong cùng bài." },
+      ],
+
+      // player
+      stepNum: step.num, stepTitle: step.title, stepKind: step.kind, stepDur: step.dur,
+      stepBody: step.body, stepTint: step.tint, stepSlot: step.slot,
+      stepHasQuiz: !!step.quiz, stepHasNotes: !!step.points, stepPoints: step.points || [],
+      quickOptions,
+      playing: s.playing, notPlaying: !s.playing,
+      togglePlay: () => this.setState({ playing: !s.playing }),
+      mediaPct: s.playing ? "42%" : "8%",
+      mediaElapsed: s.playing ? "1:45" : "0:20",
+      nextLabel: s.step === STEPS.length - 1 ? "Hoàn thành bài học" : "Tiếp tục",
+      nextStep: () => s.step === STEPS.length - 1 ? go("complete") : this.setState({ step: s.step + 1, playing: false, quickPick: null }),
+      prevStep: () => s.step === 0 ? go("detail") : this.setState({ step: s.step - 1, playing: false, quickPick: null }),
+      stepDots,
+
+      completeStats: [
+        { value: "5/5", label: "Phần đã học" }, { value: "28p", label: "Thời gian" }, { value: "100%", label: "Tiến độ" },
+      ],
+
+      // exam
+      examClock: mm + ":" + ss,
+      examPos: (s.examIdx + 1) + "/" + EXAM.length,
+      examQuestion: q.q, examOptions, examDots,
+      examNextLabel: lastQ ? "Nộp bài" : "Câu tiếp theo",
+      examNextBg: picked === null ? "#a9c6ce" : ACCENT,
+      nextQ: () => { if (picked === null) return; lastQ ? go("examresult") : this.setState({ examIdx: s.examIdx + 1 }); },
+      prevQ: () => s.examIdx === 0 ? go("complete") : this.setState({ examIdx: s.examIdx - 1 }),
+      scoreText: score.toFixed(1),
+      scoreOffset: 402 - (402 * correctCount) / EXAM.length,
+      scoreTitle: correctCount === EXAM.length ? "Xuất sắc!" : correctCount >= 2 ? "Làm tốt lắm!" : "Cần ôn lại",
+      scoreSub: "Bạn trả lời đúng " + correctCount + "/" + EXAM.length + " câu trong bài kiểm tra Cấu tạo tế bào thực vật.",
+      examReview: EXAM.map((e, i) => {
+        const ok = s.answers[i] === e.correct;
+        return {
+          text: e.q, markBg: ok ? "#22c55e" : "#ef4444",
+          markPath: ok ? "M5 12.5L10 17.5 19 6.5" : "M6 6l12 12M18 6L6 18",
+          ansLabel: ok ? "Đúng · " + e.opts[e.correct] : "Đáp án đúng: " + e.opts[e.correct],
+          ansColor: ok ? "#15803d" : "#b91c1c",
+        };
+      }),
+      restartExam: () => this.setState({ screen: "exam", examIdx: 0, answers: [null, null, null], examSecs: 596 }),
+
+      // library
+      libraryCards: [
+        { title: "Đang học", value: "3", icon: "assets/lib/learning.svg", hint: "Tiếp tục từ nơi bạn dừng lại" },
+        { title: "Hoàn thành", value: "12", icon: "assets/lib/completed.svg", hint: "Bài học đã hoàn tất trong kỳ" },
+        { title: "Đã mua", value: "8", icon: "assets/lib/purchased.svg", hint: "Học liệu sở hữu vĩnh viễn" },
+        { title: "Đã lưu", value: "24", icon: "assets/lib/saved.svg", hint: "Danh sách xem sau của bạn" },
+      ],
+      libTabs, libraryItems,
+
+      notifications: NOTI[s.role],
+
+      profileRows: [
+        { label: "Hồ sơ cá nhân", value: "", iconPath: "M12 12.4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7.2 7.1c1.3-3.4 4-5.1 7.2-5.1s5.9 1.7 7.2 5.1", onClick: () => {} },
+        { label: "Lớp học của tôi", value: "6A2", iconPath: "M3 8.5L12 4l9 4.5-9 4.5-9-4.5zM7 11v4.6c0 .5.3 1 .8 1.2 2.7 1.3 5.7 1.3 8.4 0 .5-.2.8-.7.8-1.2V11", onClick: () => {} },
+        { label: "Ví & giao dịch", value: "450.000đ", iconPath: "M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5v-8zM16.5 12.5h.01", onClick: () => this.go("wallet") },
+        { label: "Gói dịch vụ", value: "Pro", iconPath: "M4 17l1.6-9L10 12l2-6 2 6 4.4-4 1.6 9H4z", onClick: () => {} },
+        { label: "Thiết bị của tôi", value: "2/3", iconPath: "M7 3.5h10a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5zM11 17.5h2", onClick: () => {} },
+        { label: "Ngôn ngữ", value: "Tiếng Việt", iconPath: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3.2 12h17.6M12 3.2c4.5 5 4.5 12.6 0 17.6M12 3.2c-4.5 5-4.5 12.6 0 17.6", onClick: () => {} },
+      ],
+
+      topupAmounts, payMethods,
+      topupLabel: topups[s.topup].v ? topups[s.topup].label : "số tiền khác",
+
+      isStudent: s.role === "student", isTeacher: s.role === "teacher", isParent: s.role === "parent",
+      isClasswork: s.screen === "classwork", isAssignment: s.screen === "assignment",
+      isTOverview: s.screen === "tOverview", isTClasses: s.screen === "tClasses", isTClass: s.screen === "tClass",
+      isTGrading: s.screen === "tGrading", isTGrade: s.screen === "tGrade",
+      isTPlans: s.screen === "tPlans", isTPlan: s.screen === "tPlan",
+      isPOverview: s.screen === "pOverview", isPChild: s.screen === "pChild", isPReport: s.screen === "pReport",
+      isPMessages: s.screen === "pMessages", isPThread: s.screen === "pThread", isPSafety: s.screen === "pSafety",
+
+      // student classwork
+      cwTabs: [["todo", "Việc cần làm"], ["done", "Đã nộp"], ["grades", "Điểm số"]].map(([k, label]) => {
+        const on = s.cwTab === k;
+        return { label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => this.setState({ cwTab: k }) };
+      }),
+      cwItems: S_ASSIGNMENTS[s.cwTab].map((a, i) => ({ ...a, hasScore: !!a.score, onClick: () => this.setState({ screen: "assignment", asgIdx: i, submitted: s.cwTab !== "todo" }) })),
+      toClasswork: () => go("classwork"),
+      asg: S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0],
+      asgTitle: (S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0]).title,
+      asgCls: (S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0]).cls,
+      asgDue: (S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0]).due,
+      submitted: s.submitted, notSubmitted: !s.submitted,
+      submitAsg: () => this.setState({ submitted: true }),
+      asgChecklist: [
+        { text: "Nêu vị trí diễn ra quang hợp trong tế bào" },
+        { text: "Mô tả pha sáng và pha tối" },
+        { text: "Kết luận vai trò của quang hợp với sự sống" },
+      ],
+
+      // teacher
+      teacherName: "Phạm Thu Trang",
+      tMetrics: T_METRICS,
+      tClasses: T_CLASSES.map((c, i) => ({ ...c, tintBg: c.tint, onClick: () => this.setState({ screen: "tClass", tClassIdx: i }) })),
+      tAssignments: T_ASSIGNMENTS.map(() => 0).map((_, i) => ({ ...T_ASSIGNMENTS[i], onClick: () => go("tGrading") })),
+      toTClasses: () => go("tClasses"), toTGrading: () => go("tGrading"), toTPlans: () => go("tPlans"),
+      toTOverview: () => go("tOverview"), toTPlan: () => go("tPlan"),
+      tClass: T_CLASSES[s.tClassIdx],
+      tClassName: T_CLASSES[s.tClassIdx].name,
+      tClassSub: T_CLASSES[s.tClassIdx].sub,
+      tClassCode: T_CLASSES[s.tClassIdx].code,
+      tClassStudents: T_CLASSES[s.tClassIdx].students,
+      tClassProgress: T_CLASSES[s.tClassIdx].progress,
+      tClassTint: T_CLASSES[s.tClassIdx].tint,
+      tClassTabs: [["students", "Học sinh"], ["work", "Bài tập"], ["news", "Thông báo"]].map(([k, label]) => {
+        const on = s.tClassTab === k;
+        return { label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => this.setState({ tClassTab: k }) };
+      }),
+      tTabStudents: s.tClassTab === "students", tTabWork: s.tClassTab === "work", tTabNews: s.tClassTab === "news",
+      tStudents: T_STUDENTS,
+      tNews: [
+        { title: "Nhắc nộp bài tập tuần 20", when: "Hôm nay · 07:40", body: "Các em hoàn thành bài tập tuần 20 trước 23:59 ngày 17/05. Phần sơ đồ pha tối là bắt buộc." },
+        { title: "Lịch kiểm tra giữa kỳ", when: "12/05 · 16:10", body: "Kiểm tra giữa kỳ diễn ra tiết 2 ngày 19/05, nội dung từ bài 1 đến bài 6." },
+      ],
+      tGradeSummary: [
+        { label: "Chờ chấm", value: "12", bg: "#eaf6f8", color: "#00708f" },
+        { label: "Đã chấm", value: "86", bg: "#f0fdf4", color: "#15803d" },
+        { label: "Nộp muộn", value: "4", bg: "#fff5e6", color: "#b45309" },
+      ],
+      tSubmissions: T_SUBMISSIONS.map((x, i) => ({ ...x, onClick: () => this.setState({ screen: "tGrade", gradeIdx: i, graded: false }) })),
+      sub: T_SUBMISSIONS[s.gradeIdx],
+      subName: T_SUBMISSIONS[s.gradeIdx].name,
+      subAt: T_SUBMISSIONS[s.gradeIdx].at,
+      subAttempt: T_SUBMISSIONS[s.gradeIdx].attempt,
+      subAnswer: T_SUBMISSIONS[s.gradeIdx].answer,
+      subTint: T_SUBMISSIONS[s.gradeIdx].tint,
+      gradeScore: s.gradeScore,
+      graded: s.graded, notGraded: !s.graded,
+      scoreChips: ["6.0", "7.0", "8.0", "8.5", "9.0", "10"].map((v) => ({
+        label: v, bg: s.gradeScore === v ? "#eaf6f8" : "#fff",
+        border: s.gradeScore === v ? `1.6px solid ${ACCENT}` : `1px solid ${BORDER}`,
+        color: s.gradeScore === v ? DEEP : INK,
+        onClick: () => this.setState({ gradeScore: v }),
+      })),
+      saveGrade: () => this.setState({ graded: true }),
+      tPlans: T_PLANS.map(() => 0).map((_, i) => ({ ...T_PLANS[i], onClick: () => go("tPlan") })),
+      tBlocks: T_BLOCKS,
+
+      // parent
+      parentName: "Nguyễn Văn Dũng",
+      children: P_CHILDREN.map((c, i) => {
+        const on = s.childIdx === i;
+        return { name: c.name, initials: c.initials, tint: c.tint, meta: c.meta,
+          border: on ? `1.6px solid ${ACCENT}` : `1px solid ${BORDER}`, bg: on ? "#eaf6f8" : "#fff",
+          weight: on ? 600 : 400, onClick: () => this.setState({ childIdx: i }) };
+      }),
+      child: P_CHILDREN[s.childIdx],
+      childName: P_CHILDREN[s.childIdx].name,
+      childMeta: P_CHILDREN[s.childIdx].meta,
+      childInitials: P_CHILDREN[s.childIdx].initials,
+      childTint: P_CHILDREN[s.childIdx].tint,
+      childPath: P_CHILDREN[s.childIdx].path,
+      childStats: [
+        { label: "Tổng XP", value: P_CHILDREN[s.childIdx].xp, bg: "#eaf6f8", color: "#00708f" },
+        { label: "Cấp độ", value: P_CHILDREN[s.childIdx].level, bg: "#e7f2fb", color: "#0b6aa3" },
+        { label: "Ngày liên tiếp", value: P_CHILDREN[s.childIdx].streak, bg: "#fff5e6", color: "#b45309" },
+        { label: "Phút học", value: P_CHILDREN[s.childIdx].minutes, bg: "#fdeef5", color: "#b13a75" },
+      ],
+      childClasses: P_CHILDREN[s.childIdx].classes,
+      childAssignments: P_CHILDREN[s.childIdx].assignments,
+      childMissions: P_CHILDREN[s.childIdx].missions,
+      nextAction: "Giữ lịch học ngắn, đều và để trẻ có cảm giác hoàn thành mỗi ngày.",
+      toPChild: () => go("pChild"), toPReport: () => go("pReport"), toPMessages: () => go("pMessages"),
+      toPOverview: () => go("pOverview"), toPSafety: () => go("pSafety"), toPThread: () => go("pThread"),
+      report: P_REPORT, reportPeriod: P_REPORT.period, reportSummary: P_REPORT.summary,
+      reportMetrics: P_REPORT.metrics,
+      reportStrengths: P_REPORT.strengths.map((t) => ({ text: t })),
+      reportImprovements: P_REPORT.improvements.map((t) => ({ text: t })),
+      convos: P_CONVOS.map((c) => ({ ...c, hasUnread: !!c.unread, onClick: () => go("pThread") })),
+      thread: P_THREAD.map((m) => {
+        const mine = m.who === "parent";
+        return { ...m, align: mine ? "flex-end" : "flex-start",
+          bg: mine ? "#00aaab" : "#fff", color: mine ? "#fff" : "#25475a",
+          border: mine ? "1px solid #00aaab" : `1px solid ${BORDER}`,
+          metaColor: mine ? "rgba(255,255,255,.75)" : MUTED };
+      }),
+      sent: s.sent,
+      sendMsg: () => this.setState({ sent: true }),
+      safetyRows: [
+        { label: "Social learning", desc: "Cho phép tham gia nhóm học và thử thách", key: "social" },
+        { label: "Leaderboard", desc: "Hiển thị tên con trên bảng xếp hạng", key: "leaderboard" },
+        { label: "AI tutor", desc: "Trợ lý AI gợi ý bài tập và giải thích", key: "ai" },
+        { label: "Thông báo", desc: "Nhận thông báo lớp học và nhắc hạn nộp", key: "noti" },
+      ].map((r) => {
+        const on = s.safety[r.key];
+        return { ...r, trackBg: on ? ACCENT : "#dbe7ec", knobLeft: on ? "22px" : "2px",
+          onClick: () => this.setState({ safety: { ...s.safety, [r.key]: !on } }) };
+      }),
+      screenLimit: s.safety.limit,
+      limitChips: ["30", "60", "90", "120"].map((v) => ({
+        label: v + " phút", bg: s.safety.limit === v ? "#eaf6f8" : "#fff",
+        border: s.safety.limit === v ? `1.6px solid ${ACCENT}` : `1px solid ${BORDER}`,
+        color: s.safety.limit === v ? DEEP : INK,
+        onClick: () => this.setState({ safety: { ...s.safety, limit: v } }),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>
