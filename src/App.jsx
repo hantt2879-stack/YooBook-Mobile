@@ -8,6 +8,8 @@ import StudentLibraryWorkScreens from "./screens/StudentLibraryWorkScreens.jsx";
 import CommonScreens from "./screens/CommonScreens.jsx";
 import TeacherScreens from "./screens/TeacherScreens.jsx";
 import ParentScreens from "./screens/ParentScreens.jsx";
+import FilterSheet from "./screens/FilterSheet.jsx";
+import LangSheet from "./screens/LangSheet.jsx";
 
 export default function App() {
   const v = useAppLogic("tabs");
@@ -25,6 +27,8 @@ export default function App() {
         <ParentScreens v={v} />
       </div>
       <BottomNav v={v} />
+      <FilterSheet v={v} />
+      <LangSheet v={v} />
     </div>
   );
 }

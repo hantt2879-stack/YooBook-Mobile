@@ -1,6 +1,7 @@
 export default {
   "Thông báo của bạn": "Your notifications",
-  "3 thông báo chưa đọc": "3 unread notifications",
+  "thông báo chưa đọc": "unread notifications",
+  "Bạn đã xem hết thông báo": "You're all caught up",
   "Đánh dấu đã đọc": "Mark as read",
   "Gói Pro · còn 214 ngày": "Pro plan · 214 days left",
   "Số dư ví YooBook": "YooBook wallet balance",

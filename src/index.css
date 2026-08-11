@@ -35,6 +35,18 @@ a:hover {
   width: 0;
   height: 0;
 }
+.yb-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+}
+/* Horizontal tab/chip/card rows only (not .yb-main, the page's own vertical
+   scroller) — claims horizontal panning so the page never fights the row
+   for a diagonal-ish swipe, and taps still register normally since native
+   scroll containers don't fire click after a real drag. */
+.yb-scroll:not(.yb-main) {
+  touch-action: pan-x;
+}
 
 .yb-press:hover {
   border-color: #b9d6dc;
