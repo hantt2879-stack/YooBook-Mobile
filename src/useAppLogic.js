@@ -28,7 +28,7 @@ const INITIAL_STATE = {
   profileEditing: false,
   tClassesTab: "submitted",
   notiRead: false,
-  exploreCat: "Tất cả", exploreSort: "newest",
+  exploreCat: "Tất cả", exploreSort: "newest", search: "", sortMenuOpen: false,
   filterOpen: false, fLevel: "Tất cả", fGrade: "Tất cả", fTypes: [], fTopic: "",
   exploreSaved: [], notifPrefs: { push: true, email: true, sms: false, assignment: true, classNews: true },
   helpOpenIdx: null, planChoice: "pro", loggedOutDevices: [],
@@ -205,8 +205,8 @@ export function useAppLogic(navStyle = "tabs") {
     return {
       ...c, onClick: () => setState({ exploreCat: c.label }),
       border: on ? `1.4px solid ${ACCENT}` : `1px solid ${BORDER}`,
-      bg: on ? "#eaf6f8" : "#fff", color: on ? DEEP : "#25475a",
-      iconOpacity: on ? 1 : 0.7,
+      bg: on ? ACCENT : "#fff", color: on ? "#fff" : "#455771",
+      iconFilter: on ? "brightness(0) invert(1)" : "none",
     };
   });
   const activeGrades = (() => {
@@ -214,12 +214,17 @@ export function useAppLogic(navStyle = "tabs") {
     return ["Tất cả", ...Array.from(set).sort((a, b) => parseInt(a.replace("Lớp ", ""), 10) - parseInt(b.replace("Lớp ", ""), 10))];
   })();
 
+  const searchQuery = s.search.trim().toLowerCase();
   const applyFilters = (list) => list.filter((l) => {
     if (s.exploreCat !== "Tất cả" && l.subject !== s.exploreCat) return false;
     if (s.fLevel !== "Tất cả" && l.level !== s.fLevel) return false;
     if (s.fGrade !== "Tất cả" && l.grade !== s.fGrade) return false;
     if (s.fTypes.length && !s.fTypes.includes(l.type)) return false;
     if (s.fTopic && l.title !== s.fTopic) return false;
+    if (searchQuery) {
+      const hay = `${l.title} ${l.subject} ${l.grade} ${l.type} ${l.typeLabel}`.toLowerCase();
+      if (!hay.includes(searchQuery)) return false;
+    }
     return true;
   });
   const sortLessons = (list) => {
@@ -231,7 +236,12 @@ export function useAppLogic(navStyle = "tabs") {
   const SORT_LABELS = { newest: "Mới nhất", popular: "Phổ biến", rating: "Đánh giá cao" };
   const exploreSortLabel = SORT_LABELS[s.exploreSort];
   const SORT_CYCLE = ["newest", "popular", "rating"];
-  const toggleExploreSort = () => setState({ exploreSort: SORT_CYCLE[(SORT_CYCLE.indexOf(s.exploreSort) + 1) % SORT_CYCLE.length] });
+  const sortMenuOptions = SORT_CYCLE.map((key) => ({
+    key, label: SORT_LABELS[key], selected: s.exploreSort === key,
+    onClick: () => setState({ exploreSort: key, sortMenuOpen: false }),
+  }));
+  const toggleSortMenu = () => setState({ sortMenuOpen: !s.sortMenuOpen });
+  const closeSortMenu = () => setState({ sortMenuOpen: false });
 
   const trendingTopics = Array.from(new Set(LESSONS.map((l) => l.title))).slice(0, 10);
   const filterLevels = ["Tất cả", ...LEVELS].map((label) => ({
@@ -265,7 +275,7 @@ export function useAppLogic(navStyle = "tabs") {
   ];
   const detailTabs = detailTabDefs.map((t) => {
     const on = s.detailTab === t.key;
-    return { label: t.label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ detailTab: t.key }) };
+    return { label: t.label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ detailTab: t.key }) };
   });
 
   const libTabDefs = [
@@ -274,7 +284,7 @@ export function useAppLogic(navStyle = "tabs") {
   ];
   const libTabs = libTabDefs.map((t) => {
     const on = s.libTab === t.key;
-    return { label: t.label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ libTab: t.key }) };
+    return { label: t.label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ libTab: t.key }) };
   });
   const libSets = {
     learning: [
@@ -300,7 +310,7 @@ export function useAppLogic(navStyle = "tabs") {
     const picked = s.quickPick === i;
     const revealed = s.quickPick !== null;
     const correct = i === QUICK_CORRECT;
-    let border = `1px solid ${BORDER}`, bg = "#fff", dotBg = "#edf7f9", dotColor = MUTED, dotBorder = "1px solid #ddeaf0", color = "#25475a", weight = 400;
+    let border = `1px solid ${BORDER}`, bg = "#fff", dotBg = "#edf7f9", dotColor = "#455771", dotBorder = "1px solid #ddeaf0", color = "#455771", weight = 400;
     if (revealed && correct) { border = "1.6px solid #22c55e"; bg = "#f0fdf4"; dotBg = "#22c55e"; dotColor = "#fff"; dotBorder = "1px solid #22c55e"; color = "#15803d"; weight = 600; }
     else if (picked) { border = "1.6px solid #ef4444"; bg = "#fef2f2"; dotBg = "#ef4444"; dotColor = "#fff"; dotBorder = "1px solid #ef4444"; color = "#b91c1c"; weight = 600; }
     return { text: t, letter: "ABCD"[i], border, bg, dotBg, dotColor, dotBorder, color, weight, onClick: () => setState({ quickPick: i }) };
@@ -314,9 +324,9 @@ export function useAppLogic(navStyle = "tabs") {
       text: t, letter: "ABCD"[i],
       border: on ? `1.6px solid ${ACCENT}` : `1px solid ${BORDER}`,
       bg: on ? "#eaf6f8" : "#fff",
-      dotBg: on ? ACCENT : "#edf7f9", dotColor: on ? "#fff" : MUTED,
+      dotBg: on ? ACCENT : "#edf7f9", dotColor: on ? "#fff" : "#455771",
       dotBorder: on ? `1px solid ${ACCENT}` : `1px solid ${BORDER}`,
-      color: on ? INK : "#25475a", weight: on ? 600 : 400,
+      color: on ? INK : "#455771", weight: on ? 600 : 400,
       onClick: () => { const a = s.answers.slice(); a[s.examIdx] = i; setState({ answers: a }); },
     };
   });
@@ -339,7 +349,7 @@ export function useAppLogic(navStyle = "tabs") {
   ];
   const topupAmounts = topups.map((t, i) => {
     const on = s.topup === i;
-    return { label: t.label, bonus: t.bonus, ...cardOn(on), color: on ? DEEP : INK, onClick: () => setState({ topup: i }) };
+    return { label: t.label, bonus: t.bonus, ...cardOn(on), color: on ? DEEP : "#455771", onClick: () => setState({ topup: i }) };
   });
   const pays = [
     { tag: "VNP", name: "VNPAY QR", desc: "Quét mã bằng ứng dụng ngân hàng", tint: "#195658" },
@@ -445,9 +455,10 @@ export function useAppLogic(navStyle = "tabs") {
     }),
 
     chips, resultCount: String(filterBySubject(LESSONS).length),
-    exploreSortLabel, toggleExploreSort,
+    exploreSortLabel, sortMenuOpen: s.sortMenuOpen, sortMenuOptions, toggleSortMenu, closeSortMenu,
     filterOpen: s.filterOpen, openFilter, closeFilter,
     filterLevels, filterGrades, filterSubjects, filterTypes, filterTopics, filterSorts,
+    search: s.search, setSearch: (val) => setState({ search: val }),
     activeFilterCount, hasActiveFilters: activeFilterCount > 0, resetFilters, applyFilterSheet: closeFilter,
     toggleView: () => setState({ view: grid ? "list" : "grid" }),
     gridBg: grid ? "#195658" : "transparent", gridFg: grid ? "#fff" : "#8ba0ae",
@@ -651,7 +662,7 @@ export function useAppLogic(navStyle = "tabs") {
 
     cwTabs: [["todo", "Việc cần làm"], ["done", "Đã nộp"], ["grades", "Điểm số"]].map(([k, label]) => {
       const on = s.cwTab === k;
-      return { label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ cwTab: k }) };
+      return { label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ cwTab: k }) };
     }),
     cwItems: S_ASSIGNMENTS[s.cwTab].map((a, i) => ({ ...a, hasScore: !!a.score, onClick: () => setState({ screen: "assignment", asgIdx: i, submitted: s.cwTab !== "todo" }) })),
     toClasswork: () => go("classwork"),
@@ -662,7 +673,7 @@ export function useAppLogic(navStyle = "tabs") {
     })),
     classDetailTabs: [["feed", "Bảng tin"], ["students", "Học sinh"], ["assignments", "Bài tập"], ["content", "Nội dung lớp"]].map(([k, label]) => {
       const on = s.classDetailTab === k;
-      return { key: k, label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ classDetailTab: k }) };
+      return { key: k, label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ classDetailTab: k }) };
     }),
     classTabFeed: s.classDetailTab === "feed", classTabStudents: s.classDetailTab === "students",
     classTabAssignments: s.classDetailTab === "assignments", classTabContent: s.classDetailTab === "content",
@@ -762,7 +773,7 @@ export function useAppLogic(navStyle = "tabs") {
       .map((a) => ({ ...a, onClick: () => go("tGrading") })),
     tClassesTabs: [["submitted", "Bài đã nộp"], ["grading", "Bài cần chấm"], ["upcoming", "Sắp đến hạn"]].map(([k, label]) => {
       const on = s.tClassesTab === k;
-      return { key: k, label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ tClassesTab: k }) };
+      return { key: k, label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ tClassesTab: k }) };
     }),
     tcTabSubmitted: s.tClassesTab === "submitted", tcTabGrading: s.tClassesTab === "grading", tcTabUpcoming: s.tClassesTab === "upcoming",
     toTClasses: () => go("tClasses"), toTGrading: () => go("tGrading"), toTPlans: () => go("tPlans"),
@@ -776,7 +787,7 @@ export function useAppLogic(navStyle = "tabs") {
     tClassImg: T_CLASSES[s.tClassIdx].img,
     tClassTabs: [["feed", "Bảng tin"], ["students", "Học sinh"], ["work", "Bài tập"], ["grading", "Chấm bài"], ["content", "Nội dung lớp"], ["settings", "Cài đặt"]].map(([k, label]) => {
       const on = s.tClassTab === k;
-      return { key: k, label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ tClassTab: k }) };
+      return { key: k, label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ tClassTab: k }) };
     }),
     tTabFeed: s.tClassTab === "feed", tTabStudents: s.tClassTab === "students", tTabWork: s.tClassTab === "work",
     tTabGrading: s.tClassTab === "grading", tTabContent: s.tClassTab === "content", tTabSettings: s.tClassTab === "settings",
@@ -827,14 +838,14 @@ export function useAppLogic(navStyle = "tabs") {
     scoreChips: ["6.0", "7.0", "8.0", "8.5", "9.0", "10"].map((v) => ({
       label: v, bg: s.gradeScore === v ? "#eaf6f8" : "#fff",
       border: s.gradeScore === v ? `1.6px solid ${ACCENT}` : `1px solid ${BORDER}`,
-      color: s.gradeScore === v ? DEEP : INK,
+      color: s.gradeScore === v ? DEEP : "#455771",
       onClick: () => setState({ gradeScore: v }),
     })),
     saveGrade: () => setState({ graded: true }),
     tBlocks: T_BLOCKS.concat(s.createdLectures),
     planTabs: [["recent", "Gần đây"], ["draft", "Bản nháp"], ["published", "Đã xuất bản"]].map(([k, label]) => {
       const on = s.planTab === k;
-      return { key: k, label, bg: on ? "#fff" : "transparent", color: on ? INK : MUTED, weight: on ? 600 : 400, onClick: () => setState({ planTab: k }) };
+      return { key: k, label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ planTab: k }) };
     }),
     tPlans: (() => {
       const all = T_PLANS.map((p, i) => ({ ...p, onClick: () => setState({ screen: "tPlan", tPlanIdx: i }) }));
@@ -860,7 +871,7 @@ export function useAppLogic(navStyle = "tabs") {
     tExploreGridCols: tGrid ? "1fr 1fr" : "1fr",
     tQuickActions: [
       { label: "Tạo giáo án", iconPath: "M4.5 5.4A1.9 1.9 0 0 1 6.4 3.5H17a1.9 1.9 0 0 1 1.9 1.9v13.2H6.4a1.9 1.9 0 0 0-1.9 1.9V5.4zM8.5 8h6.5M8.5 11.5h6.5", bg: "#eaf6f8", color: "#00708f", onClick: () => go("tPlan") },
-      { label: "Tạo bài tập", iconPath: "M8.5 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5M8.5 5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2zM9 14l2.2 2.2L15.5 12", bg: "#e7f2fb", color: "#0b6aa3", onClick: () => setState({ screen: "tCreateAssignment", caCls: s.caCls || T_CLASSES.concat(s.createdClasses)[0].name }) },
+      { label: "Tạo bài tập", iconPath: "M8.5 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5M8.5 5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2zM9 14l2.2 2.2L15.5 12", bg: "#eaf6f8", color: ACCENT, onClick: () => setState({ screen: "tCreateAssignment", caCls: s.caCls || T_CLASSES.concat(s.createdClasses)[0].name }) },
       { label: "Tạo bài giảng", iconPath: "M4 6h16v10H4zM8 20h8M12 16v4", bg: "#fdeef5", color: "#b13a75", onClick: () => setState({ screen: "tCreateLecture", clCls: s.clCls || T_CLASSES.concat(s.createdClasses)[0].name }) },
     ],
 
@@ -899,9 +910,9 @@ export function useAppLogic(navStyle = "tabs") {
       const mine = m.who === "parent";
       return {
         ...m, align: mine ? "flex-end" : "flex-start",
-        bg: mine ? "#00aaab" : "#fff", color: mine ? "#fff" : "#25475a",
+        bg: mine ? "#00aaab" : "#fff", color: mine ? "#fff" : "#455771",
         border: mine ? "1px solid #00aaab" : `1px solid ${BORDER}`,
-        metaColor: mine ? "rgba(255,255,255,.75)" : MUTED,
+        metaColor: mine ? "rgba(255,255,255,.75)" : "#455771",
       };
     }),
     sent: s.sent,
@@ -921,7 +932,7 @@ export function useAppLogic(navStyle = "tabs") {
     limitChips: ["30", "60", "90", "120"].map((v) => ({
       label: v + " phút", bg: s.safety.limit === v ? "#eaf6f8" : "#fff",
       border: s.safety.limit === v ? `1.6px solid ${ACCENT}` : `1px solid ${BORDER}`,
-      color: s.safety.limit === v ? DEEP : INK,
+      color: s.safety.limit === v ? DEEP : "#455771",
       onClick: () => setState({ safety: { ...s.safety, limit: v } }),
     })),
 
@@ -936,6 +947,10 @@ export function useAppLogic(navStyle = "tabs") {
   // Keep language-picker option labels as endonyms ("Tiếng Việt"/"English")
   // rather than translating them into the currently active language.
   translated.langOptions = langOptions;
+  // Raw user input must never round-trip through the dictionary lookup —
+  // a query that happens to match a Vietnamese source string (e.g. "Toán")
+  // would otherwise get silently rewritten while the user is still typing.
+  translated.search = s.search;
   translated.t = t;
   return translated;
 }
