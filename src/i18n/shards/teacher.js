@@ -101,4 +101,18 @@ export default {
   "Tiêu đề sẽ được tạo tự động": "The title will be generated automatically",
   "Loại bài giảng": "Lecture type",
   "Hạn nộp": "Due date",
+
+  "Thư viện của tôi": "My Library",
+  "Yêu thích": "Liked",
+  "Đã mua": "Purchased",
+  "Gần đây": "Recent",
+  "Dùng trong giáo án": "Used in lesson plans",
+  "Chưa có học liệu nào ở đây": "No resources here yet",
+  "Học liệu sẽ xuất hiện khi bạn lưu, thích, mua hoặc dùng trong giáo án.": "Resources will appear here once you save, like, purchase, or use them in a lesson plan.",
+  "Đã giao": "Assigned to",
+  "lớp": "classes",
+  "Giao cho lớp": "Assign to class",
+  "Giao cho lớp học": "Assign to class",
+  "Huỷ": "Cancel",
+  "Xác nhận": "Confirm",
 };

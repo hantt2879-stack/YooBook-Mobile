@@ -1,15 +1,12 @@
 import { css } from "../css.js";
+import HScroll from "./HScroll.jsx";
 
 function ChipRow({ items, scroll }) {
-  return (
-    <div className={scroll ? "yb-scroll" : ""} style={css(scroll
-      ? `display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 4px`
-      : `display:flex;flex-wrap:wrap;gap:8px`)}>
-      {items.map((o, i) => (
-        <div key={i} onClick={o.onClick} style={css(`flex:none;height:38px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#00aaab" : "#fff"};color:${o.selected ? "#fff" : "#455771"};border-radius:999px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{o.label}</div>
-      ))}
-    </div>
-  );
+  const chips = items.map((o, i) => (
+    <div key={i} onClick={o.onClick} style={css(`flex:none;height:38px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#00aaab" : "#fff"};color:${o.selected ? "#fff" : "#455771"};border-radius:999px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{o.label}</div>
+  ));
+  if (scroll) return <HScroll extra="gap:8px;margin-left:-20px;margin-right:-20px;padding:0 20px 4px">{chips}</HScroll>;
+  return <div style={css(`display:flex;flex-wrap:wrap;gap:8px`)}>{chips}</div>;
 }
 
 export default function FilterSheet({ v }) {

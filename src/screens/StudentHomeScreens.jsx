@@ -1,4 +1,5 @@
 import { css } from "../css.js";
+import HScroll from "./HScroll.jsx";
 
 export default function StudentHomeScreens({ v }) {
   return (
@@ -34,19 +35,19 @@ export default function StudentHomeScreens({ v }) {
 
           <div style={css(`padding:4px 20px 0`)}>
             <div style={css(`display:flex;align-items:baseline;justify-content:space-between`)}><div style={css(`font-size:16px;font-weight:600;color:#455771`)}>{v.t(`Môn học`)}</div><span onClick={v.toExplore} style={css(`font-size:13px;color:#00708f;cursor:pointer`)}>{v.t(`Xem thêm`)}</span></div>
-            <div className="yb-scroll" style={css(`margin-top:12px;display:flex;gap:10px;overflow-x:auto;padding-bottom:14px;margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px`)}>
+            <HScroll extra="margin-top:12px;gap:10px;padding-bottom:14px;margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px">
               {v.categories.map((c, i) => (
                 <div key={i} onClick={v.toExplore} style={css(`flex:none;width:78px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer`)}>
                   <div style={css(`width:64px;height:64px;border-radius:20px;background:#eaf6f8;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center`)}><div style={css(`width:32px;height:32px;background-image:url(${c.icon});background-size:contain;background-position:center;background-repeat:no-repeat`)}></div></div>
                   <span style={css(`font-size:11.5px;color:#455771;text-align:center;line-height:1.25`)}>{c.label}</span>
                 </div>
               ))}
-            </div>
+            </HScroll>
           </div>
 
           <div style={css(`padding:22px 20px 0`)}>
             <div style={css(`display:flex;align-items:baseline;justify-content:space-between`)}><div style={css(`font-size:16px;font-weight:600;color:#455771`)}>{v.t(`Đề xuất cho bạn`)}</div><span onClick={v.toExplore} style={css(`font-size:13px;color:#00708f;cursor:pointer`)}>{v.t(`Xem thêm`)}</span></div>
-            <div className="yb-scroll" style={css(`margin-top:12px;display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px`)}>
+            <HScroll extra="margin-top:12px;gap:14px;padding-bottom:6px;margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px">
               {v.featured.map((l, i) => (
                 <div key={i} onClick={l.onClick} style={css(`flex:none;width:236px;border:1px solid #ddeaf0;border-radius:22px;background:#fff;overflow:hidden;cursor:pointer;box-shadow:0 4px 14px rgba(25,86,88,.05)`)}>
                   <div style={css(`height:126px;position:relative;background:${l.tintBg}`)}>
@@ -63,7 +64,7 @@ export default function StudentHomeScreens({ v }) {
                   </div>
                 </div>
               ))}
-            </div>
+            </HScroll>
           </div>
 
           <div style={css(`padding:22px 20px 0`)}>
@@ -98,11 +99,11 @@ export default function StudentHomeScreens({ v }) {
                 {v.hasActiveFilters && (<div style={css(`position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 3px;border-radius:999px;background:#f59e0b;border:2px solid #fcfcfc;color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center`)}>{v.activeFilterCount}</div>)}
               </div>
             </div>
-            <div className="yb-scroll" style={css(`margin-top:12px;display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 10px`)}>
+            <HScroll extra="margin-top:12px;gap:8px;margin-left:-20px;margin-right:-20px;padding:0 20px 10px">
               {v.chips.map((c, i) => (
                 <div key={i} onClick={c.onClick} style={css(`flex:none;display:flex;align-items:center;gap:6px;height:36px;padding:0 13px;border-radius:999px;border:${c.border};background:${c.bg};color:${c.color};font-size:13px;font-weight:500;cursor:pointer;transition:all .15s`)}><div style={css(`width:17px;height:17px;background-image:url(${c.icon});background-size:contain;background-position:center;background-repeat:no-repeat;filter:${c.iconFilter};flex:none`)}></div>{c.label}</div>
               ))}
-            </div>
+            </HScroll>
           </div>
 
           <div style={css(`padding:14px 20px 0;display:flex;align-items:center;justify-content:space-between`)}>
