@@ -1,4 +1,5 @@
 import { css } from "../css.js";
+import HScroll from "./HScroll.jsx";
 
 export default function TeacherScreens({ v }) {
   return (
@@ -33,7 +34,7 @@ export default function TeacherScreens({ v }) {
           </div>
           <div style={css(`padding:18px 20px 0`)}>
             <div style={css(`display:flex;align-items:baseline;justify-content:space-between`)}><div style={css(`font-size:16px;font-weight:600;color:#455771`)}>{v.t(`Lớp học của tôi`)}</div><span onClick={v.toTClasses} style={css(`font-size:13px;color:#00708f;cursor:pointer`)}>{v.t(`Xem thêm`)}</span></div>
-            <div className="yb-scroll" style={css(`margin-top:12px;display:flex;gap:12px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 8px`)}>
+            <HScroll extra="margin-top:12px;gap:12px;margin-left:-20px;margin-right:-20px;padding:0 20px 8px">
               {v.tClasses.map((c, i) => (
                 <div key={i} onClick={c.onClick} style={css(`flex:none;width:212px;border-radius:20px;overflow:hidden;border:1px solid #ddeaf0;background:#fff;cursor:pointer`)}>
                   <div style={css(`height:78px;position:relative;background:${c.tintBg}`)}><img src={c.img} alt="" style={css(`position:absolute;inset:0;width:100%;height:100%;object-fit:cover`)}/><div style={css(`position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(15,50,52,.65) 100%)`)}></div><div style={css(`position:absolute;left:12px;bottom:10px;color:#fff;font-size:14px;font-weight:700;letter-spacing:.02em`)}>{c.name}</div></div>
@@ -44,7 +45,7 @@ export default function TeacherScreens({ v }) {
                   </div>
                 </div>
               ))}
-            </div>
+            </HScroll>
           </div>
           <div style={css(`padding:18px 20px 0`)}>
             <div style={css(`display:flex;align-items:baseline;justify-content:space-between`)}><div style={css(`font-size:16px;font-weight:600;color:#455771`)}>{v.t(`Bài cần chấm`)}</div><span onClick={v.toTGrading} style={css(`font-size:13px;color:#00708f;cursor:pointer`)}>{v.t(`Chấm bài`)}</span></div>
@@ -69,7 +70,7 @@ export default function TeacherScreens({ v }) {
           <div style={css(`font-size:22px;font-weight:700;color:#455771`)}>{v.t(`Lớp học của tôi`)}</div>
           <div style={css(`font-size:13px;color:#455771;margin-top:3px`)}>{v.tClassesCountLabel}</div>
 
-          <div className="yb-scroll" style={css(`margin-top:16px;display:flex;gap:12px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 8px`)}>
+          <HScroll extra="margin-top:16px;gap:12px;margin-left:-20px;margin-right:-20px;padding:0 20px 8px">
             {v.tClasses.map((c, i) => (
               <div key={i} onClick={c.onClick} style={css(`flex:none;width:206px;padding:14px;border-radius:20px;background:${c.tintBg};color:#fff;position:relative;overflow:hidden;cursor:pointer`)}>
                 <img src={c.img} alt="" style={css(`position:absolute;inset:0;width:100%;height:100%;object-fit:cover`)}/>
@@ -87,7 +88,7 @@ export default function TeacherScreens({ v }) {
               <div style={css(`width:34px;height:34px;border-radius:999px;background:#fff;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center`)}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
               <span style={css(`font-size:12px;font-weight:600;line-height:1.3`)}>{v.t(`Tạo lớp học`)}</span>
             </div>
-          </div>
+          </HScroll>
 
           <div style={css(`margin-top:18px;display:flex;gap:6px;padding:4px;background:#edf7f9;border-radius:14px`)}>
             {v.tClassesTabs.map((t, i) => (
@@ -177,11 +178,11 @@ export default function TeacherScreens({ v }) {
           </div>
 
           <div style={css(`margin-top:20px;font-size:13.5px;font-weight:600;color:#455771`)}>{v.t(`Lớp học`)}</div>
-          <div className="yb-scroll" style={css(`margin-top:10px;display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 4px`)}>
+          <HScroll extra="margin-top:10px;gap:8px;margin-left:-20px;margin-right:-20px;padding:0 20px 4px">
             {v.caClasses.map((o, i) => (
               <div key={i} onClick={o.onClick} style={css(`flex:none;height:40px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#455771"};border-radius:12px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{o.label}</div>
             ))}
-          </div>
+          </HScroll>
 
           <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#455771`)}>{v.t(`Hạn nộp`)}</div>
           <div style={css(`margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px`)}>
@@ -208,11 +209,11 @@ export default function TeacherScreens({ v }) {
           </div>
 
           <div style={css(`margin-top:20px;font-size:13.5px;font-weight:600;color:#455771`)}>{v.t(`Lớp học`)}</div>
-          <div className="yb-scroll" style={css(`margin-top:10px;display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 4px`)}>
+          <HScroll extra="margin-top:10px;gap:8px;margin-left:-20px;margin-right:-20px;padding:0 20px 4px">
             {v.clClasses.map((o, i) => (
               <div key={i} onClick={o.onClick} style={css(`flex:none;height:40px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#455771"};border-radius:12px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{o.label}</div>
             ))}
-          </div>
+          </HScroll>
 
           <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#455771`)}>{v.t(`Loại bài giảng`)}</div>
           <div style={css(`margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:9px`)}>
@@ -233,12 +234,15 @@ export default function TeacherScreens({ v }) {
 
       {v.isTExplore && (
         <div style={css(`padding-bottom:120px;animation:ybup .3s ease`)}>
-          <div style={css(`padding:6px 20px 0`)}>
-            <div style={css(`font-size:22px;font-weight:700;color:#455771`)}>{v.t(`Khám phá học liệu`)}</div>
-            <div style={css(`font-size:13px;color:#455771;margin-top:3px;text-wrap:pretty`)}>{v.t(`Mô hình 3D/XR, thí nghiệm, video và tài nguyên bài giảng cho lớp học của bạn`)}</div>
+          <div style={css(`padding:10px 20px 0;display:flex;gap:22px;border-bottom:1px solid #edf7f9`)}>
+            {v.tExploreSectionTabs.map((tb, i) => (
+              <div key={i} onClick={tb.onClick} style={css(`padding-bottom:11px;font-size:14.5px;font-weight:${tb.weight};color:${tb.color};cursor:pointer;border-bottom:2px solid ${tb.active ? "#00aaab" : "transparent"};transition:all .15s`)}>{tb.label}</div>
+            ))}
           </div>
 
-          <div style={css(`position:sticky;top:0;z-index:20;background:#fcfcfc;padding:14px 20px 12px;margin-top:6px;border-bottom:1px solid #ddeaf0`)}>
+          {v.isTExploreSection && (
+          <>
+          <div style={css(`position:sticky;top:0;z-index:20;background:#fcfcfc;padding:12px 20px`)}>
             <div style={css(`display:flex;align-items:center;gap:10px`)}>
               <div style={css(`flex:1;display:flex;align-items:center;gap:9px;height:46px;padding:0 14px;border:1px solid #ddeaf0;border-radius:14px;background:#fff`)}>
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#617789" strokeWidth="1.8" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.2 16.2L21 21"/></svg>
@@ -250,11 +254,11 @@ export default function TeacherScreens({ v }) {
                 {v.hasActiveFilters && (<div style={css(`position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 3px;border-radius:999px;background:#f59e0b;border:2px solid #fcfcfc;color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center`)}>{v.activeFilterCount}</div>)}
               </div>
             </div>
-            <div className="yb-scroll" style={css(`margin-top:12px;display:flex;gap:8px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 10px`)}>
+            <HScroll extra="margin-top:12px;gap:8px;margin-left:-20px;margin-right:-20px;padding:0 20px 10px">
               {v.chips.map((c, i) => (
                 <div key={i} onClick={c.onClick} style={css(`flex:none;display:flex;align-items:center;gap:6px;height:36px;padding:0 13px;border-radius:999px;border:${c.border};background:${c.bg};color:${c.color};font-size:13px;font-weight:500;cursor:pointer;transition:all .15s`)}><div style={css(`width:17px;height:17px;background-image:url(${c.icon});background-size:contain;background-position:center;background-repeat:no-repeat;filter:${c.iconFilter};flex:none`)}></div>{c.label}</div>
               ))}
-            </div>
+            </HScroll>
           </div>
 
           <div style={css(`padding:14px 20px 0;display:flex;align-items:center;justify-content:space-between`)}>
@@ -305,6 +309,47 @@ export default function TeacherScreens({ v }) {
               </div>
             ))}
           </div>
+          </>
+          )}
+
+          {v.isTLibrarySection && (
+          <div style={css(`padding:0 20px`)}>
+            <HScroll extra="gap:6px;padding:4px;background:#edf7f9;border-radius:14px;margin-left:-4px;margin-right:-4px">
+              {v.tLibTabs.map((tb, i) => (
+                <div key={i} onClick={tb.onClick} style={css(`flex:none;height:36px;padding:0 14px;border-radius:11px;background:${tb.bg};color:${tb.color};font-size:12.5px;font-weight:${tb.weight};display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{tb.label}</div>
+              ))}
+            </HScroll>
+
+            {!v.tLibraryItems.length && (
+              <div style={css(`margin:20px 0 0;padding:28px 20px;border:1.4px dashed #ddeaf0;border-radius:20px;background:#f8fcfd;text-align:center`)}>
+                <div style={css(`font-size:13.5px;font-weight:600;color:#455771`)}>{v.t(`Chưa có học liệu nào ở đây`)}</div>
+                <div style={css(`font-size:12px;color:#455771;margin-top:5px;line-height:1.5`)}>{v.t(`Học liệu sẽ xuất hiện khi bạn lưu, thích, mua hoặc dùng trong giáo án.`)}</div>
+              </div>
+            )}
+            <div style={css(`margin-top:14px;display:flex;flex-direction:column;gap:12px`)}>
+              {v.tLibraryItems.map((l, i) => (
+                <div key={i} style={css(`display:flex;gap:12px;padding:12px;border:1px solid #ddeaf0;border-radius:18px;background:#fff`)}>
+                  <div style={css(`width:82px;height:66px;flex:none;border-radius:13px;position:relative;overflow:hidden;background:${l.tintBg}`)}><img src={l.img} alt="" style={css(`position:absolute;inset:0;width:100%;height:100%;object-fit:cover`)}/></div>
+                  <div style={css(`flex:1;min-width:0`)}>
+                    <div style={css(`font-size:13px;font-weight:600;color:#455771;line-height:1.35;text-wrap:pretty`)}>{l.title}</div>
+                    <div style={css(`font-size:10.5px;color:#455771;margin-top:3px`)}>{l.meta}</div>
+                    {(l.planName || l.assignedCount > 0) && (
+                      <div style={css(`margin-top:5px;display:flex;flex-wrap:wrap;gap:5px`)}>
+                        {l.planName && (<div style={css(`height:20px;padding:0 8px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:9.5px;font-weight:600;display:flex;align-items:center`)}>{l.planName}</div>)}
+                        {l.assignedCount > 0 && (<div style={css(`height:20px;padding:0 8px;border-radius:999px;background:#f0fdf4;color:#15803d;font-size:9.5px;font-weight:600;display:flex;align-items:center`)}>{v.t(`Đã giao`)} {l.assignedCount} {v.t(`lớp`)}</div>)}
+                      </div>
+                    )}
+                    <div style={css(`margin-top:8px;display:flex;gap:6px`)}>
+                      <div onClick={l.onPreview} style={css(`flex:1;height:28px;border-radius:9px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Xem trước`)}</div>
+                      <div onClick={l.onAddToPlan} style={css(`flex:1;height:28px;border-radius:9px;background:#00aaab;color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Thêm vào giáo án`)}</div>
+                      <div onClick={l.onAssignClass} style={css(`flex:1;height:28px;border-radius:9px;border:1px solid #195658;background:#fff;color:#195658;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Giao cho lớp`)}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          )}
         </div>
       )}
 
@@ -326,11 +371,11 @@ export default function TeacherScreens({ v }) {
             </div>
           </div>
           <div style={css(`padding:16px 20px 0`)}>
-            <div className="yb-scroll" style={css(`display:flex;gap:6px;padding:4px;background:#edf7f9;border-radius:14px;overflow-x:auto;margin-left:-4px;margin-right:-4px`)}>
+            <HScroll extra="gap:6px;padding:4px;background:#edf7f9;border-radius:14px;margin-left:-4px;margin-right:-4px">
               {v.tClassTabs.map((t, i) => (
                 <div key={i} onClick={t.onClick} style={css(`flex:none;height:36px;padding:0 14px;border-radius:11px;background:${t.bg};color:${t.color};font-size:12.5px;font-weight:${t.weight};display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{t.label}</div>
               ))}
-            </div>
+            </HScroll>
 
             {v.tTabFeed && (
               <div style={css(`margin-top:14px`)}>

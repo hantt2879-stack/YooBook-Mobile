@@ -25,6 +25,9 @@ const INITIAL_STATE = {
   classAccessMode: "code",
   classPerms: { post: false, comment: true, upload: true },
   tExploreSaved: [], tExploreAdded: [], planTab: "recent",
+  tExploreSection: "explore", tLibTab: "saved", tRecentIds: [],
+  tItemPlanName: {}, tItemAssignedClasses: {},
+  tAssignSheet: { open: false, mode: null, itemId: null, selectedId: null },
   profileEditing: false,
   tClassesTab: "submitted",
   notiRead: false,
@@ -83,6 +86,12 @@ const CLASS_EXTRA = [
     ],
   },
 ];
+
+// Seed ids for the Teacher Library's "Liked" and "Purchased" facets — these
+// have no in-app action that produces them (Explore only exposes Save/Add),
+// so they're mocked the same way Student libSets mocks purchased/completed.
+const TEACHER_LIKED_IDS = [3, 9, 14];
+const TEACHER_PURCHASED_IDS = [2, 7, 13];
 
 // Recursively runs every string in a data tree through `t`, leaving
 // functions (onClick handlers), numbers, and booleans untouched. Safe to
@@ -367,6 +376,27 @@ export function useAppLogic(navStyle = "tabs") {
     { title: "Thí nghiệm điện phân dung dịch CuSO₄", subject: "Hóa học", when: "Thứ 5 · 15/05", duration: "24 phút", status: "Đang học", tint: LESSONS[1].tint },
     { title: "Chiến dịch Điện Biên Phủ", subject: "Lịch sử", when: "Thứ 6 · 16/05", duration: "22 phút", status: "Hoàn thành", tint: LESSONS[3].tint },
   ].map((a) => ({ ...a, done: a.status === "Hoàn thành" }));
+
+  const pushRecent = (id) => setState((prev) => ({ tRecentIds: [id, ...prev.tRecentIds.filter((x) => x !== id)].slice(0, 10) }));
+  const openAssignSheet = (mode, itemId) => setState({ tAssignSheet: { open: true, mode, itemId, selectedId: null } });
+  const closeAssignSheet = () => setState({ tAssignSheet: { open: false, mode: null, itemId: null, selectedId: null } });
+  const selectAssignOption = (id) => setState((prev) => ({ tAssignSheet: { ...prev.tAssignSheet, selectedId: id } }));
+  const confirmAssignSheet = () => {
+    const { mode, itemId, selectedId } = s.tAssignSheet;
+    if (selectedId === null || selectedId === undefined) return;
+    if (mode === "plan") {
+      setState((prev) => ({
+        tExploreAdded: prev.tExploreAdded.includes(itemId) ? prev.tExploreAdded : [...prev.tExploreAdded, itemId],
+        tItemPlanName: { ...prev.tItemPlanName, [itemId]: T_PLANS[selectedId].title },
+        tAssignSheet: { open: false, mode: null, itemId: null, selectedId: null },
+      }));
+    } else {
+      setState((prev) => ({
+        tItemAssignedClasses: { ...prev.tItemAssignedClasses, [itemId]: Array.from(new Set([...(prev.tItemAssignedClasses[itemId] || []), selectedId])) },
+        tAssignSheet: { open: false, mode: null, itemId: null, selectedId: null },
+      }));
+    }
+  };
 
   const vals = {
     isLogin: s.screen === "login", isRole: s.screen === "role", isHome: s.screen === "home",
@@ -861,14 +891,53 @@ export function useAppLogic(navStyle = "tabs") {
       ...l, tintBg: l.tint,
       isSaved: s.tExploreSaved.includes(l.id),
       isAdded: s.tExploreAdded.includes(l.id),
-      onPreview: () => go("detail"),
+      onPreview: () => { pushRecent(l.id); go("detail"); },
       onSave: () => setState((prev) => ({ tExploreSaved: prev.tExploreSaved.includes(l.id) ? prev.tExploreSaved.filter((x) => x !== l.id) : [...prev.tExploreSaved, l.id] })),
-      onAdd: () => setState((prev) => ({ tExploreAdded: prev.tExploreAdded.includes(l.id) ? prev.tExploreAdded.filter((x) => x !== l.id) : [...prev.tExploreAdded, l.id] })),
+      onAdd: () => openAssignSheet("plan", l.id),
     })),
     toggleTExploreView: () => setState({ tExploreView: tGrid ? "list" : "grid" }),
     tGridBg: tGrid ? "#195658" : "transparent", tGridFg: tGrid ? "#fff" : "#8ba0ae",
     tListBg: tGrid ? "transparent" : "#195658", tListFg: tGrid ? "#8ba0ae" : "#fff",
     tExploreGridCols: tGrid ? "1fr 1fr" : "1fr",
+
+    tExploreSectionTabs: [["explore", "Khám phá"], ["library", "Thư viện của tôi"]].map(([k, label]) => {
+      const on = s.tExploreSection === k;
+      return { key: k, label, active: on, color: on ? "#00aaab" : "#455771", weight: on ? 600 : 500, onClick: () => setState({ tExploreSection: k }) };
+    }),
+    isTExploreSection: s.tExploreSection === "explore", isTLibrarySection: s.tExploreSection === "library",
+
+    tLibTabs: [
+      { key: "saved", label: "Đã lưu" }, { key: "liked", label: "Yêu thích" },
+      { key: "purchased", label: "Đã mua" }, { key: "recent", label: "Gần đây" },
+      { key: "used", label: "Dùng trong giáo án" },
+    ].map((tb) => {
+      const on = s.tLibTab === tb.key;
+      return { ...tb, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ tLibTab: tb.key }) };
+    }),
+    tLibraryItems: (() => {
+      const idsByTab = {
+        saved: s.tExploreSaved, liked: TEACHER_LIKED_IDS, purchased: TEACHER_PURCHASED_IDS,
+        recent: s.tRecentIds, used: s.tExploreAdded,
+      };
+      const ids = idsByTab[s.tLibTab] || [];
+      return ids.map((id) => LESSONS.find((l) => l.id === id)).filter(Boolean).map((l) => ({
+        ...l, tintBg: l.tint,
+        planName: s.tItemPlanName[l.id],
+        assignedCount: (s.tItemAssignedClasses[l.id] || []).length,
+        onPreview: () => { pushRecent(l.id); go("detail"); },
+        onAddToPlan: () => openAssignSheet("plan", l.id),
+        onAssignClass: () => openAssignSheet("class", l.id),
+      }));
+    })(),
+
+    tAssignSheetOpen: s.tAssignSheet.open,
+    tAssignSheetTitle: s.tAssignSheet.mode === "class" ? "Giao cho lớp học" : "Thêm vào giáo án",
+    tAssignSheetOptions: (s.tAssignSheet.mode === "class"
+      ? T_CLASSES.concat(s.createdClasses).map((c) => ({ id: c.name, label: c.name }))
+      : T_PLANS.map((p, i) => ({ id: i, label: p.title }))
+    ).map((o) => ({ ...o, selected: s.tAssignSheet.selectedId === o.id, onClick: () => selectAssignOption(o.id) })),
+    tAssignSheetConfirmDisabled: s.tAssignSheet.selectedId === null,
+    closeAssignSheet, confirmAssignSheet,
     tQuickActions: [
       { label: "Tạo giáo án", iconPath: "M4.5 5.4A1.9 1.9 0 0 1 6.4 3.5H17a1.9 1.9 0 0 1 1.9 1.9v13.2H6.4a1.9 1.9 0 0 0-1.9 1.9V5.4zM8.5 8h6.5M8.5 11.5h6.5", bg: "#eaf6f8", color: "#00708f", onClick: () => go("tPlan") },
       { label: "Tạo bài tập", iconPath: "M8.5 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5M8.5 5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2zM9 14l2.2 2.2L15.5 12", bg: "#eaf6f8", color: ACCENT, onClick: () => setState({ screen: "tCreateAssignment", caCls: s.caCls || T_CLASSES.concat(s.createdClasses)[0].name }) },

@@ -1,4 +1,5 @@
 import { css } from "../css.js";
+import HScroll from "./HScroll.jsx";
 
 export default function StudentLibraryWorkScreens({ v }) {
   return (
@@ -47,7 +48,7 @@ export default function StudentLibraryWorkScreens({ v }) {
             <div><div style={css(`font-size:22px;font-weight:700;color:#455771`)}>{v.t(`Lớp & bài tập`)}</div><div style={css(`font-size:13px;color:#455771;margin-top:3px`)}>{v.t(`2 lớp đang học · 3 bài cần làm`)}</div></div>
             <div onClick={v.toNoti} style={css(`position:relative;width:36px;height:36px;border-radius:999px;background:#fff;border:1px solid #ddeaf0;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#25475a" strokeWidth="1.7" strokeLinecap="round"><path d="M18 8.4a6 6 0 0 0-12 0c0 6-2.4 7.6-2.4 7.6h16.8S18 14.4 18 8.4z"/><path d="M13.7 19.6a2 2 0 0 1-3.4 0"/></svg><div style={css(`position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:999px;background:#ef5da8;border:1.5px solid #fff`)}></div></div>
           </div>
-          <div className="yb-scroll" style={css(`margin-top:16px;display:flex;gap:12px;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 8px`)}>
+          <HScroll extra="margin-top:16px;gap:12px;margin-left:-20px;margin-right:-20px;padding:0 20px 8px">
             {v.myClasses.map((c, i) => (
               <div key={i} onClick={c.onClick} className="yb-press-dark" style={css(`flex:none;width:206px;padding:14px;border-radius:20px;background:${c.tintBg};color:#fff;position:relative;overflow:hidden;cursor:pointer;transition:all .15s`)}>
                 <img src={c.img} alt="" style={css(`position:absolute;inset:0;width:100%;height:100%;object-fit:cover`)}/>
@@ -60,7 +61,7 @@ export default function StudentLibraryWorkScreens({ v }) {
                 </div>
               </div>
             ))}
-          </div>
+          </HScroll>
           <div style={css(`margin-top:18px;display:flex;gap:6px;padding:4px;background:#edf7f9;border-radius:14px`)}>
             {v.cwTabs.map((t, i) => (
               <div key={i} onClick={t.onClick} style={css(`flex:1;height:36px;border-radius:11px;background:${t.bg};color:${t.color};font-size:12.5px;font-weight:${t.weight};display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{t.label}</div>
@@ -101,11 +102,11 @@ export default function StudentLibraryWorkScreens({ v }) {
             </div>
           </div>
 
-          <div className="yb-scroll" style={css(`margin-top:18px;display:flex;gap:6px;padding:4px;background:#edf7f9;border-radius:14px;overflow-x:auto;margin-left:-4px;margin-right:-4px`)}>
+          <HScroll extra="margin-top:18px;gap:6px;padding:4px;background:#edf7f9;border-radius:14px;margin-left:-4px;margin-right:-4px">
             {v.classDetailTabs.map((t, i) => (
               <div key={i} onClick={t.onClick} style={css(`flex:none;height:36px;padding:0 14px;border-radius:11px;background:${t.bg};color:${t.color};font-size:12.5px;font-weight:${t.weight};display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{t.label}</div>
             ))}
-          </div>
+          </HScroll>
 
           {v.classTabFeed && (
             <div style={css(`margin-top:16px;display:flex;flex-direction:column;gap:10px`)}>

@@ -39,12 +39,22 @@ a:hover {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-/* Horizontal tab/chip/card rows only (not .yb-main, the page's own vertical
-   scroller) — claims horizontal panning so the page never fights the row
-   for a diagonal-ish swipe, and taps still register normally since native
-   scroll containers don't fire click after a real drag. */
+/* Single source of truth for every horizontal tab/chip/card row (not
+   .yb-main, the page's own vertical scroller): forces one line, enables
+   native horizontal scrolling, and claims horizontal panning so the page
+   never fights the row for a diagonal-ish swipe — taps still register
+   normally since native scroll containers don't fire click after a real
+   drag. Baking flex/nowrap/overflow-x in here (instead of repeating them
+   per screen) means any row that just adds className="yb-scroll" gets
+   correct behavior for free, and can't accidentally wrap or lose scroll. */
 .yb-scroll:not(.yb-main) {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
   touch-action: pan-x;
 }
 
