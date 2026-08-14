@@ -1,7 +1,16 @@
 import { ACCENT, BORDER, DEEP } from "../data/shared.js";
 import { LESSONS } from "../data/catalog.js";
 import { T_ASSIGNMENTS, T_BLOCKS, T_CLASSES, T_METRICS, T_PLANS, T_STUDENTS, T_SUBMISSIONS } from "../data/teacher.js";
+import { ASSIGNMENT_TYPE_LABEL, ROSTER } from "../data/coursework.js";
 import { isRubricWeightValid, rubricMax } from "./gradebook.js";
+
+// "1 tuần" -> hạn nộp tuyệt đối tính từ nowIso của prototype.
+const DUE_DAYS = { "3 ngày": 3, "1 tuần": 7, "2 tuần": 14 };
+function addDaysIso(iso, days) {
+  const d = new Date(`${iso}Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return `${d.toISOString().slice(0, 10)}T23:59:00`;
+}
 
 export const INITIAL_TEACHER = {
   tExploreView: "grid", tClassIdx: 0, tClassTab: "students", gradeIdx: 0, gradeScore: "8.5", graded: false,
@@ -14,7 +23,19 @@ export const INITIAL_TEACHER = {
   tAssignSheet: { open: false, mode: null, itemId: null, selectedId: null },
   createdClasses: [], createdAssignments: [], createdLectures: [],
   ccName: "", ccSubject: "Sinh học", ccGrade: "Lớp 8",
-  caTitle: "", caCls: "", caDue: "1 tuần", clTitle: "", clCls: "", clKind: "Video",
+  caTitle: "",
+  caInstructions: "",
+  caType: 5,
+  caCls: "",
+  caDue: "1 tuần",
+  caAllowLate: true,
+  caMaxAttempts: 2,
+  caMaxScore: 10,
+  caPassingScore: 5,
+  caRubricId: null,
+  caTargetMode: "all",
+  caTargetIds: [],
+  clTitle: "", clCls: "", clKind: "Video",
   tPlanIdx: 0,
   rubricDraft: {
     name: "Rubric mới",
@@ -166,15 +187,73 @@ export function useTeacherLogic(ctx) {
     toTCreateAssignment: () => { setState({ caCls: s.caCls || T_CLASSES.concat(s.createdClasses)[0].name }); push("tCreateAssignment"); },
     toTCreateAssignmentForClass: () => { setState({ caCls: T_CLASSES[s.tClassIdx].name }); push("tCreateAssignment"); },
     toTCreateLecture: () => { setState({ clCls: s.clCls || T_CLASSES.concat(s.createdClasses)[0].name }); push("tCreateLecture"); },
+    caTitle: s.caTitle,
+    caInstructions: s.caInstructions,
+    caMaxAttempts: String(s.caMaxAttempts),
+    caMaxScore: String(s.caMaxScore),
+    caPassingScore: String(s.caPassingScore),
+    caAllowLate: s.caAllowLate,
+    toggleCaAllowLate: () => setState({ caAllowLate: !s.caAllowLate }),
+    setCaField: (field, value) =>
+      setState({
+        [field]: ["caMaxAttempts", "caMaxScore", "caPassingScore"].includes(field)
+          ? Number(value) || 0
+          : value,
+      }),
+    caTypeOptions: Object.entries(ASSIGNMENT_TYPE_LABEL).map(([value, label]) => ({
+      label,
+      selected: s.caType === Number(value),
+      onClick: () => setState({ caType: Number(value) }),
+    })),
     caClasses: T_CLASSES.concat(s.createdClasses).map((c) => ({ label: c.name, selected: s.caCls === c.name, onClick: () => setState({ caCls: c.name }) })),
     caDueOptions: ["3 ngày", "1 tuần", "2 tuần"].map((label) => ({ label, selected: s.caDue === label, onClick: () => setState({ caDue: label }) })),
-    caPreviewTitle: `Bài tập tuần ${20 + T_ASSIGNMENTS.length + s.createdAssignments.length + 1}: Ôn tập`,
+    caRubricOptions: [{ id: null, name: "Không dùng tiêu chí" }, ...s.rubrics].map((r) => ({
+      label: r.name,
+      selected: s.caRubricId === r.id,
+      onClick: () => setState({ caRubricId: r.id }),
+    })),
+    caTargetMode: s.caTargetMode,
+    setCaTargetMode: (mode) => setState({ caTargetMode: mode }),
+    caTargets: ROSTER.map((st) => ({
+      id: st.id,
+      name: st.name,
+      selected: s.caTargetIds.includes(st.id),
+      onClick: () =>
+        setState((prev) => ({
+          caTargetIds: prev.caTargetIds.includes(st.id)
+            ? prev.caTargetIds.filter((x) => x !== st.id)
+            : [...prev.caTargetIds, st.id],
+        })),
+    })),
+    caValid:
+      s.caTitle.trim().length > 0 &&
+      s.caCls.length > 0 &&
+      (s.caTargetMode === "all" || s.caTargetIds.length > 0),
     createAssignment: () => {
-      const cls = s.caCls || T_CLASSES[0].name;
-      const total = T_CLASSES.concat(s.createdClasses).find((c) => c.name === cls);
-      const title = `Bài tập tuần ${20 + T_ASSIGNMENTS.length + s.createdAssignments.length + 1}: Ôn tập`;
-      const newAssignment = { title, cls, due: `hạn trong ${s.caDue}`, submitted: `0/${total ? total.students : 30}`, pending: "0 bài chờ chấm", isNew: true };
-      setState((prev) => ({ createdAssignments: [...prev.createdAssignments, newAssignment], tClassesTab: "upcoming" }));
+      const classesList = T_CLASSES.concat(s.createdClasses);
+      const cls = classesList.find((c) => c.name === s.caCls);
+      const id = Math.max(0, ...s.assignments.map((a) => a.id)) + 1;
+      ctx.addAssignment({
+        id,
+        classId: cls?.id ?? 1,
+        className: s.caCls,
+        title: s.caTitle,
+        type: s.caType,
+        instructions: s.caInstructions,
+        checklist: [],
+        openAtIso: s.nowIso,
+        dueAtIso: addDaysIso(s.nowIso, DUE_DAYS[s.caDue] ?? 7),
+        allowLate: s.caAllowLate,
+        maxAttempts: s.caMaxAttempts,
+        maxScore: s.caMaxScore,
+        passingScore: s.caPassingScore,
+        rubricId: s.caRubricId,
+        targetStudentIds: s.caTargetMode === "all" ? null : s.caTargetIds,
+        attachments: [],
+        isPublished: true,
+        totalStudents: Number(cls?.students ?? 32),
+      });
+      setState({ caTitle: "", caInstructions: "", caTargetIds: [], caTargetMode: "all" });
       resetTo("tClasses");
     },
     clClasses: T_CLASSES.concat(s.createdClasses).map((c) => ({ label: c.name, selected: s.clCls === c.name, onClick: () => setState({ clCls: c.name }) })),

@@ -172,32 +172,92 @@ export default function TeacherScreens({ v }) {
 
       {v.isTCreateAssignment && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
-          <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
-            <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Tạo bài tập`)}</div>
+          <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7" /></svg>
+          </div>
+          <div style={css(`margin-top:16px;font-size:20px;font-weight:700;color:#455771`)}>{v.t(`Tạo bài tập`)}</div>
+
+          <div style={css(`margin-top:16px;font-size:12.5px;font-weight:600;color:#455771`)}>{v.t(`Tiêu đề`)}</div>
+          <input value={v.caTitle} onChange={(e) => v.setCaField("caTitle", e.target.value)} placeholder={v.t(`Ví dụ: Bài tập tuần 21`)}
+            style={css(`margin-top:8px;width:100%;box-sizing:border-box;height:46px;padding:0 13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff;font-size:13.5px;color:#455771;font-family:inherit;outline:none`)} />
+
+          <div style={css(`margin-top:14px;font-size:12.5px;font-weight:600;color:#455771`)}>{v.t(`Hướng dẫn`)}</div>
+          <textarea value={v.caInstructions} onChange={(e) => v.setCaField("caInstructions", e.target.value)}
+            style={css(`margin-top:8px;width:100%;box-sizing:border-box;padding:12px 13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff;min-height:88px;font-size:13px;line-height:1.6;color:#455771;font-family:inherit;resize:vertical;outline:none`)} />
+
+          <div style={css(`margin-top:14px;font-size:12.5px;font-weight:600;color:#455771`)}>{v.t(`Loại bài tập`)}</div>
+          <div style={css(`margin-top:8px;display:flex;flex-wrap:wrap;gap:8px`)}>
+            {v.caTypeOptions.map((o, i) => (
+              <div key={i} onClick={o.onClick} style={css(`height:36px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#455771"};border-radius:999px;font-size:12.5px;font-weight:600;display:flex;align-items:center;cursor:pointer`)}>{o.label}</div>
+            ))}
           </div>
 
-          <div style={css(`margin-top:20px;font-size:13.5px;font-weight:600;color:#455771`)}>{v.t(`Lớp học`)}</div>
-          <HScroll extra="margin-top:10px;gap:8px;margin-left:-20px;margin-right:-20px;padding:0 20px 4px">
+          <div style={css(`margin-top:14px;font-size:12.5px;font-weight:600;color:#455771`)}>{v.t(`Lớp học`)}</div>
+          <div style={css(`margin-top:8px;display:flex;flex-wrap:wrap;gap:8px`)}>
             {v.caClasses.map((o, i) => (
-              <div key={i} onClick={o.onClick} style={css(`flex:none;height:40px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#455771"};border-radius:12px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;white-space:nowrap;transition:all .15s`)}>{o.label}</div>
+              <div key={i} onClick={o.onClick} style={css(`height:36px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#455771"};border-radius:999px;font-size:12.5px;font-weight:600;display:flex;align-items:center;cursor:pointer`)}>{o.label}</div>
             ))}
-          </HScroll>
+          </div>
 
-          <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#455771`)}>{v.t(`Hạn nộp`)}</div>
-          <div style={css(`margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px`)}>
+          <div style={css(`margin-top:14px;font-size:12.5px;font-weight:600;color:#455771`)}>{v.t(`Hạn nộp`)}</div>
+          <div style={css(`margin-top:8px;display:flex;gap:8px`)}>
             {v.caDueOptions.map((o, i) => (
-              <div key={i} onClick={o.onClick} style={css(`height:44px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#455771"};border-radius:14px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s`)}>{o.label}</div>
+              <div key={i} onClick={o.onClick} style={css(`flex:1;height:38px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#455771"};border-radius:12px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{o.label}</div>
             ))}
           </div>
 
-          <div style={css(`margin-top:18px;font-size:13.5px;font-weight:600;color:#455771`)}>{v.t(`Bài tập`)}</div>
-          <div style={css(`margin-top:10px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#f8fcfd`)}>
-            <div style={css(`font-size:11.5px;color:#455771`)}>{v.t(`Tiêu đề sẽ được tạo tự động`)}</div>
-            <div style={css(`font-size:15px;font-weight:700;color:#455771;margin-top:5px`)}>{v.caPreviewTitle}</div>
+          <div onClick={v.toggleCaAllowLate} style={css(`margin-top:14px;display:flex;align-items:center;gap:11px;padding:13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff;cursor:pointer`)}>
+            <div style={css(`flex:1;font-size:13px;color:#455771`)}>{v.t(`Cho phép nộp muộn`)}</div>
+            <div style={css(`position:relative;width:42px;height:24px;border-radius:999px;background:${v.caAllowLate ? "#00aaab" : "#dbe7ec"};flex:none`)}>
+              <div style={css(`position:absolute;top:2px;left:${v.caAllowLate ? "22px" : "2px"};width:20px;height:20px;border-radius:999px;background:#fff;transition:left .18s`)}></div>
+            </div>
           </div>
 
-          <div onClick={v.createAssignment} style={css(`margin-top:24px;height:54px;border-radius:16px;background:#00aaab;color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 22px rgba(0,170,171,.28)`)}>{v.t(`Tạo bài tập`)}</div>
+          <div style={css(`margin-top:14px;display:flex;gap:9px`)}>
+            <div style={css(`flex:1;min-width:0`)}>
+              <div style={css(`font-size:11px;color:#617789;margin-bottom:5px`)}>{v.t(`Số lượt tối đa`)}</div>
+              <input type="number" value={v.caMaxAttempts} onChange={(e) => v.setCaField("caMaxAttempts", e.target.value)} style={css(`width:100%;box-sizing:border-box;height:42px;padding:0 12px;border:1px solid #ddeaf0;border-radius:12px;background:#fff;font-size:13px;color:#455771;font-family:inherit;outline:none`)} />
+            </div>
+            <div style={css(`flex:1;min-width:0`)}>
+              <div style={css(`font-size:11px;color:#617789;margin-bottom:5px`)}>{v.t(`Điểm tối đa`)}</div>
+              <input type="number" value={v.caMaxScore} onChange={(e) => v.setCaField("caMaxScore", e.target.value)} style={css(`width:100%;box-sizing:border-box;height:42px;padding:0 12px;border:1px solid #ddeaf0;border-radius:12px;background:#fff;font-size:13px;color:#455771;font-family:inherit;outline:none`)} />
+            </div>
+            <div style={css(`flex:1;min-width:0`)}>
+              <div style={css(`font-size:11px;color:#617789;margin-bottom:5px`)}>{v.t(`Điểm đạt`)}</div>
+              <input type="number" value={v.caPassingScore} onChange={(e) => v.setCaField("caPassingScore", e.target.value)} style={css(`width:100%;box-sizing:border-box;height:42px;padding:0 12px;border:1px solid #ddeaf0;border-radius:12px;background:#fff;font-size:13px;color:#455771;font-family:inherit;outline:none`)} />
+            </div>
+          </div>
+
+          <div style={css(`margin-top:14px;display:flex;align-items:center;justify-content:space-between`)}>
+            <span style={css(`font-size:12.5px;font-weight:600;color:#455771`)}>{v.t(`Tiêu chí chấm điểm`)}</span>
+            <span onClick={v.toTRubricEditor} style={css(`font-size:12.5px;color:#00708f;cursor:pointer`)}>{v.t(`Tạo mới`)}</span>
+          </div>
+          <div style={css(`margin-top:8px;display:flex;flex-wrap:wrap;gap:8px`)}>
+            {v.caRubricOptions.map((o, i) => (
+              <div key={i} onClick={o.onClick} style={css(`height:36px;padding:0 14px;border:${o.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${o.selected ? "#eaf6f8" : "#fff"};color:${o.selected ? "#00708f" : "#455771"};border-radius:999px;font-size:12.5px;font-weight:600;display:flex;align-items:center;cursor:pointer`)}>{o.label}</div>
+            ))}
+          </div>
+
+          <div style={css(`margin-top:14px;font-size:12.5px;font-weight:600;color:#455771`)}>{v.t(`Giao cho`)}</div>
+          <div style={css(`margin-top:8px;display:flex;gap:8px`)}>
+            {[["all", `Cả lớp`], ["some", `Một số học sinh`]].map(([mode, label]) => (
+              <div key={mode} onClick={() => v.setCaTargetMode(mode)} style={css(`flex:1;height:38px;border:${v.caTargetMode === mode ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${v.caTargetMode === mode ? "#eaf6f8" : "#fff"};color:${v.caTargetMode === mode ? "#00708f" : "#455771"};border-radius:12px;font-size:12.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(label)}</div>
+            ))}
+          </div>
+          {v.caTargetMode === "some" && (
+            <div style={css(`margin-top:10px;display:flex;flex-direction:column;gap:8px`)}>
+              {v.caTargets.map((st) => (
+                <div key={st.id} onClick={st.onClick} style={css(`display:flex;align-items:center;gap:11px;padding:11px 13px;border:${st.selected ? "1.6px solid #00aaab" : "1px solid #ddeaf0"};background:${st.selected ? "#eaf6f8" : "#fff"};border-radius:14px;cursor:pointer`)}>
+                  <div style={css(`width:20px;height:20px;flex:none;border-radius:6px;border:${st.selected ? "none" : "1.6px solid #ddeaf0"};background:${st.selected ? "#00aaab" : "#fff"};display:flex;align-items:center;justify-content:center`)}>
+                    {st.selected && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round"><path d="M5 12.5L10 17.5 19 6.5" /></svg>}
+                  </div>
+                  <span style={css(`font-size:13px;color:#455771`)}>{st.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div onClick={v.caValid ? v.createAssignment : undefined} style={css(`margin-top:20px;height:54px;border-radius:16px;background:${v.caValid ? "#00aaab" : "#a9c6ce"};color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:${v.caValid ? "pointer" : "default"}`)}>{v.t(`Giao bài tập`)}</div>
         </div>
       )}
 
