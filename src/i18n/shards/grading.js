@@ -94,4 +94,7 @@ export default {
   "Đang hoạt động": "Active",
   "Điểm TB lớp": "Class average",
   "bài đã nộp": "submitted",
+  "bài đã chấm": "graded",
+  "Bảng điểm": "Gradebook",
+  "Hạn": "Due",
 };

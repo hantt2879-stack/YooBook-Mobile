@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { ACCENT, INK, MUTED, BORDER } from "../data/shared.js";
 import { CATS, EXAM, LESSONS, LESSON_TYPES, LEVELS, QUICK, QUICK_CORRECT, STEPS } from "../data/catalog.js";
-import { S_ASSIGNMENTS } from "../data/student.js";
 import { T_CLASSES, T_STUDENTS } from "../data/teacher.js";
 import { ASSIGNMENT_TYPE_LABEL, CURRENT_STUDENT_ID } from "../data/coursework.js";
-import { SUBMISSION_STATUS as S, canSubmit, applySubmit } from "./submissionState.js";
+import { SUBMISSION_STATUS as S, SUBMISSION_LABEL, SUBMISSION_TINT, canSubmit, applySubmit } from "./submissionState.js";
 import { rubricMax, rubricTotal } from "./gradebook.js";
 import { fmtDateTime } from "./formatDate.js";
 
@@ -270,16 +269,15 @@ export function useStudentLogic(ctx) {
     className: x.assignment.className,
     status: x.status,
     typeLabel: ASSIGNMENT_TYPE_LABEL[x.assignment.type],
-    dueLabel: `Hạn ${fmtDateTime(x.assignment.dueAtIso)}`,
+    dueLabel: `${t("Hạn")} ${fmtDateTime(x.assignment.dueAtIso)}`,
     scoreLabel: typeof x.submission?.finalScore === "number" ? String(x.submission.finalScore) : "",
     onClick: () => ctx.push("assignmentDetail", { assignmentId: x.assignment.id }),
   }));
 
   // Bảng tin lớp: đọc từ state dùng chung để hành động đăng thông báo của
-  // giáo viên hiện ngay ở phía học sinh trong cùng phiên.
-  const classFeed = [...ctx.s.announcements]
-    .sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || b.createdAtIso.localeCompare(a.createdAtIso))
-    .map((n) => ({ title: n.title, when: fmtDateTime(n.createdAtIso), body: n.body, isPinned: n.isPinned }));
+  // giáo viên hiện ngay ở phía học sinh trong cùng phiên. Sắp xếp/định dạng
+  // dùng chung với teacherFeed qua ctx.announcementFeed (useAppState.js).
+  const classFeed = ctx.announcementFeed(ctx.s.announcements);
 
   const currentAsg = ctx.s.assignments.find((a) => a.id === ctx.params.assignmentId) ?? null;
   const currentSub = currentAsg ? ctx.findSubmission(currentAsg.id, CURRENT_STUDENT_ID) : null;
@@ -561,11 +559,18 @@ export function useStudentLogic(ctx) {
     classDetailContent: CLASS_EXTRA[s.classIdx].lessons,
     classDetailFeed: classFeed,
     classDetailRoster: T_STUDENTS.map((st, i) => ({ name: st.name, tint: st.tint, initials: STUDENT_INITIALS[i] })),
-    classDetailAssignments: (() => {
-      const byTitle = new Map();
-      [...S_ASSIGNMENTS.todo, ...S_ASSIGNMENTS.done].forEach((a) => byTitle.set(a.title, a));
-      S_ASSIGNMENTS.grades.forEach((a) => byTitle.set(a.title, a));
-      return Array.from(byTitle.values()).filter((a) => a.cls === T_CLASSES[s.classIdx].name);
-    })(),
+    classDetailAssignments: myAssignments
+      .filter((x) => x.assignment.className === T_CLASSES[s.classIdx].name)
+      .map((x) => {
+        const tint = SUBMISSION_TINT[x.status];
+        return {
+          tag: SUBMISSION_LABEL[x.status],
+          tagBg: tint.bg,
+          tagColor: tint.color,
+          title: x.assignment.title,
+          due: `${t("Hạn")} ${fmtDateTime(x.assignment.dueAtIso)}`,
+          score: typeof x.submission?.finalScore === "number" ? String(x.submission.finalScore) : "",
+        };
+      }),
   };
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ACCENT, BORDER, INK, MUTED, TAB_ICONS } from "../data/shared.js";
 import { INITIAL_COURSEWORK } from "../data/coursework.js";
 import { translate } from "../i18n/dict.js";
+import { fmtDateTime } from "./formatDate.js";
 import * as N from "./navStack.js";
 
 // State gốc dùng chung. Các khoá riêng của một vai trò đã chuyển sang hook
@@ -139,6 +140,15 @@ export function useAppState(navStyle, initialExtra = {}) {
   const findSubmission = (assignmentId, studentId) =>
     s.submissions.find((x) => x.assignmentId === assignmentId && x.studentId === studentId) ?? null;
 
+  // Bảng tin lớp: ghim lên đầu rồi mới đến mới nhất. Dùng chung cho cả màn
+  // Bảng tin của học sinh (classFeed) và giáo viên (teacherFeed) — hai bên
+  // đọc cùng ctx.s.announcements nên hành động đăng thông báo hiện ngay ở
+  // phía học sinh trong cùng phiên.
+  const announcementFeed = (announcements) =>
+    [...announcements]
+      .sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || b.createdAtIso.localeCompare(a.createdAtIso))
+      .map((n) => ({ title: n.title, when: fmtDateTime(n.createdAtIso), body: n.body, isPinned: n.isPinned }));
+
   return {
     s, setState, stateRef,
     nav, screen, params, go, push, pop, replace, resetTo,
@@ -147,6 +157,6 @@ export function useAppState(navStyle, initialExtra = {}) {
     navTabs: navStyle === "tabs", navFab: navStyle === "fab", navPill: navStyle === "pill",
     tabsSplitLeft: tabs.slice(0, 2), tabsSplitRight: tabs.slice(3), tabsPill: tabs,
     roles, roleSwitch, langOptions,
-    upsertSubmission, addAssignment, addRubric, findSubmission,
+    upsertSubmission, addAssignment, addRubric, findSubmission, announcementFeed,
   };
 }

@@ -73,7 +73,7 @@ const TEACHER_PURCHASED_IDS = [2, 7, 13];
 // that useStudentLogic owns — a prototype simplification that predates this
 // hook split. Duplicated here rather than importing across hooks.
 export function useTeacherLogic(ctx) {
-  const { s, setState, go, push, pop, resetTo } = ctx;
+  const { s, setState, t, go, push, pop, resetTo } = ctx;
 
   const applyFilters = (list) => list.filter((l) => {
     if (s.exploreCat !== "Tất cả" && l.subject !== s.exploreCat) return false;
@@ -112,7 +112,12 @@ export function useTeacherLogic(ctx) {
   const gradeSub = ctx.s.submissions.find((x) => x.id === ctx.params.submissionId) ?? null;
   const studentOf = (id) => ROSTER.find((r) => r.id === id) ?? { name: `Học sinh #${id}`, initials: "HS", tint: "#8ba0ae" };
   // Bảng điểm lớp: mỗi bài tập đã xuất bản là một cột, mỗi học sinh trong sổ điểm là một hàng.
-  const gradebookAssignments = ctx.s.assignments.filter((a) => a.isPublished);
+  // Chỉ lấy bài tập của lớp classId 1 (lớp duy nhất có trong ROSTER) — màn
+  // bảng điểm/thống kê hiện tại là một bảng tổng duy nhất cho giáo viên, chưa
+  // có khái niệm chọn lớp, nên lọc cứng theo classId để tránh hiện cột/hàng
+  // rỗng cho bài tập của lớp khác (vd. classId 3) mà không học sinh nào trong
+  // ROSTER thực sự học.
+  const gradebookAssignments = ctx.s.assignments.filter((a) => a.isPublished && a.classId === 1);
   const draftScores = ctx.s.gradeDraftScores;
   const draftCriteria = (gradingRubric?.criteria ?? []).map((c) => ({
     code: c.code,
@@ -121,12 +126,11 @@ export function useTeacherLogic(ctx) {
     earned: draftScores[c.code] ?? 0,
   }));
 
-  // Bảng tin lớp: đọc từ state dùng chung, ghim lên đầu rồi mới đến mới nhất —
-  // cùng nguồn dữ liệu useStudentLogic đọc, nên đăng thông báo hiện ngay ở
-  // phía học sinh trong cùng phiên.
-  const teacherFeed = [...ctx.s.announcements]
-    .sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || b.createdAtIso.localeCompare(a.createdAtIso))
-    .map((n) => ({ title: n.title, when: fmtDateTime(n.createdAtIso), body: n.body, isPinned: n.isPinned }));
+  // Bảng tin lớp: đọc từ state dùng chung — cùng nguồn dữ liệu useStudentLogic
+  // đọc, nên đăng thông báo hiện ngay ở phía học sinh trong cùng phiên.
+  // Sắp xếp/định dạng dùng chung với classFeed qua ctx.announcementFeed
+  // (useAppState.js).
+  const teacherFeed = ctx.announcementFeed(ctx.s.announcements);
 
   const pushRecent = (id) => setState((prev) => ({ tRecentIds: [id, ...prev.tRecentIds.filter((x) => x !== id)].slice(0, 10) }));
   const openAssignSheet = (mode, itemId) => setState({ tAssignSheet: { open: true, mode, itemId, selectedId: null } });
@@ -256,15 +260,25 @@ export function useTeacherLogic(ctx) {
         },
       })),
     addCriterion: () =>
-      setState((prev) => ({
-        rubricDraft: {
-          ...prev.rubricDraft,
-          criteria: [
-            ...prev.rubricDraft.criteria,
-            { code: `C${prev.rubricDraft.criteria.length + 1}`, name: "", maxPoints: 2, weightPercent: 0 },
-          ],
-        },
-      })),
+      setState((prev) => {
+        // Dựa trên số lớn nhất trong các mã hiện có, không dựa trên độ dài mảng —
+        // tránh trùng mã sau khi xoá một tiêu chí rồi thêm mới (vd. [C1,C2] xoá
+        // C1 còn [C2], thêm mới theo độ dài sẽ ra lại "C2" và trùng với tiêu chí
+        // còn lại, khiến hai tiêu chí dùng chung một điểm khi chấm bài).
+        const maxNum = prev.rubricDraft.criteria.reduce((max, c) => {
+          const n = parseInt(String(c.code).replace(/^C/, ""), 10);
+          return Number.isFinite(n) && n > max ? n : max;
+        }, 0);
+        return {
+          rubricDraft: {
+            ...prev.rubricDraft,
+            criteria: [
+              ...prev.rubricDraft.criteria,
+              { code: `C${maxNum + 1}`, name: "", maxPoints: 2, weightPercent: 0 },
+            ],
+          },
+        };
+      }),
     removeCriterion: (index) =>
       setState((prev) => ({
         rubricDraft: {
@@ -460,7 +474,7 @@ export function useTeacherLogic(ctx) {
     tSubmissions: T_SUBMISSIONS.map((x) => ({ ...x, onClick: () => go("tGrading") })),
     toTGrading: () => push("tGrading", { assignmentId: gradingAssignmentId }),
     gradingAssignmentTitle: gradingAssignment?.title ?? "",
-    gradingProgressLabel: `${gradingSubs.filter((x) => x.status === S.GRADED).length}/${gradingSubs.length} bài đã chấm`,
+    gradingProgressLabel: `${gradingSubs.filter((x) => x.status === S.GRADED).length}/${gradingSubs.length} ${t("bài đã chấm")}`,
     gradingFilterTabs: [
       ["pending", "Chờ chấm"],
       ["graded", "Đã chấm"],
