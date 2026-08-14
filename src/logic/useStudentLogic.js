@@ -4,7 +4,7 @@ import { CATS, EXAM, LESSONS, LESSON_TYPES, LEVELS, QUICK, QUICK_CORRECT, STEPS 
 import { S_ASSIGNMENTS } from "../data/student.js";
 import { T_CLASSES, T_STUDENTS } from "../data/teacher.js";
 import { ASSIGNMENT_TYPE_LABEL, CURRENT_STUDENT_ID } from "../data/coursework.js";
-import { SUBMISSION_STATUS as S, canSubmit } from "./submissionState.js";
+import { SUBMISSION_STATUS as S, canSubmit, applySubmit } from "./submissionState.js";
 
 const REASON_LABEL = {
   notOpen: "Bài tập chưa mở",
@@ -30,6 +30,10 @@ export const INITIAL_STUDENT = {
   examIdx: 0, answers: [null, null, null], examSecs: 596,
   saved: false,
   cwTab: "todo", asgIdx: 0, submitted: false,
+  draftText: "",
+  draftFiles: [],
+  draftSavedAtIso: null,
+  submitConfirmOpen: false,
   classIdx: 0, classDetailTab: "feed",
   exploreCat: "Tất cả", exploreSort: "newest", search: "", sortMenuOpen: false,
   filterOpen: false, fLevel: "Tất cả", fGrade: "Tất cả", fTypes: [], fTopic: "",
@@ -431,6 +435,50 @@ export function useStudentLogic(ctx) {
     }),
     cwItems,
     isAssignmentDetail: ctx.screen === "assignmentDetail",
+    isAssignmentSubmit: ctx.screen === "assignmentSubmit",
+    draftText: ctx.s.draftText,
+    setDraftText: (text) => ctx.setState({ draftText: text }),
+    draftFiles: ctx.s.draftFiles,
+    // Prototype không đọc tệp thật — mỗi lần bấm thêm một tệp mẫu để duyệt giao diện.
+    addDraftFile: () =>
+      ctx.setState((prev) => ({
+        draftFiles: [
+          ...prev.draftFiles,
+          { name: `bai-lam-${prev.draftFiles.length + 1}.pdf`, size: "1,1 MB", kind: "pdf" },
+        ],
+      })),
+    removeDraftFile: (index) =>
+      ctx.setState((prev) => ({ draftFiles: prev.draftFiles.filter((_, i) => i !== index) })),
+    draftSavedLabel: ctx.s.draftSavedAtIso ? `Đã lưu nháp ${fmt(ctx.s.draftSavedAtIso)}` : "",
+    saveDraft: () => ctx.setState({ draftSavedAtIso: ctx.s.nowIso }),
+    canConfirmSubmit: ctx.s.draftText.trim().length > 0 || ctx.s.draftFiles.length > 0,
+    submitConfirmOpen: ctx.s.submitConfirmOpen,
+    openSubmitConfirm: () => ctx.setState({ submitConfirmOpen: true }),
+    closeSubmitConfirm: () => ctx.setState({ submitConfirmOpen: false }),
+    confirmSubmit: () => {
+      if (!currentAsg) return;
+      const base = currentSub ?? {
+        id: ctx.s.nextSubmissionId,
+        assignmentId: currentAsg.id,
+        studentId: CURRENT_STUDENT_ID,
+        status: S.NOT_STARTED,
+        attemptNumber: 0,
+        attachments: [],
+        finalScore: null,
+        feedback: "",
+        gradedAtIso: null,
+        criteriaScores: {},
+        criteriaComments: {},
+      };
+      const next = applySubmit(
+        { ...base, answerText: ctx.s.draftText, attachments: ctx.s.draftFiles },
+        currentAsg,
+        ctx.s.nowIso
+      );
+      ctx.upsertSubmission(next);
+      ctx.setState({ submitConfirmOpen: false, draftText: "", draftFiles: [], draftSavedAtIso: null });
+      ctx.replace("submissionResult", { assignmentId: currentAsg.id });
+    },
     asgSubmission: currentSub,
     asgStatus: statusOf(currentSub),
     asgGate: { ...gate, reasonLabel: gate.reason ? REASON_LABEL[gate.reason] : "" },

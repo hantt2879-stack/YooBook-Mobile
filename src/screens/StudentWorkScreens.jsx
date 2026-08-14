@@ -1,4 +1,5 @@
 import { css } from "../css.js";
+import ConfirmSheet from "./ui/ConfirmSheet.jsx";
 import EmptyState from "./ui/EmptyState.jsx";
 import FilePicker from "./ui/FilePicker.jsx";
 import StatusChip from "./ui/StatusChip.jsx";
@@ -21,8 +22,8 @@ function Fact({ label, value }) {
 }
 
 export default function StudentWorkScreens({ v }) {
-  if (!v.isAssignmentDetail) return null;
-  if (!v.asg) {
+  if (!v.isAssignmentDetail && !v.isAssignmentSubmit && !v.isSubmissionResult && !v.isSubmissionHistory) return null;
+  if (v.isAssignmentDetail && !v.asg) {
     return (
       <div style={css(`padding:6px 20px 40px`)}>
         <BackButton onClick={v.back} />
@@ -34,6 +35,8 @@ export default function StudentWorkScreens({ v }) {
   const gate = v.asgGate;
 
   return (
+    <>
+    {v.isAssignmentDetail && (
     <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
       <BackButton onClick={v.back} />
 
@@ -110,5 +113,59 @@ export default function StudentWorkScreens({ v }) {
         </div>
       )}
     </div>
+    )}
+
+      {v.isAssignmentSubmit && v.asg && (
+        <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
+          <BackButton onClick={v.back} />
+          <div style={css(`margin-top:16px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#00aaab`)}>{v.asg.className}</div>
+          <div style={css(`font-size:19px;font-weight:700;color:#455771;line-height:1.32;margin-top:6px;text-wrap:pretty`)}>{v.asg.title}</div>
+
+          <div style={css(`margin-top:18px;font-size:14px;font-weight:600;color:#455771`)}>{v.t(`Bài làm của bạn`)}</div>
+          <textarea
+            value={v.draftText}
+            onChange={(e) => v.setDraftText(e.target.value)}
+            placeholder={v.t(`Nhập bài làm của bạn...`)}
+            style={css(`margin-top:10px;width:100%;box-sizing:border-box;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;min-height:150px;font-size:13px;line-height:1.6;color:#455771;font-family:inherit;resize:vertical;outline:none`)}
+          />
+
+          <div style={css(`margin-top:14px;font-size:14px;font-weight:600;color:#455771`)}>{v.t(`Đính kèm tệp`)}</div>
+          <div style={css(`margin-top:9px`)}>
+            <FilePicker
+              files={v.draftFiles}
+              onAdd={v.addDraftFile}
+              onRemove={v.removeDraftFile}
+              addLabel={v.t(`Đính kèm tệp`)}
+              addHint={v.t(`Ảnh, PDF hoặc tài liệu, tối đa 20MB`)}
+            />
+          </div>
+
+          {v.draftSavedLabel && (
+            <div style={css(`margin-top:12px;font-size:11.5px;color:#15803d`)}>{v.draftSavedLabel}</div>
+          )}
+
+          <div style={css(`margin-top:20px;display:flex;gap:11px`)}>
+            <div onClick={v.saveDraft} style={css(`width:126px;height:52px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:14.5px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Lưu nháp`)}</div>
+            <div
+              onClick={v.canConfirmSubmit ? v.openSubmitConfirm : undefined}
+              style={css(`flex:1;height:52px;border-radius:16px;background:${v.canConfirmSubmit ? "#00aaab" : "#a9c6ce"};color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:${v.canConfirmSubmit ? "pointer" : "default"}`)}
+            >
+              {v.t(`Nộp bài`)}
+            </div>
+          </div>
+
+          <ConfirmSheet
+            open={v.submitConfirmOpen}
+            title={v.t(`Xác nhận nộp bài`)}
+            desc={v.asgGate.willBeLate ? v.t(`Bài sẽ được ghi nhận là nộp muộn.`) : v.t(`Sau khi nộp bạn không sửa được nữa.`)}
+            confirmLabel={v.t(`Nộp bài`)}
+            cancelLabel={v.t(`Hủy`)}
+            tone={v.asgGate.willBeLate ? "warning" : "accent"}
+            onConfirm={v.confirmSubmit}
+            onCancel={v.closeSubmitConfirm}
+          />
+        </div>
+      )}
+    </>
   );
 }

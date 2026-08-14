@@ -31,6 +31,8 @@ export default {
   "Nộp lại": "Resubmit",
   "Lưu nháp": "Save draft",
   "Đã lưu nháp": "Draft saved",
+  "Nhập bài làm của bạn...": "Enter your work...",
+  "Hủy": "Cancel",
   "Xác nhận nộp bài": "Confirm submission",
   "Bài sẽ được ghi nhận là nộp muộn.": "This will be recorded as a late submission.",
   "Sau khi nộp bạn không sửa được nữa.": "You cannot edit after submitting.",
