@@ -213,6 +213,57 @@ export default function TeacherGradingScreens({ v }) {
           </div>
         </div>
       )}
+
+      {v.isTAssignmentStats && (
+        <div style={css(`padding:6px 20px 120px;animation:ybup .3s ease`)}>
+          <BackButton onClick={v.back} />
+          <div style={css(`margin-top:16px;font-size:20px;font-weight:700;color:#455771`)}>{v.t(`Thống kê bài tập`)}</div>
+          <div style={css(`margin-top:16px;display:flex;flex-direction:column;gap:11px`)}>
+            {v.statsRows.length === 0 && <EmptyState title={v.t(`Chưa có bài tập nào`)} />}
+            {v.statsRows.map((r) => (
+              <div key={r.assignmentId} onClick={r.onClick} style={css(`padding:15px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer`)}>
+                <div style={css(`font-size:14px;font-weight:600;color:#455771;line-height:1.4;text-wrap:pretty`)}>{r.title}</div>
+                <div style={css(`margin-top:11px;height:6px;border-radius:999px;background:#edf7f9;overflow:hidden`)}>
+                  <div style={css(`height:100%;width:${r.completionPct};border-radius:999px;background:#00aaab`)}></div>
+                </div>
+                <div style={css(`margin-top:10px;display:flex;align-items:center;gap:14px;font-size:11.5px;color:#617789`)}>
+                  <span>{v.t(`Đã nộp`)} <b style={css(`color:#455771`)}>{r.submittedLabel}</b></span>
+                  <span>{v.t(`Đã chấm`)} <b style={css(`color:#455771`)}>{r.gradedLabel}</b></span>
+                  <span>{v.t(`TB`)} <b style={css(`color:#00708f`)}>{r.averageLabel}</b></span>
+                  {r.rangeLabel && <span>{r.rangeLabel}</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {v.isTClassProgress && (
+        <div style={css(`padding:6px 20px 120px;animation:ybup .3s ease`)}>
+          <BackButton onClick={v.back} />
+          <div style={css(`margin-top:16px;font-size:20px;font-weight:700;color:#455771`)}>{v.t(`Tiến độ lớp`)}</div>
+          <div style={css(`margin-top:16px;display:flex;gap:9px`)}>
+            {v.classProgressSummary.map((m, i) => (
+              <div key={i} style={css(`flex:1;min-width:0;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;text-align:center`)}>
+                <div style={css(`font-size:22px;font-weight:700;color:#00708f;line-height:1.1`)}>{m.value}</div>
+                <div style={css(`font-size:10.5px;color:#617789;margin-top:4px`)}>{v.t(m.label)}</div>
+              </div>
+            ))}
+          </div>
+          <div style={css(`margin-top:16px;display:flex;flex-direction:column;gap:10px`)}>
+            {v.classProgressStudents.map((st) => (
+              <div key={st.studentId} style={css(`display:flex;align-items:center;gap:11px;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff`)}>
+                <div style={css(`width:38px;height:38px;flex:none;border-radius:999px;background:${st.tint};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:12.5px`)}>{st.initials}</div>
+                <div style={css(`flex:1;min-width:0`)}>
+                  <div style={css(`font-size:13.5px;font-weight:600;color:#455771`)}>{st.name}</div>
+                  <div style={css(`font-size:11px;color:#617789;margin-top:3px`)}>{st.submittedLabel}</div>
+                </div>
+                <div style={css(`flex:none;font-size:17px;font-weight:700;color:#00708f`)}>{st.averageLabel}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }

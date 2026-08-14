@@ -2,7 +2,7 @@ import { ACCENT } from "../data/shared.js";
 import { LESSONS } from "../data/catalog.js";
 import { T_ASSIGNMENTS, T_BLOCKS, T_CLASSES, T_METRICS, T_PLANS, T_STUDENTS, T_SUBMISSIONS } from "../data/teacher.js";
 import { ASSIGNMENT_TYPE_LABEL, ROSTER } from "../data/coursework.js";
-import { averageScore, isRubricWeightValid, rubricMax, rubricTotal } from "./gradebook.js";
+import { assignmentStats, averageScore, isRubricWeightValid, rubricMax, rubricTotal } from "./gradebook.js";
 import { SUBMISSION_STATUS as S, SUBMISSION_TINT, applyGrade, applyReturn } from "./submissionState.js";
 import { fmtDateTime } from "./formatDate.js";
 
@@ -144,6 +144,46 @@ export function useTeacherLogic(ctx) {
     isTGrading: ctx.screen === "tGrading", isTGrade: ctx.screen === "tGrade",
     isTGradebook: ctx.screen === "tGradebook",
     toTGradebook: () => push("tGradebook"),
+    isTAssignmentStats: ctx.screen === "tAssignmentStats",
+    isTClassProgress: ctx.screen === "tClassProgress",
+    toTAssignmentStats: () => ctx.push("tAssignmentStats"),
+    toTClassProgress: () => ctx.push("tClassProgress"),
+    statsRows: gradebookAssignments.map((a) => {
+      const subs = ctx.s.submissions.filter((x) => x.assignmentId === a.id);
+      const st = assignmentStats(subs, a.totalStudents);
+      return {
+        assignmentId: a.id,
+        title: a.title,
+        submittedLabel: `${st.submittedCount}/${a.totalStudents}`,
+        gradedLabel: `${st.gradedCount}`,
+        completionPct: `${st.completionRate}%`,
+        averageLabel: st.averageScore === null ? "–" : String(st.averageScore),
+        rangeLabel: st.minScore === null ? "" : `${st.minScore} – ${st.maxScore}`,
+        onClick: () => ctx.push("tGrading", { assignmentId: a.id }),
+      };
+    }),
+    classProgressSummary: (() => {
+      const all = ctx.s.submissions;
+      const avg = averageScore(all);
+      const activeIds = new Set(all.map((x) => x.studentId));
+      return [
+        { label: "Sĩ số", value: String(ROSTER.length) },
+        { label: "Đang hoạt động", value: String(activeIds.size) },
+        { label: "Điểm TB lớp", value: avg === null ? "–" : String(avg) },
+      ];
+    })(),
+    classProgressStudents: ROSTER.map((st) => {
+      const mySubs = ctx.s.submissions.filter((x) => x.studentId === st.id);
+      const avg = averageScore(mySubs);
+      return {
+        studentId: st.id,
+        name: st.name,
+        initials: st.initials,
+        tint: st.tint,
+        submittedLabel: `${mySubs.length}/${gradebookAssignments.length} bài đã nộp`,
+        averageLabel: avg === null ? "–" : String(avg),
+      };
+    }),
     gradebookColumns: gradebookAssignments.map((a) => ({
       assignmentId: a.id,
       // Nhãn cột phải rất ngắn vì bảng cuộn ngang trên màn hình hẹp.
@@ -564,6 +604,11 @@ export function useTeacherLogic(ctx) {
       { label: "Tạo giáo án", iconPath: "M4.5 5.4A1.9 1.9 0 0 1 6.4 3.5H17a1.9 1.9 0 0 1 1.9 1.9v13.2H6.4a1.9 1.9 0 0 0-1.9 1.9V5.4zM8.5 8h6.5M8.5 11.5h6.5", bg: "#eaf6f8", color: "#00708f", onClick: () => go("tPlan") },
       { label: "Tạo bài tập", iconPath: "M8.5 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5M8.5 5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2zM9 14l2.2 2.2L15.5 12", bg: "#eaf6f8", color: ACCENT, onClick: () => { setState({ caCls: s.caCls || T_CLASSES.concat(s.createdClasses)[0].name }); push("tCreateAssignment"); } },
       { label: "Tạo bài giảng", iconPath: "M4 6h16v10H4zM8 20h8M12 16v4", bg: "#fdeef5", color: "#b13a75", onClick: () => { setState({ clCls: s.clCls || T_CLASSES.concat(s.createdClasses)[0].name }); push("tCreateLecture"); } },
+      { label: "Chấm bài", iconPath: "M9 14l2.2 2.2L15.5 12M7 3.5h10a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5z", bg: "#e7f2fb", color: "#0b6aa3", onClick: () => push("tGrading", {}) },
+      { label: "Bảng điểm", iconPath: "M4 20V10.5M10 20V4.5M16 20v-7M21.5 20h-19", bg: "#f0fdf4", color: "#15803d", onClick: () => push("tGradebook") },
+      { label: "Thống kê bài tập", iconPath: "M5 19V9M12 19V5M19 19v-6", bg: "#fff5e6", color: "#b45309", onClick: () => push("tAssignmentStats") },
+      { label: "Tiến độ lớp", iconPath: "M12 12.4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7.2 7.1c1.3-3.4 4-5.1 7.2-5.1s5.9 1.7 7.2 5.1", bg: "#eaf6f8", color: "#00708f", onClick: () => push("tClassProgress") },
+      { label: "Đăng thông báo", iconPath: "M4 9.5h4l7-4.5v14l-7-4.5H4zM18 9a3.4 3.4 0 0 1 0 6", bg: "#fdeef5", color: "#b13a75", onClick: () => push("tAnnouncementCreate") },
     ],
   };
 }

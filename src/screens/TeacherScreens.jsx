@@ -24,9 +24,9 @@ export default function TeacherScreens({ v }) {
               ))}
             </div>
           </div>
-          <div style={css(`padding:16px 20px 0;display:flex;gap:10px`)}>
+          <div style={css(`padding:16px 20px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px`)}>
             {v.tQuickActions.map((q, i) => (
-              <div key={i} onClick={q.onClick} style={css(`flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:13px 6px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer;transition:all .15s`)}>
+              <div key={i} onClick={q.onClick} style={css(`display:flex;flex-direction:column;align-items:center;gap:8px;padding:13px 6px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer;transition:all .15s`)}>
                 <div style={css(`width:38px;height:38px;border-radius:12px;background:${q.bg};display:flex;align-items:center;justify-content:center`)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={q.color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={q.iconPath}/></svg></div>
                 <span style={css(`font-size:11px;font-weight:600;color:#195658;text-align:center;line-height:1.3`)}>{q.label}</span>
               </div>

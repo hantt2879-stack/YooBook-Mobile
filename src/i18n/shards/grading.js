@@ -90,4 +90,8 @@ export default {
     "The student will see this back in To do with your feedback. The current score will be cleared.",
   "TB": "Avg",
   "Chạm vào ô điểm để mở bài nộp.": "Tap a cell to open the submission.",
+  "Sĩ số": "Class size",
+  "Đang hoạt động": "Active",
+  "Điểm TB lớp": "Class average",
+  "bài đã nộp": "submitted",
 };
