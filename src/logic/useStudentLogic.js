@@ -5,6 +5,7 @@ import { S_ASSIGNMENTS } from "../data/student.js";
 import { T_CLASSES, T_STUDENTS } from "../data/teacher.js";
 import { ASSIGNMENT_TYPE_LABEL, CURRENT_STUDENT_ID } from "../data/coursework.js";
 import { SUBMISSION_STATUS as S, canSubmit, applySubmit } from "./submissionState.js";
+import { rubricMax, rubricTotal } from "./gradebook.js";
 
 const REASON_LABEL = {
   notOpen: "Bài tập chưa mở",
@@ -436,6 +437,46 @@ export function useStudentLogic(ctx) {
     cwItems,
     isAssignmentDetail: ctx.screen === "assignmentDetail",
     isAssignmentSubmit: ctx.screen === "assignmentSubmit",
+    isSubmissionResult: ctx.screen === "submissionResult",
+    isSubmissionHistory: ctx.screen === "submissionHistory",
+    resultIsReturned: currentSub?.status === S.RETURNED,
+    resultView: currentSub && currentAsg && (() => {
+      const criteriaRows = (rubric?.criteria ?? []).map((c) => ({
+        code: c.code,
+        name: c.name,
+        earned: currentSub.criteriaScores?.[c.code] ?? 0,
+        max: c.maxPoints,
+      }));
+      const graded = currentSub.status === S.GRADED;
+      return {
+        submittedLabel: fmt(currentSub.submittedAtIso),
+        isLate: !!currentSub.isLate,
+        scoreLabel: graded ? String(currentSub.finalScore) : "—",
+        maxScoreLabel: String(currentAsg.maxScore),
+        passed: graded && currentSub.finalScore >= currentAsg.passingScore,
+        feedback: currentSub.feedback ?? "",
+        answerText: currentSub.answerText ?? "",
+        attachments: currentSub.attachments ?? [],
+        criteriaRows,
+        totalLabel: criteriaRows.length
+          ? `${rubricTotal(criteriaRows.map((r) => ({ earnedPoints: r.earned })))} / ${rubricMax(criteriaRows.map((r) => ({ maxPoints: r.max })))}`
+          : "",
+      };
+    })(),
+    historyRows: currentSub
+      ? Array.from({ length: currentSub.attemptNumber }, (_, i) => {
+          const n = currentSub.attemptNumber - i;
+          const isCurrent = n === currentSub.attemptNumber;
+          return {
+            attemptNumber: n,
+            submittedLabel: isCurrent ? fmt(currentSub.submittedAtIso) : "",
+            status: isCurrent ? currentSub.status : S.SUBMITTED,
+            statusLabel: isCurrent ? "" : "Đã thay thế",
+            scoreLabel:
+              isCurrent && typeof currentSub.finalScore === "number" ? String(currentSub.finalScore) : "",
+          };
+        })
+      : [],
     draftText: ctx.s.draftText,
     setDraftText: (text) => ctx.setState({ draftText: text }),
     draftFiles: ctx.s.draftFiles,

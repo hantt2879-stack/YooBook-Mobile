@@ -166,6 +166,95 @@ export default function StudentWorkScreens({ v }) {
           />
         </div>
       )}
+
+      {v.isSubmissionResult && v.resultView && (
+        <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
+          <BackButton onClick={v.back} />
+          <div style={css(`margin-top:16px;display:flex;align-items:center;gap:8px`)}>
+            <StatusChip status={v.asgStatus} t={v.t} />
+            {v.resultView.isLate && <span style={css(`font-size:11px;color:#b45309`)}>{v.t(`Nộp muộn`)}</span>}
+          </div>
+          <div style={css(`font-size:19px;font-weight:700;color:#455771;line-height:1.32;margin-top:8px;text-wrap:pretty`)}>{v.asg.title}</div>
+          <div style={css(`font-size:11.5px;color:#617789;margin-top:5px`)}>{v.t(`Lần nộp`)} {v.asgSubmission.attemptNumber} · {v.resultView.submittedLabel}</div>
+
+          <div style={css(`margin-top:16px;padding:18px;border-radius:20px;background:${v.resultIsReturned ? "#fdeef5" : "#eaf6f8"};display:flex;align-items:center;gap:16px`)}>
+            <div style={css(`font-size:38px;font-weight:700;color:${v.resultIsReturned ? "#b13a75" : "#00708f"};line-height:1`)}>{v.resultView.scoreLabel}</div>
+            <div style={css(`flex:1;min-width:0`)}>
+              <div style={css(`font-size:12px;color:#617789`)}>{v.t(`Điểm tối đa`)} {v.resultView.maxScoreLabel}</div>
+              {v.resultView.scoreLabel !== "—" && (
+                <div style={css(`margin-top:4px;font-size:13px;font-weight:600;color:${v.resultView.passed ? "#15803d" : "#b45309"}`)}>
+                  {v.resultView.passed ? v.t(`Đạt`) : v.t(`Chưa đạt`)}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {v.resultIsReturned && (
+            <div style={css(`margin-top:12px;padding:14px;border:1.4px solid #f3c6dd;border-radius:16px;background:#fff`)}>
+              <div style={css(`font-size:13.5px;font-weight:600;color:#b13a75`)}>{v.t(`Giáo viên đã trả bài`)}</div>
+              <div style={css(`font-size:12.5px;line-height:1.6;color:#455771;margin-top:6px;text-wrap:pretty`)}>{v.resultView.feedback}</div>
+              <div onClick={v.toAssignmentSubmit} style={css(`margin-top:14px;height:46px;border-radius:14px;background:#00aaab;color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Nộp lại`)}</div>
+            </div>
+          )}
+
+          {!v.resultIsReturned && v.resultView.feedback && (
+            <>
+              <div style={css(`margin-top:18px;font-size:14px;font-weight:600;color:#455771`)}>{v.t(`Nhận xét của giáo viên`)}</div>
+              <div style={css(`margin-top:9px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;font-size:13px;line-height:1.6;color:#455771;text-wrap:pretty`)}>{v.resultView.feedback}</div>
+            </>
+          )}
+
+          {v.resultView.criteriaRows.length > 0 && (
+            <>
+              <div style={css(`margin-top:18px;display:flex;align-items:baseline;justify-content:space-between`)}>
+                <div style={css(`font-size:14px;font-weight:600;color:#455771`)}>{v.t(`Tiêu chí chấm điểm`)}</div>
+                <div style={css(`font-size:12.5px;font-weight:600;color:#00708f`)}>{v.resultView.totalLabel}</div>
+              </div>
+              <div style={css(`margin-top:9px;display:flex;flex-direction:column;gap:8px`)}>
+                {v.resultView.criteriaRows.map((r) => (
+                  <div key={r.code} style={css(`padding:12px 13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff`)}>
+                    <div style={css(`display:flex;align-items:center;gap:10px`)}>
+                      <span style={css(`flex:1;min-width:0;font-size:12.5px;color:#455771;line-height:1.45`)}>{r.name}</span>
+                      <span style={css(`flex:none;font-size:12.5px;font-weight:600;color:#00708f`)}>{r.earned} / {r.max}</span>
+                    </div>
+                    <div style={css(`margin-top:8px;height:5px;border-radius:999px;background:#edf7f9;overflow:hidden`)}>
+                      <div style={css(`height:100%;width:${r.max ? Math.round((r.earned / r.max) * 100) : 0}%;border-radius:999px;background:#00aaab`)}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          <div style={css(`margin-top:18px;font-size:14px;font-weight:600;color:#455771`)}>{v.t(`Bài làm của bạn`)}</div>
+          <div style={css(`margin-top:9px;padding:14px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;font-size:13px;line-height:1.6;color:#455771;text-wrap:pretty`)}>{v.resultView.answerText}</div>
+          {v.resultView.attachments.length > 0 && (
+            <div style={css(`margin-top:11px`)}><FilePicker files={v.resultView.attachments} readOnly /></div>
+          )}
+
+          <div onClick={v.toSubmissionHistory} style={css(`margin-top:18px;height:48px;border-radius:16px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Lịch sử nộp bài`)}</div>
+        </div>
+      )}
+
+      {v.isSubmissionHistory && (
+        <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
+          <BackButton onClick={v.back} />
+          <div style={css(`margin-top:16px;font-size:20px;font-weight:700;color:#455771`)}>{v.t(`Lịch sử nộp bài`)}</div>
+          <div style={css(`font-size:12.5px;color:#617789;margin-top:4px;text-wrap:pretty`)}>{v.asg?.title}</div>
+          <div style={css(`margin-top:16px;display:flex;flex-direction:column;gap:10px`)}>
+            {v.historyRows.map((r) => (
+              <div key={r.attemptNumber} style={css(`display:flex;align-items:center;gap:11px;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff`)}>
+                <div style={css(`width:34px;height:34px;flex:none;border-radius:999px;background:#eaf6f8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#00708f`)}>{r.attemptNumber}</div>
+                <div style={css(`flex:1;min-width:0`)}>
+                  <div style={css(`font-size:13px;font-weight:600;color:#455771`)}>{v.t(`Lần nộp`)} {r.attemptNumber}</div>
+                  <div style={css(`font-size:11px;color:#617789;margin-top:2px`)}>{r.submittedLabel || v.t(r.statusLabel)}</div>
+                </div>
+                {r.scoreLabel && <div style={css(`font-size:17px;font-weight:700;color:#00708f;flex:none`)}>{r.scoreLabel}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }

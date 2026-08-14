@@ -60,4 +60,7 @@ export default {
   "Bài tập có thể đã bị gỡ khỏi lớp.": "This assignment may have been removed from the class.",
   "Cho phép nộp muộn": "Late submission allowed",
   "Không nhận bài muộn": "Late submissions not accepted",
+  "Đạt": "Passed",
+  "Chưa đạt": "Not passed",
+  "Đã thay thế": "Replaced",
 };
