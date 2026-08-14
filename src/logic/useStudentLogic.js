@@ -3,6 +3,25 @@ import { ACCENT, INK, MUTED, BORDER } from "../data/shared.js";
 import { CATS, EXAM, LESSONS, LESSON_TYPES, LEVELS, QUICK, QUICK_CORRECT, STEPS } from "../data/catalog.js";
 import { S_ASSIGNMENTS } from "../data/student.js";
 import { T_CLASSES, T_STUDENTS } from "../data/teacher.js";
+import { ASSIGNMENT_TYPE_LABEL, CURRENT_STUDENT_ID } from "../data/coursework.js";
+import { SUBMISSION_STATUS as S, canSubmit } from "./submissionState.js";
+
+const REASON_LABEL = {
+  notOpen: "Bài tập chưa mở",
+  closed: "Đã quá hạn nộp",
+  noAttemptsLeft: "Đã hết lượt nộp",
+  alreadyGraded: "Bài đã được chấm",
+};
+
+// "2026-05-17T23:59:00" -> "17/05 · 23:59"
+function fmt(iso) {
+  if (!iso) return "";
+  return `${iso.slice(8, 10)}/${iso.slice(5, 7)} · ${iso.slice(11, 16)}`;
+}
+
+function statusOf(submission) {
+  return submission ? submission.status : S.NOT_STARTED;
+}
 
 export const INITIAL_STUDENT = {
   tab: "home", view: "grid",
@@ -238,6 +257,38 @@ export function useStudentLogic(ctx) {
     { title: "Chiến dịch Điện Biên Phủ", subject: "Lịch sử", when: "Thứ 6 · 16/05", duration: "22 phút", status: "Hoàn thành", tint: LESSONS[3].tint },
   ].map((a) => ({ ...a, done: a.status === "Hoàn thành" }));
 
+  const myAssignments = ctx.s.assignments
+    .filter((a) => a.isPublished)
+    .filter((a) => !a.targetStudentIds || a.targetStudentIds.includes(CURRENT_STUDENT_ID))
+    .map((a) => {
+      const sub = ctx.findSubmission(a.id, CURRENT_STUDENT_ID);
+      return { assignment: a, submission: sub, status: statusOf(sub) };
+    });
+
+  const TAB_FILTER = {
+    todo: (x) => [S.NOT_STARTED, S.IN_PROGRESS, S.RETURNED].includes(x.status),
+    done: (x) => [S.SUBMITTED, S.LATE_SUBMITTED, S.RESUBMITTED].includes(x.status),
+    grades: (x) => x.status === S.GRADED,
+  };
+
+  const cwItems = myAssignments.filter(TAB_FILTER[s.cwTab]).map((x) => ({
+    id: x.assignment.id,
+    title: x.assignment.title,
+    className: x.assignment.className,
+    status: x.status,
+    typeLabel: ASSIGNMENT_TYPE_LABEL[x.assignment.type],
+    dueLabel: `Hạn ${fmt(x.assignment.dueAtIso)}`,
+    scoreLabel: typeof x.submission?.finalScore === "number" ? String(x.submission.finalScore) : "",
+    onClick: () => ctx.push("assignmentDetail", { assignmentId: x.assignment.id }),
+  }));
+
+  const currentAsg = ctx.s.assignments.find((a) => a.id === ctx.params.assignmentId) ?? null;
+  const currentSub = currentAsg ? ctx.findSubmission(currentAsg.id, CURRENT_STUDENT_ID) : null;
+  const gate = currentAsg
+    ? canSubmit(currentAsg, currentSub ?? { status: S.NOT_STARTED, attemptNumber: 0 }, ctx.s.nowIso)
+    : { allowed: false, reason: null, willBeLate: false };
+  const rubric = currentAsg ? ctx.s.rubrics.find((r) => r.id === currentAsg.rubricId) : null;
+
   return {
     isHome: ctx.screen === "home",
     isLearningActivity: ctx.screen === "learningActivity", isStudyTime: ctx.screen === "studyTime",
@@ -245,7 +296,7 @@ export function useStudentLogic(ctx) {
     isExplore: ctx.screen === "explore", isDetail: ctx.screen === "detail", isPlayer: ctx.screen === "player",
     isComplete: ctx.screen === "complete", isExam: ctx.screen === "exam", isExamResult: ctx.screen === "examresult",
     isLibrary: ctx.screen === "library",
-    isClasswork: ctx.screen === "classwork", isAssignment: ctx.screen === "assignment",
+    isClasswork: ctx.screen === "classwork",
     isClassDetail: ctx.screen === "classDetail",
 
     toExplore: () => go("explore"),
@@ -378,7 +429,30 @@ export function useStudentLogic(ctx) {
       const on = s.cwTab === k;
       return { label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ cwTab: k }) };
     }),
-    cwItems: S_ASSIGNMENTS[s.cwTab].map((a, i) => ({ ...a, hasScore: !!a.score, onClick: () => { setState({ asgIdx: i, submitted: s.cwTab !== "todo" }); push("assignment"); } })),
+    cwItems,
+    isAssignmentDetail: ctx.screen === "assignmentDetail",
+    asgSubmission: currentSub,
+    asgStatus: statusOf(currentSub),
+    asgGate: { ...gate, reasonLabel: gate.reason ? REASON_LABEL[gate.reason] : "" },
+    asg: currentAsg && {
+      id: currentAsg.id,
+      title: currentAsg.title,
+      className: currentAsg.className,
+      typeLabel: ASSIGNMENT_TYPE_LABEL[currentAsg.type],
+      instructions: currentAsg.instructions,
+      checklist: currentAsg.checklist.map((text) => ({ text })),
+      openLabel: fmt(currentAsg.openAtIso),
+      dueLabel: fmt(currentAsg.dueAtIso),
+      maxScore: String(currentAsg.maxScore),
+      passingScore: String(currentAsg.passingScore),
+      attemptsLeftLabel: `${Math.max(0, currentAsg.maxAttempts - (currentSub?.attemptNumber ?? 0))}/${currentAsg.maxAttempts}`,
+      allowLateLabel: currentAsg.allowLate ? "Cho phép nộp muộn" : "Không nhận bài muộn",
+      attachments: currentAsg.attachments,
+      criteria: rubric ? rubric.criteria : [],
+    },
+    toAssignmentSubmit: () => ctx.push("assignmentSubmit", { assignmentId: ctx.params.assignmentId }),
+    toSubmissionResult: () => ctx.push("submissionResult", { assignmentId: ctx.params.assignmentId }),
+    toSubmissionHistory: () => ctx.push("submissionHistory", { assignmentId: ctx.params.assignmentId }),
 
     myClasses: T_CLASSES.map((c, i) => ({
       ...c, tintBg: c.tint,
@@ -410,15 +484,5 @@ export function useStudentLogic(ctx) {
       S_ASSIGNMENTS.grades.forEach((a) => byTitle.set(a.title, a));
       return Array.from(byTitle.values()).filter((a) => a.cls === T_CLASSES[s.classIdx].name);
     })(),
-    asgTitle: (S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0]).title,
-    asgCls: (S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0]).cls,
-    asgDue: (S_ASSIGNMENTS[s.cwTab][s.asgIdx] || S_ASSIGNMENTS.todo[0]).due,
-    submitted: s.submitted, notSubmitted: !s.submitted,
-    submitAsg: () => setState({ submitted: true }),
-    asgChecklist: [
-      { text: "Nêu vị trí diễn ra quang hợp trong tế bào" },
-      { text: "Mô tả pha sáng và pha tối" },
-      { text: "Kết luận vai trò của quang hợp với sự sống" },
-    ],
   };
 }
