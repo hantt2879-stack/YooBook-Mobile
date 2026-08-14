@@ -194,9 +194,15 @@ export const SEED_SUBMISSIONS = [
   },
 ];
 
+export const SEED_ANNOUNCEMENTS = [
+  { id: 1, classId: 1, title: "Nhắc nộp bài tập tuần 20", body: "Các em hoàn thành bài tập tuần 20 trước 23:59 ngày 17/05. Phần sơ đồ pha tối là bắt buộc.", createdAtIso: "2026-05-16T07:40:00", isPinned: true },
+  { id: 2, classId: 1, title: "Lịch kiểm tra giữa kỳ", body: "Kiểm tra giữa kỳ diễn ra tiết 2 ngày 19/05, nội dung từ bài 1 đến bài 6.", createdAtIso: "2026-05-12T16:10:00", isPinned: false },
+];
+
 export const INITIAL_COURSEWORK = {
   assignments: SEED_ASSIGNMENTS,
   submissions: SEED_SUBMISSIONS,
   rubrics: SEED_RUBRICS,
+  announcements: SEED_ANNOUNCEMENTS,
   nextSubmissionId: 7,
 };

@@ -36,13 +36,6 @@ export const INITIAL_STUDENT = {
   exploreSaved: [],
 };
 
-// Shared announcement mock for the student-facing Class Detail newsfeed —
-// the same content the teacher dashboard's own "Bảng tin" tab shows.
-const CLASS_NEWS = [
-  { title: "Nhắc nộp bài tập tuần 20", when: "Hôm nay · 07:40", body: "Các em hoàn thành bài tập tuần 20 trước 23:59 ngày 17/05. Phần sơ đồ pha tối là bắt buộc." },
-  { title: "Lịch kiểm tra giữa kỳ", when: "12/05 · 16:10", body: "Kiểm tra giữa kỳ diễn ra tiết 2 ngày 19/05, nội dung từ bài 1 đến bài 6." },
-];
-
 // Avatar initials for T_STUDENTS, aligned by index (kept separate since the
 // roster's own initials aren't stored on that constant).
 const STUDENT_INITIALS = ["HN", "QB", "MA", "GH", "KL"];
@@ -281,6 +274,12 @@ export function useStudentLogic(ctx) {
     scoreLabel: typeof x.submission?.finalScore === "number" ? String(x.submission.finalScore) : "",
     onClick: () => ctx.push("assignmentDetail", { assignmentId: x.assignment.id }),
   }));
+
+  // Bảng tin lớp: đọc từ state dùng chung để hành động đăng thông báo của
+  // giáo viên hiện ngay ở phía học sinh trong cùng phiên.
+  const classFeed = [...ctx.s.announcements]
+    .sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || b.createdAtIso.localeCompare(a.createdAtIso))
+    .map((n) => ({ title: n.title, when: fmtDateTime(n.createdAtIso), body: n.body, isPinned: n.isPinned }));
 
   const currentAsg = ctx.s.assignments.find((a) => a.id === ctx.params.assignmentId) ?? null;
   const currentSub = currentAsg ? ctx.findSubmission(currentAsg.id, CURRENT_STUDENT_ID) : null;
@@ -560,7 +559,7 @@ export function useStudentLogic(ctx) {
     classDetailTeacherTint: CLASS_EXTRA[s.classIdx].tint,
     classDetailTeacherMeta: CLASS_EXTRA[s.classIdx].teacherMeta,
     classDetailContent: CLASS_EXTRA[s.classIdx].lessons,
-    classDetailFeed: CLASS_NEWS,
+    classDetailFeed: classFeed,
     classDetailRoster: T_STUDENTS.map((st, i) => ({ name: st.name, tint: st.tint, initials: STUDENT_INITIALS[i] })),
     classDetailAssignments: (() => {
       const byTitle = new Map();

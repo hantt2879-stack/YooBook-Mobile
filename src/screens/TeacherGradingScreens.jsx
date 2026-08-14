@@ -238,6 +238,30 @@ export default function TeacherGradingScreens({ v }) {
         </div>
       )}
 
+      {v.isTAnnouncementCreate && (
+        <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
+          <BackButton onClick={v.back} />
+          <div style={css(`margin-top:16px;font-size:20px;font-weight:700;color:#455771`)}>{v.t(`Đăng thông báo`)}</div>
+
+          <div style={css(`margin-top:16px;font-size:12.5px;font-weight:600;color:#455771`)}>{v.t(`Tiêu đề`)}</div>
+          <input value={v.annTitle} onChange={(e) => v.setAnnField("annTitle", e.target.value)}
+            style={css(`margin-top:8px;width:100%;box-sizing:border-box;height:46px;padding:0 13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff;font-size:13.5px;color:#455771;font-family:inherit;outline:none`)} />
+
+          <div style={css(`margin-top:14px;font-size:12.5px;font-weight:600;color:#455771`)}>{v.t(`Nội dung`)}</div>
+          <textarea value={v.annBody} onChange={(e) => v.setAnnField("annBody", e.target.value)}
+            style={css(`margin-top:8px;width:100%;box-sizing:border-box;padding:12px 13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff;min-height:120px;font-size:13px;line-height:1.6;color:#455771;font-family:inherit;resize:vertical;outline:none`)} />
+
+          <div onClick={v.toggleAnnPinned} style={css(`margin-top:14px;display:flex;align-items:center;gap:11px;padding:13px;border:1px solid #ddeaf0;border-radius:14px;background:#fff;cursor:pointer`)}>
+            <div style={css(`flex:1;font-size:13px;color:#455771`)}>{v.t(`Ghim lên đầu`)}</div>
+            <div style={css(`position:relative;width:42px;height:24px;border-radius:999px;background:${v.annPinned ? "#00aaab" : "#dbe7ec"};flex:none`)}>
+              <div style={css(`position:absolute;top:2px;left:${v.annPinned ? "22px" : "2px"};width:20px;height:20px;border-radius:999px;background:#fff;transition:left .18s`)}></div>
+            </div>
+          </div>
+
+          <div onClick={v.annValid ? v.postAnnouncement : undefined} style={css(`margin-top:20px;height:54px;border-radius:16px;background:${v.annValid ? "#00aaab" : "#a9c6ce"};color:#fff;font-size:15.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:${v.annValid ? "pointer" : "default"}`)}>{v.t(`Đăng thông báo`)}</div>
+        </div>
+      )}
+
       {v.isTClassProgress && (
         <div style={css(`padding:6px 20px 120px;animation:ybup .3s ease`)}>
           <BackButton onClick={v.back} />

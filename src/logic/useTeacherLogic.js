@@ -57,6 +57,9 @@ export const INITIAL_TEACHER = {
       { code: "C2", name: "", maxPoints: 5, weightPercent: 50 },
     ],
   },
+  annTitle: "",
+  annBody: "",
+  annPinned: false,
 };
 
 // Seed ids for the Teacher Library's "Liked" and "Purchased" facets — these
@@ -117,6 +120,13 @@ export function useTeacherLogic(ctx) {
     max: c.maxPoints,
     earned: draftScores[c.code] ?? 0,
   }));
+
+  // Bảng tin lớp: đọc từ state dùng chung, ghim lên đầu rồi mới đến mới nhất —
+  // cùng nguồn dữ liệu useStudentLogic đọc, nên đăng thông báo hiện ngay ở
+  // phía học sinh trong cùng phiên.
+  const teacherFeed = [...ctx.s.announcements]
+    .sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || b.createdAtIso.localeCompare(a.createdAtIso))
+    .map((n) => ({ title: n.title, when: fmtDateTime(n.createdAtIso), body: n.body, isPinned: n.isPinned }));
 
   const pushRecent = (id) => setState((prev) => ({ tRecentIds: [id, ...prev.tRecentIds.filter((x) => x !== id)].slice(0, 10) }));
   const openAssignSheet = (mode, itemId) => setState({ tAssignSheet: { open: true, mode, itemId, selectedId: null } });
@@ -412,10 +422,7 @@ export function useTeacherLogic(ctx) {
     tTabFeed: s.tClassTab === "feed", tTabStudents: s.tClassTab === "students", tTabWork: s.tClassTab === "work",
     tTabGrading: s.tClassTab === "grading", tTabContent: s.tClassTab === "content", tTabSettings: s.tClassTab === "settings",
     tStudents: T_STUDENTS,
-    tNews: [
-      { title: "Nhắc nộp bài tập tuần 20", when: "Hôm nay · 07:40", body: "Các em hoàn thành bài tập tuần 20 trước 23:59 ngày 17/05. Phần sơ đồ pha tối là bắt buộc." },
-      { title: "Lịch kiểm tra giữa kỳ", when: "12/05 · 16:10", body: "Kiểm tra giữa kỳ diễn ra tiết 2 ngày 19/05, nội dung từ bài 1 đến bài 6." },
-    ],
+    tNews: teacherFeed,
     tClassAssignments: T_ASSIGNMENTS.concat(s.createdAssignments).filter((a) => a.cls === T_CLASSES[s.tClassIdx].name).map((a) => ({ ...a, onClick: () => go("tGrading") })),
     tClassInfo: [
       { label: "Tên lớp", value: T_CLASSES[s.tClassIdx].name },
@@ -610,5 +617,26 @@ export function useTeacherLogic(ctx) {
       { label: "Tiến độ lớp", iconPath: "M12 12.4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7.2 7.1c1.3-3.4 4-5.1 7.2-5.1s5.9 1.7 7.2 5.1", bg: "#eaf6f8", color: "#00708f", onClick: () => push("tClassProgress") },
       { label: "Đăng thông báo", iconPath: "M4 9.5h4l7-4.5v14l-7-4.5H4zM18 9a3.4 3.4 0 0 1 0 6", bg: "#fdeef5", color: "#b13a75", onClick: () => push("tAnnouncementCreate") },
     ],
+
+    isTAnnouncementCreate: ctx.screen === "tAnnouncementCreate",
+    annTitle: ctx.s.annTitle,
+    annBody: ctx.s.annBody,
+    annPinned: ctx.s.annPinned,
+    setAnnField: (field, value) => ctx.setState({ [field]: value }),
+    toggleAnnPinned: () => ctx.setState({ annPinned: !ctx.s.annPinned }),
+    annValid: ctx.s.annTitle.trim().length > 0 && ctx.s.annBody.trim().length > 0,
+    postAnnouncement: () => {
+      const id = Math.max(0, ...ctx.s.announcements.map((n) => n.id)) + 1;
+      ctx.setState((prev) => ({
+        announcements: [
+          ...prev.announcements,
+          { id, classId: 1, title: prev.annTitle, body: prev.annBody, createdAtIso: prev.nowIso, isPinned: prev.annPinned },
+        ],
+        annTitle: "",
+        annBody: "",
+        annPinned: false,
+      }));
+      ctx.pop();
+    },
   };
 }
