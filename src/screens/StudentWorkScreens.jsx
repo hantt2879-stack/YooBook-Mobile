@@ -190,7 +190,7 @@ export default function StudentWorkScreens({ v }) {
           </div>
 
           {v.resultIsReturned && (
-            <div style={css(`margin-top:12px;padding:14px;border:1.4px solid #f3c6dd;border-radius:16px;background:#fff`)}>
+            <div style={css(`margin-top:12px;padding:14px;border:1.4px solid #ddeaf0;border-radius:16px;background:#fff`)}>
               <div style={css(`font-size:13.5px;font-weight:600;color:#b13a75`)}>{v.t(`Giáo viên đã trả bài`)}</div>
               <div style={css(`font-size:12.5px;line-height:1.6;color:#455771;margin-top:6px;text-wrap:pretty`)}>{v.resultView.feedback}</div>
               <div onClick={v.toAssignmentSubmit} style={css(`margin-top:14px;height:46px;border-radius:14px;background:#00aaab;color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer`)}>{v.t(`Nộp lại`)}</div>
