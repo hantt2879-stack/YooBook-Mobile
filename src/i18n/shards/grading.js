@@ -53,4 +53,9 @@ export default {
   "Trọng số phải cộng đủ 100%": "Weights must total 100%",
   "Đăng thông báo": "Post announcement",
   "Ghim lên đầu": "Pin to top",
+  "Bài tập giáo viên giao sẽ hiện ở đây.": "Assignments from your teacher will appear here.",
+  "Không tìm thấy bài tập": "Assignment not found",
+  "Bài tập có thể đã bị gỡ khỏi lớp.": "This assignment may have been removed from the class.",
+  "Cho phép nộp muộn": "Late submission allowed",
+  "Không nhận bài muộn": "Late submissions not accepted",
 };
