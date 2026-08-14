@@ -167,6 +167,52 @@ export default function TeacherGradingScreens({ v }) {
           />
         </div>
       )}
+
+      {v.isTGradebook && (
+        <div style={css(`padding:6px 0 120px;animation:ybup .3s ease`)}>
+          <div style={css(`padding:0 20px`)}>
+            <BackButton onClick={v.back} />
+            <div style={css(`margin-top:16px;display:flex;align-items:baseline;justify-content:space-between`)}>
+              <div style={css(`font-size:20px;font-weight:700;color:#455771`)}>{v.t(`Bảng điểm lớp`)}</div>
+              <div style={css(`font-size:13px;font-weight:600;color:#00708f`)}>{v.t(`TB`)} {v.gradebookClassAverageLabel}</div>
+            </div>
+            <div style={css(`font-size:12px;color:#617789;margin-top:4px`)}>{v.t(`Chạm vào ô điểm để mở bài nộp.`)}</div>
+          </div>
+
+          <div style={css(`margin-top:16px;display:flex`)}>
+            <div style={css(`flex:none;width:132px;border-right:1px solid #ddeaf0;background:#fcfcfc;z-index:2`)}>
+              <div style={css(`height:48px;padding:0 12px;display:flex;align-items:center;font-size:11px;font-weight:600;color:#617789;border-bottom:1px solid #ddeaf0`)}>{v.t(`Học sinh`)}</div>
+              {v.gradebookRows.map((r) => (
+                <div key={r.studentId} style={css(`height:52px;padding:0 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #edf7f9`)}>
+                  <div style={css(`width:26px;height:26px;flex:none;border-radius:999px;background:${r.tint};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:10px`)}>{r.initials}</div>
+                  <span style={css(`flex:1;min-width:0;font-size:11.5px;color:#455771;overflow:hidden;text-overflow:ellipsis;white-space:nowrap`)}>{r.studentName}</span>
+                </div>
+              ))}
+            </div>
+
+            <div style={css(`flex:1;min-width:0;overflow-x:auto`)}>
+              <div style={css(`display:inline-flex;flex-direction:column;min-width:100%`)}>
+                <div style={css(`display:flex;height:48px;border-bottom:1px solid #ddeaf0`)}>
+                  {v.gradebookColumns.map((c) => (
+                    <div key={c.assignmentId} style={css(`flex:none;width:86px;padding:0 8px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10.5px;font-weight:600;color:#617789;line-height:1.3`)}>{c.shortTitle}</div>
+                  ))}
+                  <div style={css(`flex:none;width:64px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:#00708f`)}>{v.t(`TB`)}</div>
+                </div>
+                {v.gradebookRows.map((r) => (
+                  <div key={r.studentId} style={css(`display:flex;height:52px;border-bottom:1px solid #edf7f9`)}>
+                    {r.cells.map((cell) => (
+                      <div key={cell.assignmentId} onClick={cell.onClick} style={css(`flex:none;width:86px;padding:7px 8px;display:flex;align-items:center;justify-content:center;cursor:${cell.onClick ? "pointer" : "default"}`)}>
+                        <div style={css(`width:100%;height:100%;border-radius:10px;background:${cell.bg};color:${cell.color};font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center`)}>{cell.label}</div>
+                      </div>
+                    ))}
+                    <div style={css(`flex:none;width:64px;display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:700;color:#00708f`)}>{r.averageLabel}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

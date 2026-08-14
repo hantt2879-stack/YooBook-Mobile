@@ -2,8 +2,8 @@ import { ACCENT } from "../data/shared.js";
 import { LESSONS } from "../data/catalog.js";
 import { T_ASSIGNMENTS, T_BLOCKS, T_CLASSES, T_METRICS, T_PLANS, T_STUDENTS, T_SUBMISSIONS } from "../data/teacher.js";
 import { ASSIGNMENT_TYPE_LABEL, ROSTER } from "../data/coursework.js";
-import { isRubricWeightValid, rubricMax, rubricTotal } from "./gradebook.js";
-import { SUBMISSION_STATUS as S, applyGrade, applyReturn } from "./submissionState.js";
+import { averageScore, isRubricWeightValid, rubricMax, rubricTotal } from "./gradebook.js";
+import { SUBMISSION_STATUS as S, SUBMISSION_TINT, applyGrade, applyReturn } from "./submissionState.js";
 import { fmtDateTime } from "./formatDate.js";
 
 const GRADING_FILTER = {
@@ -108,6 +108,8 @@ export function useTeacherLogic(ctx) {
     : null;
   const gradeSub = ctx.s.submissions.find((x) => x.id === ctx.params.submissionId) ?? null;
   const studentOf = (id) => ROSTER.find((r) => r.id === id) ?? { name: `Học sinh #${id}`, initials: "HS", tint: "#8ba0ae" };
+  // Bảng điểm lớp: mỗi bài tập đã xuất bản là một cột, mỗi học sinh trong sổ điểm là một hàng.
+  const gradebookAssignments = ctx.s.assignments.filter((a) => a.isPublished);
   const draftScores = ctx.s.gradeDraftScores;
   const draftCriteria = (gradingRubric?.criteria ?? []).map((c) => ({
     code: c.code,
@@ -140,6 +142,48 @@ export function useTeacherLogic(ctx) {
   return {
     isTOverview: ctx.screen === "tOverview", isTClasses: ctx.screen === "tClasses", isTClass: ctx.screen === "tClass",
     isTGrading: ctx.screen === "tGrading", isTGrade: ctx.screen === "tGrade",
+    isTGradebook: ctx.screen === "tGradebook",
+    toTGradebook: () => push("tGradebook"),
+    gradebookColumns: gradebookAssignments.map((a) => ({
+      assignmentId: a.id,
+      // Nhãn cột phải rất ngắn vì bảng cuộn ngang trên màn hình hẹp.
+      shortTitle: a.title.length > 14 ? `${a.title.slice(0, 13)}…` : a.title,
+      maxScore: a.maxScore,
+    })),
+    gradebookRows: ROSTER.map((st) => {
+      const mySubs = ctx.s.submissions.filter((x) => x.studentId === st.id);
+      const cells = gradebookAssignments.map((a) => {
+        const sub = mySubs.find((x) => x.assignmentId === a.id);
+        const status = sub ? sub.status : S.NOT_STARTED;
+        const tint = SUBMISSION_TINT[status];
+        return {
+          assignmentId: a.id,
+          label: typeof sub?.finalScore === "number" ? String(sub.finalScore) : "–",
+          bg: tint.bg,
+          color: tint.color,
+          onClick: sub
+            ? () =>
+                setState({
+                  gradeDraftScores: { ...sub.criteriaScores },
+                  gradeDraftFeedback: sub.feedback ?? "",
+                }) || push("tGrade", { assignmentId: a.id, submissionId: sub.id })
+            : undefined,
+        };
+      });
+      const avg = averageScore(mySubs);
+      return {
+        studentId: st.id,
+        studentName: st.name,
+        initials: st.initials,
+        tint: st.tint,
+        cells,
+        averageLabel: avg === null ? "–" : String(avg),
+      };
+    }),
+    gradebookClassAverageLabel: (() => {
+      const avg = averageScore(ctx.s.submissions);
+      return avg === null ? "–" : String(avg);
+    })(),
     isTPlans: ctx.screen === "tPlans", isTPlan: ctx.screen === "tPlan",
     isTExplore: ctx.screen === "tExplore",
     isTCreateClass: ctx.screen === "tCreateClass",
