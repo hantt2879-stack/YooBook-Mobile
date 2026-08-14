@@ -356,8 +356,11 @@ Giai đoạn 1–3 là phần bắt buộc để prototype thể hiện được
 
 ## 11. Cách kiểm chứng
 
-Prototype không có test framework và spec này không đưa việc thêm framework vào phạm vi. Cách kiểm chứng thay thế:
+Prototype hiện không có test framework. Spec này bổ sung **Vitest ở phạm vi hẹp**: chỉ kiểm thử các module logic thuần trong `src/logic/` (ngăn xếp điều hướng, máy trạng thái bài nộp, tính điểm bài thi). Lý do: đây là phần logic sẽ được mang nguyên sang bản production, và là phần duy nhất có thể sai một cách âm thầm. Giao diện không viết test tự động — kiểm chứng bằng checklist bấm tay.
 
+Cách kiểm chứng:
+
+0. **Test tự động cho logic thuần** — `npm test` (Vitest) phải xanh trước mỗi commit chạm `src/logic/`.
 1. **Checklist luồng theo vai trò** — mỗi giai đoạn kèm một danh sách bấm tay đi hết luồng, ví dụ giai đoạn 1: *GV tạo bài tập có rubric → HS thấy bài, nộp kèm ảnh → GV chấm theo rubric và trả bài → HS thấy trạng thái Trả bài và nộp lại → GV chấm lần 2 → điểm xuất hiện đúng ở bảng điểm cả hai phía*.
 2. **Kiểm tra chéo hai vai trò**: mọi hành động của một vai trò phải nhìn thấy được ở vai trò kia trong cùng phiên (state dùng chung). Đây là điểm mạnh của prototype một-state-machine, cần giữ.
 3. **Rà chuỗi**: mọi chuỗi mới có mặt ở shard i18n; chuyển ngôn ngữ sang EN không còn chuỗi tiếng Việt sót trên các màn mới.
