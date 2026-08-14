@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ACCENT, BORDER, INK, MUTED, TAB_ICONS } from "../data/shared.js";
+import { INITIAL_COURSEWORK } from "../data/coursework.js";
 import { translate } from "../i18n/dict.js";
 import * as N from "./navStack.js";
 
@@ -13,6 +14,7 @@ const INITIAL_SHARED = {
   // Mốc thời gian giả lập của prototype. Mọi so sánh hạn nộp dùng giá trị này
   // thay vì Date.now(), để kịch bản demo luôn tái lập được.
   nowIso: "2026-05-16T09:00:00",
+  ...INITIAL_COURSEWORK,
 };
 
 export function useAppState(navStyle, initialExtra = {}) {
@@ -117,6 +119,26 @@ export function useAppState(navStyle, initialExtra = {}) {
     { code: "en", label: "English" },
   ].map((o) => ({ ...o, active: o.code === s.lang, onClick: () => setState({ lang: o.code, langOpen: false }) }));
 
+  // Ba vai trò cùng ghi vào một mảng bài nộp, nên hàm ghi đặt ở tầng dùng chung.
+  const upsertSubmission = (next) =>
+    setState((prev) => {
+      const exists = prev.submissions.some((x) => x.id === next.id);
+      return {
+        submissions: exists
+          ? prev.submissions.map((x) => (x.id === next.id ? next : x))
+          : [...prev.submissions, next],
+        nextSubmissionId: exists ? prev.nextSubmissionId : prev.nextSubmissionId + 1,
+      };
+    });
+
+  const addAssignment = (assignment) =>
+    setState((prev) => ({ assignments: [...prev.assignments, assignment] }));
+
+  const addRubric = (rubric) => setState((prev) => ({ rubrics: [...prev.rubrics, rubric] }));
+
+  const findSubmission = (assignmentId, studentId) =>
+    s.submissions.find((x) => x.assignmentId === assignmentId && x.studentId === studentId) ?? null;
+
   return {
     s, setState, stateRef,
     nav, screen, params, go, push, pop, replace, resetTo,
@@ -125,5 +147,6 @@ export function useAppState(navStyle, initialExtra = {}) {
     navTabs: navStyle === "tabs", navFab: navStyle === "fab", navPill: navStyle === "pill",
     tabsSplitLeft: tabs.slice(0, 2), tabsSplitRight: tabs.slice(3), tabsPill: tabs,
     roles, roleSwitch, langOptions,
+    upsertSubmission, addAssignment, addRubric, findSubmission,
   };
 }
