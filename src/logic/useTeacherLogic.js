@@ -1,6 +1,7 @@
 import { ACCENT, BORDER, DEEP } from "../data/shared.js";
 import { LESSONS } from "../data/catalog.js";
 import { T_ASSIGNMENTS, T_BLOCKS, T_CLASSES, T_METRICS, T_PLANS, T_STUDENTS, T_SUBMISSIONS } from "../data/teacher.js";
+import { isRubricWeightValid, rubricMax } from "./gradebook.js";
 
 export const INITIAL_TEACHER = {
   tExploreView: "grid", tClassIdx: 0, tClassTab: "students", gradeIdx: 0, gradeScore: "8.5", graded: false,
@@ -15,6 +16,13 @@ export const INITIAL_TEACHER = {
   ccName: "", ccSubject: "Sinh học", ccGrade: "Lớp 8",
   caTitle: "", caCls: "", caDue: "1 tuần", clTitle: "", clCls: "", clKind: "Video",
   tPlanIdx: 0,
+  rubricDraft: {
+    name: "Rubric mới",
+    criteria: [
+      { code: "C1", name: "", maxPoints: 5, weightPercent: 50 },
+      { code: "C2", name: "", maxPoints: 5, weightPercent: 50 },
+    ],
+  },
 };
 
 // Seed ids for the Teacher Library's "Liked" and "Purchased" facets — these
@@ -50,6 +58,7 @@ export function useTeacherLogic(ctx) {
   };
 
   const tGrid = s.tExploreView === "grid";
+  const draft = s.rubricDraft;
 
   const pushRecent = (id) => setState((prev) => ({ tRecentIds: [id, ...prev.tRecentIds.filter((x) => x !== id)].slice(0, 10) }));
   const openAssignSheet = (mode, itemId) => setState({ tAssignSheet: { open: true, mode, itemId, selectedId: null } });
@@ -80,6 +89,46 @@ export function useTeacherLogic(ctx) {
     isTCreateClass: ctx.screen === "tCreateClass",
     isTCreateAssignment: ctx.screen === "tCreateAssignment",
     isTCreateLecture: ctx.screen === "tCreateLecture",
+    isTRubricEditor: ctx.screen === "tRubricEditor",
+    toTRubricEditor: () => push("tRubricEditor"),
+    rubricDraft: draft,
+    rubricWeightTotal: draft.criteria.reduce((sum, c) => sum + (c.weightPercent || 0), 0),
+    rubricMaxTotal: rubricMax(draft.criteria),
+    rubricValid: isRubricWeightValid(draft.criteria) && draft.criteria.every((c) => c.name.trim()),
+    setRubricName: (name) => setState((prev) => ({ rubricDraft: { ...prev.rubricDraft, name } })),
+    setCriterion: (index, field, value) =>
+      setState((prev) => ({
+        rubricDraft: {
+          ...prev.rubricDraft,
+          criteria: prev.rubricDraft.criteria.map((c, i) =>
+            i === index ? { ...c, [field]: field === "name" ? value : Number(value) || 0 } : c
+          ),
+        },
+      })),
+    addCriterion: () =>
+      setState((prev) => ({
+        rubricDraft: {
+          ...prev.rubricDraft,
+          criteria: [
+            ...prev.rubricDraft.criteria,
+            { code: `C${prev.rubricDraft.criteria.length + 1}`, name: "", maxPoints: 2, weightPercent: 0 },
+          ],
+        },
+      })),
+    removeCriterion: (index) =>
+      setState((prev) => ({
+        rubricDraft: {
+          ...prev.rubricDraft,
+          criteria: prev.rubricDraft.criteria.filter((_, i) => i !== index),
+        },
+      })),
+    saveRubric: () => {
+      const id = Math.max(0, ...s.rubrics.map((r) => r.id)) + 1;
+      ctx.addRubric({ id, name: draft.name, criteria: draft.criteria });
+      // Bài tập đang soạn dở nhận luôn rubric vừa tạo, tránh bắt giáo viên chọn lại.
+      setState({ caRubricId: id });
+      pop();
+    },
 
     teacherName: "Phạm Thu Trang",
     tMetrics: T_METRICS,

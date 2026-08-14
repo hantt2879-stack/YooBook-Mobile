@@ -63,4 +63,11 @@ export default {
   "Đạt": "Passed",
   "Chưa đạt": "Not passed",
   "Đã thay thế": "Replaced",
+  "Chia điểm theo tiêu chí để chấm nhất quán giữa các bài.": "Split points by criteria so grading stays consistent.",
+  "Tên bộ tiêu chí": "Rubric name",
+  "Nội dung tiêu chí": "Criterion",
+  "Trọng số %": "Weight %",
+  "Thêm tiêu chí": "Add criterion",
+  "Hợp lệ": "Valid",
+  "Lưu bộ tiêu chí": "Save rubric",
 };
