@@ -449,7 +449,7 @@ export function useStudentLogic(ctx) {
       })),
     removeDraftFile: (index) =>
       ctx.setState((prev) => ({ draftFiles: prev.draftFiles.filter((_, i) => i !== index) })),
-    draftSavedLabel: ctx.s.draftSavedAtIso ? `Đã lưu nháp ${fmt(ctx.s.draftSavedAtIso)}` : "",
+    draftSavedLabel: ctx.s.draftSavedAtIso ? `${t("Đã lưu nháp")} ${fmt(ctx.s.draftSavedAtIso)}` : "",
     saveDraft: () => ctx.setState({ draftSavedAtIso: ctx.s.nowIso }),
     canConfirmSubmit: ctx.s.draftText.trim().length > 0 || ctx.s.draftFiles.length > 0,
     submitConfirmOpen: ctx.s.submitConfirmOpen,
