@@ -81,4 +81,11 @@ export default {
   "Cả lớp": "Whole class",
   "Một số học sinh": "Selected students",
   "Giao bài tập": "Assign",
+  "Đã trả": "Returned",
+  "Lần 1": "Attempt 1",
+  "Lần 2": "Attempt 2",
+  "Lần 3": "Attempt 3",
+  "Bài tập này không dùng tiêu chí chấm điểm.": "This assignment has no rubric.",
+  "Học sinh sẽ thấy bài quay lại mục Việc cần làm kèm nhận xét của bạn. Điểm hiện tại sẽ bị xoá.":
+    "The student will see this back in To do with your feedback. The current score will be cleared.",
 };

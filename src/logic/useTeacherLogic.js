@@ -1,8 +1,17 @@
-import { ACCENT, BORDER, DEEP } from "../data/shared.js";
+import { ACCENT } from "../data/shared.js";
 import { LESSONS } from "../data/catalog.js";
 import { T_ASSIGNMENTS, T_BLOCKS, T_CLASSES, T_METRICS, T_PLANS, T_STUDENTS, T_SUBMISSIONS } from "../data/teacher.js";
 import { ASSIGNMENT_TYPE_LABEL, ROSTER } from "../data/coursework.js";
-import { isRubricWeightValid, rubricMax } from "./gradebook.js";
+import { isRubricWeightValid, rubricMax, rubricTotal } from "./gradebook.js";
+import { SUBMISSION_STATUS as S, applyGrade, applyReturn } from "./submissionState.js";
+import { fmtDateTime } from "./formatDate.js";
+
+const GRADING_FILTER = {
+  pending: (x) => [S.SUBMITTED, S.LATE_SUBMITTED, S.RESUBMITTED].includes(x.status),
+  graded: (x) => x.status === S.GRADED,
+  late: (x) => x.isLate,
+  returned: (x) => x.status === S.RETURNED,
+};
 
 // "1 tuần" -> hạn nộp tuyệt đối tính từ nowIso của prototype.
 const DUE_DAYS = { "3 ngày": 3, "1 tuần": 7, "2 tuần": 14 };
@@ -13,7 +22,11 @@ function addDaysIso(iso, days) {
 }
 
 export const INITIAL_TEACHER = {
-  tExploreView: "grid", tClassIdx: 0, tClassTab: "students", gradeIdx: 0, gradeScore: "8.5", graded: false,
+  tExploreView: "grid", tClassIdx: 0, tClassTab: "students",
+  gradingFilter: "pending",
+  gradeDraftScores: {},
+  gradeDraftFeedback: "",
+  gradeReturnConfirmOpen: false,
   tClassesTab: "submitted",
   classAccessMode: "code",
   classPerms: { post: false, comment: true, upload: true },
@@ -80,6 +93,28 @@ export function useTeacherLogic(ctx) {
 
   const tGrid = s.tExploreView === "grid";
   const draft = s.rubricDraft;
+
+  // Bài tập đang chấm: lấy từ params, mặc định là bài tập đầu tiên còn bài chờ chấm.
+  const gradingAssignmentId =
+    ctx.params.assignmentId ??
+    ctx.s.assignments.find((a) =>
+      ctx.s.submissions.some((sub) => sub.assignmentId === a.id && GRADING_FILTER.pending(sub))
+    )?.id ??
+    ctx.s.assignments[0]?.id;
+  const gradingAssignment = ctx.s.assignments.find((a) => a.id === gradingAssignmentId) ?? null;
+  const gradingSubs = ctx.s.submissions.filter((x) => x.assignmentId === gradingAssignmentId);
+  const gradingRubric = gradingAssignment
+    ? ctx.s.rubrics.find((r) => r.id === gradingAssignment.rubricId)
+    : null;
+  const gradeSub = ctx.s.submissions.find((x) => x.id === ctx.params.submissionId) ?? null;
+  const studentOf = (id) => ROSTER.find((r) => r.id === id) ?? { name: `Học sinh #${id}`, initials: "HS", tint: "#8ba0ae" };
+  const draftScores = ctx.s.gradeDraftScores;
+  const draftCriteria = (gradingRubric?.criteria ?? []).map((c) => ({
+    code: c.code,
+    name: c.name,
+    max: c.maxPoints,
+    earned: draftScores[c.code] ?? 0,
+  }));
 
   const pushRecent = (id) => setState((prev) => ({ tRecentIds: [id, ...prev.tRecentIds.filter((x) => x !== id)].slice(0, 10) }));
   const openAssignSheet = (mode, itemId) => setState({ tAssignSheet: { open: true, mode, itemId, selectedId: null } });
@@ -277,7 +312,7 @@ export function useTeacherLogic(ctx) {
       return { key: k, label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ tClassesTab: k }) };
     }),
     tcTabSubmitted: s.tClassesTab === "submitted", tcTabGrading: s.tClassesTab === "grading", tcTabUpcoming: s.tClassesTab === "upcoming",
-    toTClasses: () => go("tClasses"), toTGrading: () => go("tGrading"), toTPlans: () => go("tPlans"),
+    toTClasses: () => go("tClasses"), toTPlans: () => go("tPlans"),
     toTOverview: () => go("tOverview"), toTPlan: () => go("tPlan"),
     tClassName: T_CLASSES[s.tClassIdx].name,
     tClassSub: T_CLASSES[s.tClassIdx].sub,
@@ -323,26 +358,98 @@ export function useTeacherLogic(ctx) {
       return { ...r, trackBg: on ? ACCENT : "#dbe7ec", knobLeft: on ? "22px" : "2px", onClick: () => setState({ classPerms: { ...s.classPerms, [r.key]: !on } }) };
     }),
     resetClassSettings: () => setState({ classAccessMode: "code", classPerms: { post: false, comment: true, upload: true } }),
+    // Bảng tóm tắt chấm điểm dùng lại ở tab "Chấm bài" trong Chi tiết lớp — dữ
+    // liệu minh hoạ cố định, tách biệt với luồng chấm bài thật (isTGrading/isTGrade
+    // bên dưới) vốn đọc trực tiếp từ ctx.s.submissions.
     tGradeSummary: [
       { label: "Chờ chấm", value: "12", bg: "#eaf6f8", color: "#00708f" },
       { label: "Đã chấm", value: "86", bg: "#f0fdf4", color: "#15803d" },
       { label: "Nộp muộn", value: "4", bg: "#fff5e6", color: "#b45309" },
     ],
-    tSubmissions: T_SUBMISSIONS.map((x, i) => ({ ...x, onClick: () => { setState({ gradeIdx: i, graded: false }); push("tGrade"); } })),
-    subName: T_SUBMISSIONS[s.gradeIdx].name,
-    subAt: T_SUBMISSIONS[s.gradeIdx].at,
-    subAttempt: T_SUBMISSIONS[s.gradeIdx].attempt,
-    subAnswer: T_SUBMISSIONS[s.gradeIdx].answer,
-    subTint: T_SUBMISSIONS[s.gradeIdx].tint,
-    gradeScore: s.gradeScore,
-    graded: s.graded, notGraded: !s.graded,
-    scoreChips: ["6.0", "7.0", "8.0", "8.5", "9.0", "10"].map((v) => ({
-      label: v, bg: s.gradeScore === v ? "#eaf6f8" : "#fff",
-      border: s.gradeScore === v ? `1.6px solid ${ACCENT}` : `1px solid ${BORDER}`,
-      color: s.gradeScore === v ? DEEP : "#455771",
-      onClick: () => setState({ gradeScore: v }),
+    tSubmissions: T_SUBMISSIONS.map((x) => ({ ...x, onClick: () => go("tGrading") })),
+    toTGrading: () => push("tGrading", { assignmentId: gradingAssignmentId }),
+    gradingAssignmentTitle: gradingAssignment?.title ?? "",
+    gradingProgressLabel: `${gradingSubs.filter((x) => x.status === S.GRADED).length}/${gradingSubs.length} bài đã chấm`,
+    gradingFilterTabs: [
+      ["pending", "Chờ chấm"],
+      ["graded", "Đã chấm"],
+      ["late", "Nộp muộn"],
+      ["returned", "Đã trả"],
+    ].map(([key, label]) => ({
+      label,
+      active: s.gradingFilter === key,
+      onClick: () => setState({ gradingFilter: key }),
     })),
-    saveGrade: () => setState({ graded: true }),
+    gradingRows: gradingSubs.filter(GRADING_FILTER[s.gradingFilter]).map((sub) => {
+      const st = studentOf(sub.studentId);
+      return {
+        id: sub.id,
+        studentName: st.name,
+        initials: st.initials,
+        tint: st.tint,
+        submittedLabel: fmtDateTime(sub.submittedAtIso),
+        status: sub.status,
+        attemptLabel: `Lần ${sub.attemptNumber}`,
+        scoreLabel: typeof sub.finalScore === "number" ? String(sub.finalScore) : "",
+        onClick: () =>
+          setState({
+            gradeDraftScores: { ...sub.criteriaScores },
+            gradeDraftFeedback: sub.feedback ?? "",
+          }) || push("tGrade", { assignmentId: gradingAssignmentId, submissionId: sub.id }),
+      };
+    }),
+    gradeTarget: gradeSub && {
+      submissionId: gradeSub.id,
+      studentName: studentOf(gradeSub.studentId).name,
+      initials: studentOf(gradeSub.studentId).initials,
+      tint: studentOf(gradeSub.studentId).tint,
+      submittedLabel: fmtDateTime(gradeSub.submittedAtIso),
+      isLate: !!gradeSub.isLate,
+      attemptNumber: gradeSub.attemptNumber,
+      answerText: gradeSub.answerText ?? "",
+      attachments: gradeSub.attachments ?? [],
+      assignmentTitle: gradingAssignment?.title ?? "",
+      maxScore: String(gradingAssignment?.maxScore ?? 10),
+    },
+    gradeCriteria: draftCriteria.map((c) => ({
+      ...c,
+      onChange: (value) =>
+        setState((prev) => ({
+          gradeDraftScores: { ...prev.gradeDraftScores, [c.code]: Math.min(c.max, Number(value) || 0) },
+        })),
+    })),
+    gradeTotalLabel: draftCriteria.length
+      ? `${rubricTotal(draftCriteria.map((c) => ({ earnedPoints: c.earned })))} / ${gradingAssignment?.maxScore ?? 10}`
+      : "",
+    gradeFeedback: s.gradeDraftFeedback,
+    setGradeFeedback: (text) => setState({ gradeDraftFeedback: text }),
+    gradeReturnConfirmOpen: s.gradeReturnConfirmOpen,
+    openReturnConfirm: () => setState({ gradeReturnConfirmOpen: true }),
+    closeReturnConfirm: () => setState({ gradeReturnConfirmOpen: false }),
+    saveGrade: () => {
+      if (!gradeSub) return;
+      const total = rubricTotal(draftCriteria.map((c) => ({ earnedPoints: c.earned })));
+      ctx.upsertSubmission({
+        ...applyGrade(gradeSub, {
+          finalScore: total,
+          feedback: s.gradeDraftFeedback,
+          gradedAtIso: s.nowIso,
+        }),
+        criteriaScores: { ...draftScores },
+      });
+      pop();
+    },
+    returnSubmission: () => {
+      if (!gradeSub) return;
+      ctx.upsertSubmission(
+        applyReturn(gradeSub, {
+          feedback: s.gradeDraftFeedback,
+          returnedAtIso: s.nowIso,
+        })
+      );
+      setState({ gradeReturnConfirmOpen: false });
+      pop();
+    },
     tBlocks: T_BLOCKS.concat(s.createdLectures),
     planTabs: [["recent", "Gần đây"], ["draft", "Bản nháp"], ["published", "Đã xuất bản"]].map(([k, label]) => {
       const on = s.planTab === k;

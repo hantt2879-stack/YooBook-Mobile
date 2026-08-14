@@ -6,6 +6,7 @@ import { T_CLASSES, T_STUDENTS } from "../data/teacher.js";
 import { ASSIGNMENT_TYPE_LABEL, CURRENT_STUDENT_ID } from "../data/coursework.js";
 import { SUBMISSION_STATUS as S, canSubmit, applySubmit } from "./submissionState.js";
 import { rubricMax, rubricTotal } from "./gradebook.js";
+import { fmtDateTime } from "./formatDate.js";
 
 const REASON_LABEL = {
   notOpen: "Bài tập chưa mở",
@@ -13,12 +14,6 @@ const REASON_LABEL = {
   noAttemptsLeft: "Đã hết lượt nộp",
   alreadyGraded: "Bài đã được chấm",
 };
-
-// "2026-05-17T23:59:00" -> "17/05 · 23:59"
-function fmt(iso) {
-  if (!iso) return "";
-  return `${iso.slice(8, 10)}/${iso.slice(5, 7)} · ${iso.slice(11, 16)}`;
-}
 
 function statusOf(submission) {
   return submission ? submission.status : S.NOT_STARTED;
@@ -282,7 +277,7 @@ export function useStudentLogic(ctx) {
     className: x.assignment.className,
     status: x.status,
     typeLabel: ASSIGNMENT_TYPE_LABEL[x.assignment.type],
-    dueLabel: `Hạn ${fmt(x.assignment.dueAtIso)}`,
+    dueLabel: `Hạn ${fmtDateTime(x.assignment.dueAtIso)}`,
     scoreLabel: typeof x.submission?.finalScore === "number" ? String(x.submission.finalScore) : "",
     onClick: () => ctx.push("assignmentDetail", { assignmentId: x.assignment.id }),
   }));
@@ -449,7 +444,7 @@ export function useStudentLogic(ctx) {
       }));
       const graded = currentSub.status === S.GRADED;
       return {
-        submittedLabel: fmt(currentSub.submittedAtIso),
+        submittedLabel: fmtDateTime(currentSub.submittedAtIso),
         isLate: !!currentSub.isLate,
         scoreLabel: graded ? String(currentSub.finalScore) : "—",
         maxScoreLabel: String(currentAsg.maxScore),
@@ -469,7 +464,7 @@ export function useStudentLogic(ctx) {
           const isCurrent = n === currentSub.attemptNumber;
           return {
             attemptNumber: n,
-            submittedLabel: isCurrent ? fmt(currentSub.submittedAtIso) : "",
+            submittedLabel: isCurrent ? fmtDateTime(currentSub.submittedAtIso) : "",
             status: isCurrent ? currentSub.status : S.SUBMITTED,
             statusLabel: isCurrent ? "" : "Đã thay thế",
             scoreLabel:
@@ -490,7 +485,7 @@ export function useStudentLogic(ctx) {
       })),
     removeDraftFile: (index) =>
       ctx.setState((prev) => ({ draftFiles: prev.draftFiles.filter((_, i) => i !== index) })),
-    draftSavedLabel: ctx.s.draftSavedAtIso ? `${t("Đã lưu nháp")} ${fmt(ctx.s.draftSavedAtIso)}` : "",
+    draftSavedLabel: ctx.s.draftSavedAtIso ? `${t("Đã lưu nháp")} ${fmtDateTime(ctx.s.draftSavedAtIso)}` : "",
     saveDraft: () => ctx.setState({ draftSavedAtIso: ctx.s.nowIso }),
     canConfirmSubmit: ctx.s.draftText.trim().length > 0 || ctx.s.draftFiles.length > 0,
     submitConfirmOpen: ctx.s.submitConfirmOpen,
@@ -530,8 +525,8 @@ export function useStudentLogic(ctx) {
       typeLabel: ASSIGNMENT_TYPE_LABEL[currentAsg.type],
       instructions: currentAsg.instructions,
       checklist: currentAsg.checklist.map((text) => ({ text })),
-      openLabel: fmt(currentAsg.openAtIso),
-      dueLabel: fmt(currentAsg.dueAtIso),
+      openLabel: fmtDateTime(currentAsg.openAtIso),
+      dueLabel: fmtDateTime(currentAsg.dueAtIso),
       maxScore: String(currentAsg.maxScore),
       passingScore: String(currentAsg.passingScore),
       attemptsLeftLabel: `${Math.max(0, currentAsg.maxAttempts - (currentSub?.attemptNumber ?? 0))}/${currentAsg.maxAttempts}`,
