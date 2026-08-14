@@ -146,7 +146,7 @@ export default function ParentScreens({ v }) {
       {v.isPThread && (
         <div style={css(`min-height:100%;display:flex;flex-direction:column;animation:ybup .3s ease`)}>
           <div style={css(`padding:6px 20px 14px;border-bottom:1px solid #ddeaf0;display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toPMessages} style={css(`width:36px;height:36px;flex:none;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:36px;height:36px;flex:none;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`width:36px;height:36px;flex:none;border-radius:999px;background:#00aaab;display:flex;align-items:center;justify-content:center`)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.9" strokeLinecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 19.4c1.2-3.2 3.8-4.8 7-4.8s5.8 1.6 7 4.8"/></svg></div>
             <div><div style={css(`font-size:14.5px;font-weight:600;color:#455771`)}>{v.t(`Cô Phạm Thu Trang`)}</div><div style={css(`font-size:11px;color:#455771`)}>{v.t(`SINH HỌC 8A1 · Trao đổi học tập`)}</div></div>
           </div>
@@ -174,7 +174,7 @@ export default function ParentScreens({ v }) {
       {v.isPSafety && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toPOverview} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Cài đặt an toàn`)}</div>
           </div>
           <div style={css(`margin-top:8px;font-size:12.5px;line-height:1.55;color:#455771;text-wrap:pretty`)}>{v.t(`Quản lý social, leaderboard, AI tutor và giới hạn thời gian học.`)}</div>

@@ -142,7 +142,7 @@ export default function TeacherScreens({ v }) {
       {v.isTCreateClass && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toTClasses} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Tạo lớp học`)}</div>
           </div>
 
@@ -173,7 +173,7 @@ export default function TeacherScreens({ v }) {
       {v.isTCreateAssignment && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toTOverview} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Tạo bài tập`)}</div>
           </div>
 
@@ -204,7 +204,7 @@ export default function TeacherScreens({ v }) {
       {v.isTCreateLecture && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toTOverview} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Tạo bài giảng`)}</div>
           </div>
 
@@ -359,7 +359,7 @@ export default function TeacherScreens({ v }) {
             <img src={v.tClassImg} alt="" style={css(`position:absolute;inset:0;width:100%;height:100%;object-fit:cover`)}/>
             <div style={css(`position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,50,52,.5) 0%,rgba(15,50,52,.35) 40%,rgba(15,50,52,.72) 100%)`)}></div>
             <div style={css(`position:relative`)}>
-              <div onClick={v.toTClasses} style={css(`width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+              <div onClick={v.back} style={css(`width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
               <div style={css(`margin-top:14px;color:#fff`)}>
                 <div style={css(`font-size:21px;font-weight:700;letter-spacing:.02em`)}>{v.tClassName}</div>
                 <div style={css(`font-size:12.5px;opacity:.85;margin-top:4px`)}>{v.tClassSub} · {v.tClassStudents} {v.t(`học sinh`)}</div>
@@ -547,7 +547,7 @@ export default function TeacherScreens({ v }) {
 
       {v.isTGrading && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
-          <div onClick={v.toTOverview} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+          <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
           <div style={css(`margin-top:16px;font-size:22px;font-weight:700;color:#455771`)}>{v.t(`Chấm bài`)}</div>
           <div style={css(`font-size:13px;color:#455771;margin-top:3px;text-wrap:pretty`)}>{v.t(`Xem bài nộp của học sinh, phản hồi và lưu điểm cuối cùng.`)}</div>
           <div style={css(`margin-top:16px;display:flex;flex-direction:column;gap:10px`)}>
@@ -574,7 +574,7 @@ export default function TeacherScreens({ v }) {
 
       {v.isTGrade && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
-          <div onClick={v.toTGrading} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+          <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
           <div style={css(`margin-top:16px;display:flex;align-items:center;gap:12px`)}>
             <div style={css(`width:46px;height:46px;flex:none;border-radius:999px;background:${v.subTint};display:flex;align-items:center;justify-content:center`)}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.9" strokeLinecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 19.4c1.2-3.2 3.8-4.8 7-4.8s5.8 1.6 7 4.8"/></svg></div>
             <div><div style={css(`font-size:17px;font-weight:700;color:#455771`)}>{v.subName}</div><div style={css(`font-size:12px;color:#455771;margin-top:2px`)}>{v.subAt} · {v.subAttempt}</div></div>
@@ -645,7 +645,7 @@ export default function TeacherScreens({ v }) {
       {v.isTPlan && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;justify-content:space-between`)}>
-            <div onClick={v.toTPlans} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`height:34px;padding:0 14px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;color:#195658;font-size:12.5px;font-weight:600;display:flex;align-items:center;cursor:pointer`)}>{v.t(`Lưu nháp`)}</div>
           </div>
           <div style={css(`margin-top:16px;font-size:20px;font-weight:700;color:#455771;line-height:1.32`)}>{v.tPlanTitle}</div>

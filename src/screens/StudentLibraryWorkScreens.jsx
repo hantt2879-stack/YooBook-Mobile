@@ -85,7 +85,7 @@ export default function StudentLibraryWorkScreens({ v }) {
       {v.isClassDetail && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toClasswork} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.classDetailName}</div>
           </div>
 
@@ -178,7 +178,7 @@ export default function StudentLibraryWorkScreens({ v }) {
 
       {v.isAssignment && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
-          <div onClick={v.toClasswork} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+          <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
           <div style={css(`margin-top:16px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#00aaab`)}>{v.asgCls}</div>
           <div style={css(`font-size:20px;font-weight:700;color:#455771;line-height:1.32;margin-top:7px;text-wrap:pretty`)}>{v.asgTitle}</div>
           <div style={css(`margin-top:12px;display:flex;align-items:center;gap:8px;padding:12px 14px;border:1px solid #fbe0b3;background:#fff5e6;border-radius:14px`)}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b45309" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg><span style={css(`font-size:12.5px;font-weight:600;color:#b45309`)}>{v.asgDue}</span></div>
