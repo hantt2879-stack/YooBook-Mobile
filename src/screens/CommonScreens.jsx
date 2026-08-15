@@ -87,7 +87,7 @@ export default function CommonScreens({ v }) {
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;justify-content:space-between`)}>
             <div style={css(`display:flex;align-items:center;gap:12px`)}>
-              <div onClick={v.toProfile} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+              <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
               <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Hồ sơ cá nhân`)}</div>
             </div>
             <div onClick={v.toggleProfileEdit} style={css(`height:36px;padding:0 15px;border-radius:999px;background:${v.profileEditing ? "#00aaab" : "#fff"};border:1px solid ${v.profileEditing ? "#00aaab" : "#ddeaf0"};color:${v.profileEditing ? "#fff" : "#195658"};font-size:12.5px;font-weight:600;display:flex;align-items:center;cursor:pointer`)}>{v.profileEditing ? v.t(`Lưu thay đổi`) : v.t(`Chỉnh sửa`)}</div>
@@ -166,7 +166,7 @@ export default function CommonScreens({ v }) {
       {v.isChangePassword && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toProfileDetail} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Đổi mật khẩu`)}</div>
           </div>
           <div style={css(`margin-top:20px;display:flex;flex-direction:column;gap:16px`)}>
@@ -200,7 +200,7 @@ export default function CommonScreens({ v }) {
       {v.isWallet && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toProfile} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Nạp tiền vào ví`)}</div>
           </div>
           <div style={css(`margin-top:18px;padding:18px;border-radius:22px;background:linear-gradient(135deg,#195658,#00708f);color:#fff`)}>
@@ -234,7 +234,7 @@ export default function CommonScreens({ v }) {
       {v.isServicePlan && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toProfile} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Gói dịch vụ`)}</div>
           </div>
 
@@ -275,7 +275,7 @@ export default function CommonScreens({ v }) {
       {v.isDevices && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toProfile} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Thiết bị của tôi`)}</div>
           </div>
           <div style={css(`margin-top:8px;font-size:12.5px;color:#455771;line-height:1.5`)}>{v.t(`Tối đa 3 thiết bị đăng nhập cùng lúc. Đăng xuất thiết bị không dùng để bảo vệ tài khoản.`)}</div>
@@ -300,7 +300,7 @@ export default function CommonScreens({ v }) {
       {v.isNotifPrefs && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toProfile} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Thông báo & tuỳ chọn`)}</div>
           </div>
           <div style={css(`margin-top:18px;display:flex;flex-direction:column;gap:11px`)}>
@@ -318,7 +318,7 @@ export default function CommonScreens({ v }) {
       {v.isAccountSecurity && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toProfile} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Tài khoản & bảo mật`)}</div>
           </div>
 
@@ -354,7 +354,7 @@ export default function CommonScreens({ v }) {
       {v.isHelpSupport && (
         <div style={css(`padding:6px 20px 40px;animation:ybup .3s ease`)}>
           <div style={css(`display:flex;align-items:center;gap:12px`)}>
-            <div onClick={v.toProfile} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
+            <div onClick={v.back} style={css(`width:38px;height:38px;border-radius:999px;border:1px solid #ddeaf0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer`)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#195658" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 5L7.5 12l7 7"/></svg></div>
             <div style={css(`font-size:18px;font-weight:700;color:#455771`)}>{v.t(`Trợ giúp & hỗ trợ`)}</div>
           </div>
 
