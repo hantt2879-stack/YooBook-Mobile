@@ -1,10 +1,16 @@
 import { ACCENT } from "../data/shared.js";
 import { LESSONS } from "../data/catalog.js";
-import { T_ASSIGNMENTS, T_BLOCKS, T_CLASSES, T_METRICS, T_PLANS, T_STUDENTS, T_SUBMISSIONS } from "../data/teacher.js";
+import { T_BLOCKS, T_CLASSES, T_METRICS, T_PLANS, T_STUDENTS } from "../data/teacher.js";
 import { ASSIGNMENT_TYPE_LABEL, ROSTER } from "../data/coursework.js";
 import { assignmentStats, averageScore, isRubricWeightValid, rubricMax, rubricTotal } from "./gradebook.js";
-import { SUBMISSION_STATUS as S, SUBMISSION_TINT, applyGrade, applyReturn } from "./submissionState.js";
+import { SUBMISSION_STATUS as S, SUBMISSION_LABEL, SUBMISSION_TINT, applyGrade, applyReturn } from "./submissionState.js";
 import { fmtDateTime } from "./formatDate.js";
+
+// "17/05/2026" — dùng cho hạn nộp trên các thẻ bài tập tổng hợp (khác với
+// fmtDateTime vốn có cả giờ, dùng trong màn chấm bài chi tiết).
+function fmtDueDate(iso) {
+  return `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
+}
 
 const GRADING_FILTER = {
   pending: (x) => [S.SUBMITTED, S.LATE_SUBMITTED, S.RESUBMITTED].includes(x.status),
@@ -73,7 +79,7 @@ const TEACHER_PURCHASED_IDS = [2, 7, 13];
 // that useStudentLogic owns — a prototype simplification that predates this
 // hook split. Duplicated here rather than importing across hooks.
 export function useTeacherLogic(ctx) {
-  const { s, setState, t, go, push, pop, resetTo } = ctx;
+  const { s, setState, t, go, push, pop } = ctx;
 
   const applyFilters = (list) => list.filter((l) => {
     if (s.exploreCat !== "Tất cả" && l.subject !== s.exploreCat) return false;
@@ -97,27 +103,84 @@ export function useTeacherLogic(ctx) {
   const tGrid = s.tExploreView === "grid";
   const draft = s.rubricDraft;
 
-  // Bài tập đang chấm: lấy từ params, mặc định là bài tập đầu tiên còn bài chờ chấm.
-  const gradingAssignmentId =
-    ctx.params.assignmentId ??
-    ctx.s.assignments.find((a) =>
-      ctx.s.submissions.some((sub) => sub.assignmentId === a.id && GRADING_FILTER.pending(sub))
-    )?.id ??
-    ctx.s.assignments[0]?.id;
-  const gradingAssignment = ctx.s.assignments.find((a) => a.id === gradingAssignmentId) ?? null;
-  const gradingSubs = ctx.s.submissions.filter((x) => x.assignmentId === gradingAssignmentId);
+  // Lớp đang mở trong Chi tiết lớp — dùng để lọc bảng điểm/thống kê/tiến độ/
+  // thông báo đúng theo lớp, thay cho việc hardcode classId === 1.
+  const currentTClass = T_CLASSES[s.tClassIdx];
+  const currentClassId = currentTClass.id;
+  // Bảng điểm/Thống kê/Tiến độ lớp là các màn riêng, luôn được mở kèm
+  // classId qua params (từ Chi tiết lớp) — không suy ra từ currentClassId để
+  // dữ liệu không phụ thuộc vào việc s.tClassIdx có đổi hay không sau đó.
+  const scopedClassId = ctx.params.classId ?? null;
+
+  // Bài tập đang chấm: luôn lấy từ params — mọi điểm vào màn Chấm bài đều
+  // phải truyền đúng assignmentId (không còn suy đoán "bài đầu tiên còn chờ
+  // chấm" như trước, vì điều đó khiến nhiều nút khác lớp/khác bài cùng mở
+  // ra một hàng đợi chấm bài).
+  const gradingAssignmentId = ctx.params.assignmentId ?? null;
+  const gradingAssignment = gradingAssignmentId
+    ? ctx.s.assignments.find((a) => a.id === gradingAssignmentId) ?? null
+    : null;
+  const gradingSubs = gradingAssignmentId
+    ? ctx.s.submissions.filter((x) => x.assignmentId === gradingAssignmentId)
+    : [];
   const gradingRubric = gradingAssignment
     ? ctx.s.rubrics.find((r) => r.id === gradingAssignment.rubricId)
     : null;
   const gradeSub = ctx.s.submissions.find((x) => x.id === ctx.params.submissionId) ?? null;
   const studentOf = (id) => ROSTER.find((r) => r.id === id) ?? { name: `Học sinh #${id}`, initials: "HS", tint: "#8ba0ae" };
-  // Bảng điểm lớp: mỗi bài tập đã xuất bản là một cột, mỗi học sinh trong sổ điểm là một hàng.
-  // Chỉ lấy bài tập của lớp classId 1 (lớp duy nhất có trong ROSTER) — màn
-  // bảng điểm/thống kê hiện tại là một bảng tổng duy nhất cho giáo viên, chưa
-  // có khái niệm chọn lớp, nên lọc cứng theo classId để tránh hiện cột/hàng
-  // rỗng cho bài tập của lớp khác (vd. classId 3) mà không học sinh nào trong
-  // ROSTER thực sự học.
-  const gradebookAssignments = ctx.s.assignments.filter((a) => a.isPublished && a.classId === 1);
+
+  const publishedAssignments = ctx.s.assignments.filter((a) => a.isPublished);
+  const currentClassAssignments = publishedAssignments.filter((a) => a.classId === currentClassId);
+  const buildAssignmentCard = (a) => {
+    const subs = ctx.s.submissions.filter((x) => x.assignmentId === a.id);
+    const pendingCount = subs.filter(GRADING_FILTER.pending).length;
+    return {
+      assignmentId: a.id,
+      classId: a.classId,
+      title: a.title,
+      cls: a.className,
+      due: fmtDueDate(a.dueAtIso),
+      submitted: `${subs.length}/${a.totalStudents}`,
+      pending: `${pendingCount} ${t("bài chờ chấm")}`,
+      onClick: () => push("tGrading", { assignmentId: a.id, classId: a.classId }),
+    };
+  };
+  // Danh sách bài nộp gộp theo bài tập (assignmentId truyền null = mọi lớp,
+  // dùng cho tab "Bài đã nộp" liên lớp; truyền classId cụ thể cho tab "Chấm
+  // bài" trong Chi tiết lớp). Chạm vào một dòng mở thẳng màn Chấm điểm của
+  // đúng bài nộp đó, thay vì luôn rơi vào hàng đợi chấm bài chung chung.
+  const buildSubmissionRows = (classId) => {
+    const relevantIds = new Set(
+      ctx.s.assignments.filter((a) => classId == null || a.classId === classId).map((a) => a.id)
+    );
+    return ctx.s.submissions
+      .filter((x) => relevantIds.has(x.assignmentId) && x.status !== S.NOT_STARTED && x.status !== S.IN_PROGRESS)
+      .sort((a, b) => b.submittedAtIso.localeCompare(a.submittedAtIso))
+      .map((sub) => {
+        const st = studentOf(sub.studentId);
+        const tint = SUBMISSION_TINT[sub.status];
+        return {
+          id: sub.id,
+          name: st.name,
+          tint: st.tint,
+          at: fmtDateTime(sub.submittedAtIso),
+          attempt: `${t("Lần")} ${sub.attemptNumber}`,
+          status: t(SUBMISSION_LABEL[sub.status]),
+          statusTint: tint.color,
+          statusBg: tint.bg,
+          onClick: () =>
+            setState({
+              gradeDraftScores: { ...sub.criteriaScores },
+              gradeDraftFeedback: sub.feedback ?? "",
+            }) || push("tGrade", { assignmentId: sub.assignmentId, submissionId: sub.id }),
+        };
+      });
+  };
+
+  // Bảng điểm lớp: mỗi bài tập đã xuất bản của lớp đang mở là một cột, mỗi
+  // học sinh trong sổ điểm là một hàng.
+  const gradebookAssignments = publishedAssignments.filter((a) => a.classId === scopedClassId);
+  const classRoster = ROSTER.filter((r) => r.classId === scopedClassId);
   const draftScores = ctx.s.gradeDraftScores;
   const draftCriteria = (gradingRubric?.criteria ?? []).map((c) => ({
     code: c.code,
@@ -126,11 +189,12 @@ export function useTeacherLogic(ctx) {
     earned: draftScores[c.code] ?? 0,
   }));
 
-  // Bảng tin lớp: đọc từ state dùng chung — cùng nguồn dữ liệu useStudentLogic
-  // đọc, nên đăng thông báo hiện ngay ở phía học sinh trong cùng phiên.
-  // Sắp xếp/định dạng dùng chung với classFeed qua ctx.announcementFeed
-  // (useAppState.js).
-  const teacherFeed = ctx.announcementFeed(ctx.s.announcements);
+  // Bảng tin lớp: chỉ hiện thông báo của đúng lớp đang mở (trước đây không
+  // lọc theo lớp vì mọi thông báo đều bị gán cứng classId 1). Cùng nguồn dữ
+  // liệu useStudentLogic đọc, nên đăng thông báo hiện ngay ở phía học sinh
+  // trong cùng phiên. Sắp xếp/định dạng dùng chung với classFeed qua
+  // ctx.announcementFeed (useAppState.js).
+  const teacherFeed = ctx.announcementFeed(ctx.s.announcements.filter((n) => n.classId === currentClassId));
 
   const pushRecent = (id) => setState((prev) => ({ tRecentIds: [id, ...prev.tRecentIds.filter((x) => x !== id)].slice(0, 10) }));
   const openAssignSheet = (mode, itemId) => setState({ tAssignSheet: { open: true, mode, itemId, selectedId: null } });
@@ -157,11 +221,8 @@ export function useTeacherLogic(ctx) {
     isTOverview: ctx.screen === "tOverview", isTClasses: ctx.screen === "tClasses", isTClass: ctx.screen === "tClass",
     isTGrading: ctx.screen === "tGrading", isTGrade: ctx.screen === "tGrade",
     isTGradebook: ctx.screen === "tGradebook",
-    toTGradebook: () => push("tGradebook"),
     isTAssignmentStats: ctx.screen === "tAssignmentStats",
     isTClassProgress: ctx.screen === "tClassProgress",
-    toTAssignmentStats: () => ctx.push("tAssignmentStats"),
-    toTClassProgress: () => ctx.push("tClassProgress"),
     statsRows: gradebookAssignments.map((a) => {
       const subs = ctx.s.submissions.filter((x) => x.assignmentId === a.id);
       const st = assignmentStats(subs, a.totalStudents);
@@ -173,20 +234,21 @@ export function useTeacherLogic(ctx) {
         completionPct: `${st.completionRate}%`,
         averageLabel: st.averageScore === null ? "–" : String(st.averageScore),
         rangeLabel: st.minScore === null ? "" : `${st.minScore} – ${st.maxScore}`,
-        onClick: () => ctx.push("tGrading", { assignmentId: a.id }),
+        onClick: () => ctx.push("tGrading", { assignmentId: a.id, classId: a.classId }),
       };
     }),
     classProgressSummary: (() => {
-      const all = ctx.s.submissions;
+      const classAssignmentIds = new Set(gradebookAssignments.map((a) => a.id));
+      const all = ctx.s.submissions.filter((x) => classAssignmentIds.has(x.assignmentId));
       const avg = averageScore(all);
       const activeIds = new Set(all.map((x) => x.studentId));
       return [
-        { label: "Sĩ số", value: String(ROSTER.length) },
+        { label: "Sĩ số", value: String(classRoster.length) },
         { label: "Đang hoạt động", value: String(activeIds.size) },
         { label: "Điểm TB lớp", value: avg === null ? "–" : String(avg) },
       ];
     })(),
-    classProgressStudents: ROSTER.map((st) => {
+    classProgressStudents: classRoster.map((st) => {
       const mySubs = ctx.s.submissions.filter((x) => x.studentId === st.id);
       const avg = averageScore(mySubs);
       return {
@@ -204,7 +266,7 @@ export function useTeacherLogic(ctx) {
       shortTitle: a.title.length > 14 ? `${a.title.slice(0, 13)}…` : a.title,
       maxScore: a.maxScore,
     })),
-    gradebookRows: ROSTER.map((st) => {
+    gradebookRows: classRoster.map((st) => {
       const mySubs = ctx.s.submissions.filter((x) => x.studentId === st.id);
       const cells = gradebookAssignments.map((a) => {
         const sub = mySubs.find((x) => x.assignmentId === a.id);
@@ -235,7 +297,8 @@ export function useTeacherLogic(ctx) {
       };
     }),
     gradebookClassAverageLabel: (() => {
-      const avg = averageScore(ctx.s.submissions);
+      const classAssignmentIds = new Set(gradebookAssignments.map((a) => a.id));
+      const avg = averageScore(ctx.s.submissions.filter((x) => classAssignmentIds.has(x.assignmentId)));
       return avg === null ? "–" : String(avg);
     })(),
     isTPlans: ctx.screen === "tPlans", isTPlan: ctx.screen === "tPlan",
@@ -319,6 +382,7 @@ export function useTeacherLogic(ctx) {
       const gradeNum = s.ccGrade.replace("Lớp ", "");
       const count = T_CLASSES.concat(s.createdClasses).filter((c) => c.sub.startsWith(s.ccSubject) || c.sub.includes(s.ccSubject)).length;
       const newClass = {
+        id: T_CLASSES.length + s.createdClasses.length + 1,
         name: `${abbr} ${gradeNum}A${count + 1}`, sub: `${s.ccSubject} · ${s.ccGrade}`,
         code: `${abbr.slice(0, 2)}${gradeNum}N${count + 1}-26`, students: "0", progress: "0%",
         tint: tints[s.createdClasses.length % tints.length], img, isNew: true,
@@ -328,7 +392,7 @@ export function useTeacherLogic(ctx) {
     },
 
     toTCreateAssignment: () => { setState({ caCls: s.caCls || T_CLASSES.concat(s.createdClasses)[0].name }); push("tCreateAssignment"); },
-    toTCreateAssignmentForClass: () => { setState({ caCls: T_CLASSES[s.tClassIdx].name }); push("tCreateAssignment"); },
+    toTCreateAssignmentForClass: () => { setState({ caCls: currentTClass.name }); push("tCreateAssignment"); },
     toTCreateLecture: () => { setState({ clCls: s.clCls || T_CLASSES.concat(s.createdClasses)[0].name }); push("tCreateLecture"); },
     caTitle: s.caTitle,
     caInstructions: s.caInstructions,
@@ -378,7 +442,7 @@ export function useTeacherLogic(ctx) {
       const id = Math.max(0, ...s.assignments.map((a) => a.id)) + 1;
       ctx.addAssignment({
         id,
-        classId: cls?.id ?? 1,
+        classId: cls.id,
         className: s.caCls,
         title: s.caTitle,
         type: s.caType,
@@ -397,7 +461,10 @@ export function useTeacherLogic(ctx) {
         totalStudents: Number(cls?.students ?? 32),
       });
       setState({ caTitle: "", caInstructions: "", caTargetIds: [], caTargetMode: "all" });
-      resetTo("tClasses");
+      // Quay lại đúng nơi giáo viên đã mở màn tạo bài tập từ đó (Trang chủ
+      // hoặc Chi tiết lớp) thay vì luôn nhảy về danh sách lớp và làm mất
+      // ngữ cảnh đang thao tác.
+      pop();
     },
     clClasses: T_CLASSES.concat(s.createdClasses).map((c) => ({ label: c.name, selected: s.clCls === c.name, onClick: () => setState({ clCls: c.name }) })),
     clKinds: ["Video", "Mô hình 3D", "Bài đọc", "Trắc nghiệm"].map((label) => ({ label, selected: s.clKind === label, onClick: () => setState({ clKind: label }) })),
@@ -409,12 +476,15 @@ export function useTeacherLogic(ctx) {
       setState((prev) => ({ createdLectures: [...prev.createdLectures, newLecture] }));
       pop();
     },
-    tAssignments: T_ASSIGNMENTS.concat(s.createdAssignments).map((a) => ({ ...a, onClick: () => go("tGrading") })),
-    tUpcoming: [...T_ASSIGNMENTS]
-      .sort((a, b) => a.due.split("/").reverse().join("").localeCompare(b.due.split("/").reverse().join("")))
-      .slice(0, 2)
-      .concat(s.createdAssignments)
-      .map((a) => ({ ...a, onClick: () => go("tGrading") })),
+    // "Bài cần chấm" — mọi bài tập (mọi lớp) còn ít nhất một bài nộp chờ chấm.
+    tAssignments: publishedAssignments
+      .filter((a) => ctx.s.submissions.some((x) => x.assignmentId === a.id && GRADING_FILTER.pending(x)))
+      .map(buildAssignmentCard),
+    // "Sắp đến hạn" — mọi bài tập, sắp theo hạn nộp gần nhất.
+    tUpcoming: [...publishedAssignments]
+      .sort((a, b) => a.dueAtIso.localeCompare(b.dueAtIso))
+      .slice(0, 4)
+      .map(buildAssignmentCard),
     tClassesTabs: [["submitted", "Bài đã nộp"], ["grading", "Bài cần chấm"], ["upcoming", "Sắp đến hạn"]].map(([k, label]) => {
       const on = s.tClassesTab === k;
       return { key: k, label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ tClassesTab: k }) };
@@ -429,15 +499,35 @@ export function useTeacherLogic(ctx) {
     tClassProgress: T_CLASSES[s.tClassIdx].progress,
     tClassTint: T_CLASSES[s.tClassIdx].tint,
     tClassImg: T_CLASSES[s.tClassIdx].img,
-    tClassTabs: [["feed", "Bảng tin"], ["students", "Học sinh"], ["work", "Bài tập"], ["grading", "Chấm bài"], ["content", "Nội dung lớp"], ["settings", "Cài đặt"]].map(([k, label]) => {
-      const on = s.tClassTab === k;
-      return { key: k, label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ tClassTab: k }) };
-    }),
+    tClassTabs: [["feed", "Bảng tin"], ["students", "Học sinh"], ["work", "Bài tập"], ["grading", "Chấm bài"], ["content", "Nội dung lớp"], ["settings", "Cài đặt"]]
+      .map(([k, label]) => {
+        const on = s.tClassTab === k;
+        return { key: k, label, bg: on ? "#00aaab" : "transparent", color: on ? "#fff" : "#455771", weight: on ? 600 : 400, onClick: () => setState({ tClassTab: k }) };
+      })
+      // Bảng điểm và Tiến độ lớp là công cụ phụ của lớp — mở màn riêng kèm
+      // đúng classId, chứ không phải một tab con đổi view tại chỗ như các mục trên.
+      .concat([
+        { key: "gradebook", label: "Bảng điểm", bg: "transparent", color: "#455771", weight: 400, onClick: () => push("tGradebook", { classId: currentClassId }) },
+        { key: "progress", label: "Tiến độ lớp", bg: "transparent", color: "#455771", weight: 400, onClick: () => push("tClassProgress", { classId: currentClassId }) },
+      ]),
     tTabFeed: s.tClassTab === "feed", tTabStudents: s.tClassTab === "students", tTabWork: s.tClassTab === "work",
     tTabGrading: s.tClassTab === "grading", tTabContent: s.tClassTab === "content", tTabSettings: s.tClassTab === "settings",
     tStudents: T_STUDENTS,
     tNews: teacherFeed,
-    tClassAssignments: T_ASSIGNMENTS.concat(s.createdAssignments).filter((a) => a.cls === T_CLASSES[s.tClassIdx].name).map((a) => ({ ...a, onClick: () => go("tGrading") })),
+    toTAnnouncementCreateForClass: () => push("tAnnouncementCreate", { classId: currentClassId }),
+    // "Bài tập" trong Chi tiết lớp mở thẳng Thống kê bài tập của đúng lớp này
+    // (màn tổng hợp hoàn thành/điểm TB theo từng bài) thay vì rơi vào hàng
+    // đợi chấm bài chung chung như trước.
+    tClassAssignments: currentClassAssignments
+      .map((a) => {
+        const subs = ctx.s.submissions.filter((x) => x.assignmentId === a.id);
+        return {
+          title: a.title,
+          due: fmtDueDate(a.dueAtIso),
+          submitted: `${subs.length}/${a.totalStudents}`,
+          onClick: () => push("tAssignmentStats", { classId: currentClassId }),
+        };
+      }),
     tClassInfo: [
       { label: "Tên lớp", value: T_CLASSES[s.tClassIdx].name },
       { label: "Khối lớp", value: T_CLASSES[s.tClassIdx].sub.split(" · ")[1] || T_CLASSES[s.tClassIdx].sub },
@@ -463,16 +553,21 @@ export function useTeacherLogic(ctx) {
       return { ...r, trackBg: on ? ACCENT : "#dbe7ec", knobLeft: on ? "22px" : "2px", onClick: () => setState({ classPerms: { ...s.classPerms, [r.key]: !on } }) };
     }),
     resetClassSettings: () => setState({ classAccessMode: "code", classPerms: { post: false, comment: true, upload: true } }),
-    // Bảng tóm tắt chấm điểm dùng lại ở tab "Chấm bài" trong Chi tiết lớp — dữ
-    // liệu minh hoạ cố định, tách biệt với luồng chấm bài thật (isTGrading/isTGrade
-    // bên dưới) vốn đọc trực tiếp từ ctx.s.submissions.
-    tGradeSummary: [
-      { label: "Chờ chấm", value: "12", bg: "#eaf6f8", color: "#00708f" },
-      { label: "Đã chấm", value: "86", bg: "#f0fdf4", color: "#15803d" },
-      { label: "Nộp muộn", value: "4", bg: "#fff5e6", color: "#b45309" },
-    ],
-    tSubmissions: T_SUBMISSIONS.map((x) => ({ ...x, onClick: () => go("tGrading") })),
-    toTGrading: () => push("tGrading", { assignmentId: gradingAssignmentId }),
+    // Tóm tắt chấm điểm của đúng lớp đang mở (dùng ở tab "Chấm bài" trong Chi
+    // tiết lớp) — trước đây là số minh hoạ cố định, không đổi theo lớp.
+    tGradeSummary: (() => {
+      const classAssignmentIds = new Set(currentClassAssignments.map((a) => a.id));
+      const subs = ctx.s.submissions.filter((x) => classAssignmentIds.has(x.assignmentId));
+      return [
+        { label: "Chờ chấm", value: String(subs.filter(GRADING_FILTER.pending).length), bg: "#eaf6f8", color: "#00708f" },
+        { label: "Đã chấm", value: String(subs.filter((x) => x.status === S.GRADED).length), bg: "#f0fdf4", color: "#15803d" },
+        { label: "Nộp muộn", value: String(subs.filter((x) => x.isLate).length), bg: "#fff5e6", color: "#b45309" },
+      ];
+    })(),
+    // "Bài đã nộp" liên lớp (tab Lớp học) và bài nộp riêng của lớp đang mở
+    // (tab "Chấm bài" trong Chi tiết lớp) — mỗi dòng mở thẳng đúng bài nộp đó.
+    tSubmissions: buildSubmissionRows(null),
+    tClassSubmissions: buildSubmissionRows(currentClassId),
     gradingAssignmentTitle: gradingAssignment?.title ?? "",
     gradingProgressLabel: `${gradingSubs.filter((x) => x.status === S.GRADED).length}/${gradingSubs.length} ${t("bài đã chấm")}`,
     gradingFilterTabs: [
@@ -621,15 +716,15 @@ export function useTeacherLogic(ctx) {
     ).map((o) => ({ ...o, selected: s.tAssignSheet.selectedId === o.id, onClick: () => selectAssignOption(o.id) })),
     tAssignSheetConfirmDisabled: s.tAssignSheet.selectedId === null,
     closeAssignSheet, confirmAssignSheet,
+    // Trang chủ chỉ giữ các hành động không gắn với một lớp cụ thể (lớp được
+    // chọn ngay trong form soạn), hoặc dẫn sang khu vực liên lớp "Lớp học".
+    // Thông báo/Bảng điểm/Thống kê bài tập/Tiến độ lớp đã chuyển hẳn vào
+    // Chi tiết lớp — nơi có sẵn classId đúng, tránh phải suy đoán "lớp nào".
     tQuickActions: [
       { label: "Tạo giáo án", iconPath: "M4.5 5.4A1.9 1.9 0 0 1 6.4 3.5H17a1.9 1.9 0 0 1 1.9 1.9v13.2H6.4a1.9 1.9 0 0 0-1.9 1.9V5.4zM8.5 8h6.5M8.5 11.5h6.5", bg: "#eaf6f8", color: "#00708f", onClick: () => go("tPlan") },
       { label: "Tạo bài tập", iconPath: "M8.5 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5M8.5 5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2zM9 14l2.2 2.2L15.5 12", bg: "#eaf6f8", color: ACCENT, onClick: () => { setState({ caCls: s.caCls || T_CLASSES.concat(s.createdClasses)[0].name }); push("tCreateAssignment"); } },
       { label: "Tạo bài giảng", iconPath: "M4 6h16v10H4zM8 20h8M12 16v4", bg: "#fdeef5", color: "#b13a75", onClick: () => { setState({ clCls: s.clCls || T_CLASSES.concat(s.createdClasses)[0].name }); push("tCreateLecture"); } },
-      { label: "Chấm bài", iconPath: "M9 14l2.2 2.2L15.5 12M7 3.5h10a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5z", bg: "#e7f2fb", color: "#0b6aa3", onClick: () => push("tGrading", {}) },
-      { label: "Bảng điểm", iconPath: "M4 20V10.5M10 20V4.5M16 20v-7M21.5 20h-19", bg: "#f0fdf4", color: "#15803d", onClick: () => push("tGradebook") },
-      { label: "Thống kê bài tập", iconPath: "M5 19V9M12 19V5M19 19v-6", bg: "#fff5e6", color: "#b45309", onClick: () => push("tAssignmentStats") },
-      { label: "Tiến độ lớp", iconPath: "M12 12.4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7.2 7.1c1.3-3.4 4-5.1 7.2-5.1s5.9 1.7 7.2 5.1", bg: "#eaf6f8", color: "#00708f", onClick: () => push("tClassProgress") },
-      { label: "Đăng thông báo", iconPath: "M4 9.5h4l7-4.5v14l-7-4.5H4zM18 9a3.4 3.4 0 0 1 0 6", bg: "#fdeef5", color: "#b13a75", onClick: () => push("tAnnouncementCreate") },
+      { label: "Chấm bài", iconPath: "M9 14l2.2 2.2L15.5 12M7 3.5h10a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5z", bg: "#e7f2fb", color: "#0b6aa3", onClick: () => { setState({ tClassesTab: "grading" }); push("tClasses"); } },
     ],
 
     isTAnnouncementCreate: ctx.screen === "tAnnouncementCreate",
@@ -640,11 +735,14 @@ export function useTeacherLogic(ctx) {
     toggleAnnPinned: () => ctx.setState({ annPinned: !ctx.s.annPinned }),
     annValid: ctx.s.annTitle.trim().length > 0 && ctx.s.annBody.trim().length > 0,
     postAnnouncement: () => {
+      // Luôn đăng vào đúng lớp giáo viên đã mở màn này từ đó (Bảng tin của
+      // Chi tiết lớp là điểm vào duy nhất, luôn kèm classId qua params).
+      const classId = ctx.params.classId;
       const id = Math.max(0, ...ctx.s.announcements.map((n) => n.id)) + 1;
       ctx.setState((prev) => ({
         announcements: [
           ...prev.announcements,
-          { id, classId: 1, title: prev.annTitle, body: prev.annBody, createdAtIso: prev.nowIso, isPinned: prev.annPinned },
+          { id, classId, title: prev.annTitle, body: prev.annBody, createdAtIso: prev.nowIso, isPinned: prev.annPinned },
         ],
         annTitle: "",
         annBody: "",

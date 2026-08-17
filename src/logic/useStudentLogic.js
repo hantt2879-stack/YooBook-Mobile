@@ -274,10 +274,13 @@ export function useStudentLogic(ctx) {
     onClick: () => ctx.push("assignmentDetail", { assignmentId: x.assignment.id }),
   }));
 
-  // Bảng tin lớp: đọc từ state dùng chung để hành động đăng thông báo của
+  // Bảng tin lớp: chỉ hiện thông báo của đúng lớp học sinh đang xem trong
+  // Chi tiết lớp. Đọc từ state dùng chung để hành động đăng thông báo của
   // giáo viên hiện ngay ở phía học sinh trong cùng phiên. Sắp xếp/định dạng
   // dùng chung với teacherFeed qua ctx.announcementFeed (useAppState.js).
-  const classFeed = ctx.announcementFeed(ctx.s.announcements);
+  const classFeed = ctx.announcementFeed(
+    ctx.s.announcements.filter((n) => n.classId === T_CLASSES[s.classIdx].id)
+  );
 
   const currentAsg = ctx.s.assignments.find((a) => a.id === ctx.params.assignmentId) ?? null;
   const currentSub = currentAsg ? ctx.findSubmission(currentAsg.id, CURRENT_STUDENT_ID) : null;
@@ -570,6 +573,9 @@ export function useStudentLogic(ctx) {
           title: x.assignment.title,
           due: `${t("Hạn")} ${fmtDateTime(x.assignment.dueAtIso)}`,
           score: typeof x.submission?.finalScore === "number" ? String(x.submission.finalScore) : "",
+          // Cùng đích với thẻ bài tập bên tab Lớp học (cwItems) — trước đây
+          // thiếu onClick nên bấm vào thẻ trong Chi tiết lớp không có phản hồi.
+          onClick: () => ctx.push("assignmentDetail", { assignmentId: x.assignment.id }),
         };
       }),
   };

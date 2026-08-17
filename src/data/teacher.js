@@ -4,11 +4,14 @@ export const T_METRICS = [
   { label: "Sắp đến hạn", value: "3", hint: "Trong 3 ngày tới", bg: "#fff5e6", color: "#f59e0b" },
   { label: "Học sinh", value: "128", hint: "Cần theo dõi và hỗ trợ", bg: "#fdeef5", color: "#ef5da8" },
 ];
+// `id` phải khớp với `classId` dùng trong SEED_ASSIGNMENTS/ROSTER (coursework.js)
+// — đây là khoá dùng để lọc bảng điểm/thống kê/tiến độ/thông báo đúng theo lớp
+// đang mở, thay cho việc hardcode classId === 1.
 export const T_CLASSES = [
-  { name: "SINH HỌC 8A1", sub: "Sinh học · Lớp 8", code: "SH8A1-24", students: "32", progress: "60%", tint: "linear-gradient(135deg,#00aaab,#00708f)", img: "/assets/thumbs/thumb-bio-cell.svg" },
-  { name: "SINH HỌC 8A2", sub: "Sinh học · Lớp 8", code: "SH8A2-24", students: "30", progress: "45%", tint: "linear-gradient(135deg,#138cd2,#195658)", img: "/assets/thumbs/thumb-bio-cell.svg" },
-  { name: "KHTN 6A2", sub: "Khoa học tự nhiên · Lớp 6", code: "KH6A2-24", students: "34", progress: "72%", tint: "linear-gradient(135deg,#22c55e,#15803d)", img: "/assets/thumbs/thumb-science-watercycle.svg" },
-  { name: "SINH HỌC 9A1", sub: "Sinh học · Lớp 9", code: "SH9A1-24", students: "32", progress: "28%", tint: "linear-gradient(135deg,#ef5da8,#a03a6d)", img: "/assets/thumbs/thumb-bio-cell.svg" },
+  { id: 1, name: "SINH HỌC 8A1", sub: "Sinh học · Lớp 8", code: "SH8A1-24", students: "32", progress: "60%", tint: "linear-gradient(135deg,#00aaab,#00708f)", img: "/assets/thumbs/thumb-bio-cell.svg" },
+  { id: 2, name: "SINH HỌC 8A2", sub: "Sinh học · Lớp 8", code: "SH8A2-24", students: "30", progress: "45%", tint: "linear-gradient(135deg,#138cd2,#195658)", img: "/assets/thumbs/thumb-bio-cell.svg" },
+  { id: 3, name: "KHTN 6A2", sub: "Khoa học tự nhiên · Lớp 6", code: "KH6A2-24", students: "34", progress: "72%", tint: "linear-gradient(135deg,#22c55e,#15803d)", img: "/assets/thumbs/thumb-science-watercycle.svg" },
+  { id: 4, name: "SINH HỌC 9A1", sub: "Sinh học · Lớp 9", code: "SH9A1-24", students: "32", progress: "28%", tint: "linear-gradient(135deg,#ef5da8,#a03a6d)", img: "/assets/thumbs/thumb-bio-cell.svg" },
 ];
 export const T_ASSIGNMENTS = [
   { title: "Bài tập tuần 20: Quang hợp của thực vật", cls: "SINH HỌC 8A1", due: "17/05/2026", submitted: "28/32", pending: "4 bài chờ chấm" },
