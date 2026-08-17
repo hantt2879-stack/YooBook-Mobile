@@ -151,7 +151,7 @@ export default function StudentLibraryWorkScreens({ v }) {
             v.classDetailAssignments.length ? (
               <div style={css(`margin-top:16px;display:flex;flex-direction:column;gap:11px`)}>
                 {v.classDetailAssignments.map((a, i) => (
-                  <div key={i} style={css(`padding:15px;border:1px solid #ddeaf0;border-radius:18px;background:#fff`)}>
+                  <div key={i} onClick={a.onClick} style={css(`padding:15px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer`)}>
                     <div style={css(`display:flex;align-items:flex-start;justify-content:space-between;gap:10px`)}>
                       <div style={css(`flex:1;min-width:0`)}>
                         <div style={css(`height:23px;padding:0 10px;border-radius:999px;background:${a.tagBg};color:${a.tagColor};font-size:10.5px;font-weight:600;display:inline-flex;align-items:center`)}>{a.tag}</div>

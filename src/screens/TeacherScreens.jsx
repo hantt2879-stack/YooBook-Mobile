@@ -1,5 +1,6 @@
 import { css } from "../css.js";
 import HScroll from "./HScroll.jsx";
+import EmptyState from "./ui/EmptyState.jsx";
 
 export default function TeacherScreens({ v }) {
   return (
@@ -46,21 +47,6 @@ export default function TeacherScreens({ v }) {
                 </div>
               ))}
             </HScroll>
-          </div>
-          <div style={css(`padding:18px 20px 0`)}>
-            <div style={css(`display:flex;align-items:baseline;justify-content:space-between`)}><div style={css(`font-size:16px;font-weight:600;color:#455771`)}>{v.t(`Bài cần chấm`)}</div><span onClick={v.toTGrading} style={css(`font-size:13px;color:#00708f;cursor:pointer`)}>{v.t(`Chấm bài`)}</span></div>
-            <div style={css(`margin-top:12px;display:flex;flex-direction:column;gap:11px`)}>
-              {v.tAssignments.map((a, i) => (
-                <div key={i} onClick={a.onClick} style={css(`padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer`)}>
-                  <div style={css(`font-size:13.5px;font-weight:600;color:#455771;line-height:1.4;text-wrap:pretty`)}>{a.title}</div>
-                  <div style={css(`font-size:11.5px;color:#455771;margin-top:5px`)}>{a.cls} · {v.t(`hạn`)} {a.due}</div>
-                  <div style={css(`margin-top:10px;display:flex;align-items:center;gap:9px`)}>
-                    <div style={css(`height:23px;padding:0 10px;border-radius:999px;background:#eaf6f8;color:#00708f;font-size:10.5px;font-weight:600;display:flex;align-items:center;gap:4px`)}>{a.submitted} {v.t(`đã nộp`)}</div>
-                    <div style={css(`height:23px;padding:0 10px;border-radius:999px;background:#fff5e6;color:#b45309;font-size:10.5px;font-weight:600;display:flex;align-items:center`)}>{a.pending}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       )}
@@ -439,10 +425,9 @@ export default function TeacherScreens({ v }) {
 
             {v.tTabFeed && (
               <div style={css(`margin-top:14px`)}>
-                <div style={css(`padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff`)}>
-                  <div style={css(`height:42px;border:1px solid #ddeaf0;border-radius:12px;display:flex;align-items:center;padding:0 13px;font-size:13px;color:#455771`)}>{v.t(`Nhập tiêu đề để thông báo`)}</div>
-                  <div style={css(`margin-top:9px;height:66px;border:1px solid #ddeaf0;border-radius:12px;padding:11px 13px;font-size:12.5px;color:#455771`)}>{v.t(`Bạn muốn thông báo điều gì cho lớp?`)}</div>
-                  <div style={css(`margin-top:11px;display:flex;justify-content:flex-end`)}><div style={css(`height:34px;padding:0 16px;border-radius:999px;background:#00aaab;color:#fff;font-size:12.5px;font-weight:600;display:flex;align-items:center;cursor:pointer`)}>{v.t(`Đăng`)}</div></div>
+                <div onClick={v.toTAnnouncementCreateForClass} style={css(`padding:14px;border:1px solid #ddeaf0;border-radius:18px;background:#fff;cursor:pointer`)}>
+                  <div style={css(`height:42px;border:1px solid #ddeaf0;border-radius:12px;display:flex;align-items:center;padding:0 13px;font-size:13px;color:#8ba0ae`)}>{v.t(`Nhập tiêu đề để thông báo`)}</div>
+                  <div style={css(`margin-top:11px;display:flex;justify-content:flex-end`)}><div style={css(`height:34px;padding:0 16px;border-radius:999px;background:#00aaab;color:#fff;font-size:12.5px;font-weight:600;display:flex;align-items:center`)}>{v.t(`Đăng thông báo`)}</div></div>
                 </div>
                 <div style={css(`margin-top:11px;display:flex;flex-direction:column;gap:11px`)}>
                   {v.tNews.map((n, i) => (
@@ -489,14 +474,15 @@ export default function TeacherScreens({ v }) {
 
             {v.tTabGrading && (
               <div style={css(`margin-top:14px`)}>
-                <div style={css(`display:flex;align-items:baseline;justify-content:space-between`)}><span style={css(`font-size:13px;color:#455771`)}>{v.t(`Bài cần chấm trong lớp này`)}</span><span onClick={v.toTGrading} style={css(`font-size:12.5px;color:#00708f;font-weight:500;cursor:pointer`)}>{v.t(`Xem tất cả`)}</span></div>
+                <div style={css(`font-size:13px;color:#455771`)}>{v.t(`Bài cần chấm trong lớp này`)}</div>
                 <div style={css(`margin-top:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px`)}>
                   {v.tGradeSummary.map((g, i) => (
                     <div key={i} style={css(`padding:12px 8px;border-radius:16px;background:${g.bg};text-align:center`)}><div style={css(`font-size:20px;font-weight:700;color:${g.color};line-height:1`)}>{g.value}</div><div style={css(`font-size:10px;color:#455771;margin-top:4px`)}>{g.label}</div></div>
                   ))}
                 </div>
                 <div style={css(`margin-top:14px;display:flex;flex-direction:column;gap:10px`)}>
-                  {v.tSubmissions.map((x, i) => (
+                  {v.tClassSubmissions.length === 0 && <EmptyState title={v.t(`Chưa có bài nộp nào cần chấm`)} />}
+                  {v.tClassSubmissions.map((x, i) => (
                     <div key={i} onClick={x.onClick} style={css(`display:flex;align-items:center;gap:12px;padding:13px;border:1px solid #ddeaf0;border-radius:16px;background:#fff;cursor:pointer`)}>
                       <div style={css(`width:36px;height:36px;flex:none;border-radius:999px;background:${x.tint};display:flex;align-items:center;justify-content:center`)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.9" strokeLinecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 19.4c1.2-3.2 3.8-4.8 7-4.8s5.8 1.6 7 4.8"/></svg></div>
                       <div style={css(`flex:1;min-width:0`)}><div style={css(`font-size:13.5px;font-weight:600;color:#455771`)}>{x.name}</div><div style={css(`font-size:11.5px;color:#455771;margin-top:2px`)}>{x.at} · {x.attempt}</div></div>
